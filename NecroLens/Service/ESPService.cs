@@ -210,7 +210,8 @@ public class ESPService : IDisposable
 
     private unsafe void TryInteract(ESPObject espObj)
     {
-        if (conf.OpenChests && espObj.IsChest())
+        var player = PluginService.ClientState.LocalPlayer!;
+        if ((player.StatusFlags & StatusFlags.InCombat) == 0 && conf.OpenChests && espObj.IsChest())
         {
             var type = espObj.Type;
 
@@ -219,6 +220,9 @@ public class ESPService : IDisposable
             if (!conf.OpenGoldCoffers && type == ESPObject.ESPType.GoldChest) return;
             if (!conf.OpenHoards && type == ESPObject.ESPType.AccursedHoard) return;
 
+            // We dont want to kill the player
+            if (type == ESPObject.ESPType.SilverChest && player.CurrentHp <= player.MaxHp*0.85) return;
+            
             if (CheckChestOpenSafe(type) && espObj.Distance() <= espObj.InteractionDistance()
                                          && !InteractionList.Contains(espObj.GameObject.ObjectId))
             {
