@@ -1,0 +1,20 @@
+{
+    "Author": "Jukka",
+    "Name": "NecroLens",
+    "Punchline": "A true Necromancer always know the DeepDungeon ... everyone else just uses a high tech!",
+    "Description": "DeepDungeon Helper. Radar for Mobs, Aggro, Sight and everything else.",
+    "InternalName": "NecroLens",
+    "ApplicableVersion": "any",
+    "Tags": [
+        "potd",
+        "hoh",
+        "eo",
+        "esp",
+        "radar",
+        "sonar",
+        "deep",
+        "dungeon"
+    ],
+    "RepoUrl": "https://github.com/Jukkales/NecroLens",
+    "IconUrl": "https://raw.githubusercontent.com/Jukkales/NecroLens/master/icon.png"
+}
