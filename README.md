@@ -1,6 +1,7 @@
-# NecroLens
+[![Build](https://github.com/Jukkales/NecroLens/actions/workflows/build-plugin.yml/badge.svg)](https://github.com/Jukkales/NecroLens/actions/workflows/build-plugin.yml)
+[![Github Downloads (total)](https://img.shields.io/github/downloads/Jukkales/NecroLens/total.svg)]()
 
-[FFXIVQuickLauncher](https://github.com/goaaats/FFXIVQuickLauncher) plugin.
+# NecroLens
 
 ![image](icon.png)
 
@@ -25,7 +26,7 @@ For installation instructions, please see my [custom plugin repo](https://github
    - Invisible Traps, Chest bombs and Hoards are ServerSide only! (expect you use a Pomander)
  - Highlight of objects once near
  - Respawn and Floor timer
- - Pomander tracker ofg static floor effects
+ - Pomander tracker of static floor effects
  - **EXPERIMENTAL** Automatically opens chest for you once near
    - Only when safe, max one time and it very rarely stuck you 
 
