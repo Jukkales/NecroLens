@@ -197,9 +197,7 @@ public class ESPService : IDisposable
         var unsafeChest = false;
         if (info != null)
         {
-            unsafeChest = (info.MimicChests == DeepDungeonContentInfo.MimicChests.Bronze &&
-                           type == ESPObject.ESPType.BronzeChest) ||
-                          (info.MimicChests == DeepDungeonContentInfo.MimicChests.Silver &&
+            unsafeChest = (info.MimicChests == DeepDungeonContentInfo.MimicChests.Silver &&
                            type == ESPObject.ESPType.SilverChest) ||
                           (info.MimicChests == DeepDungeonContentInfo.MimicChests.Gold &&
                            type == ESPObject.ESPType.GoldChest);
@@ -221,8 +219,8 @@ public class ESPService : IDisposable
             if (!conf.OpenHoards && type == ESPObject.ESPType.AccursedHoard) return;
 
             // We dont want to kill the player
-            if (type == ESPObject.ESPType.SilverChest && player.CurrentHp <= player.MaxHp*0.85) return;
-            
+            if (type == ESPObject.ESPType.SilverChest && player.CurrentHp <= player.MaxHp * 0.77) return;
+
             if (CheckChestOpenSafe(type) && espObj.Distance() <= espObj.InteractionDistance()
                                          && !InteractionList.Contains(espObj.GameObject.ObjectId))
             {

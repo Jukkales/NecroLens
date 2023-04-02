@@ -72,6 +72,8 @@ public partial class DeepDungeonService : IDisposable
         currentFloor = info.StartFloor - 1; // NextFloor() adds 1
         floorTimes.Clear();
 
+        PluginService.MobInfoService.TryReloadIfEmpty();
+
         for (var i = info.StartFloor; i < info.StartFloor + 10; i++)
             floorTimes[i] = 0;
 

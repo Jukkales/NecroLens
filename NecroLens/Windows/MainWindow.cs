@@ -47,7 +47,7 @@ public class MainWindow : Window, IDisposable
 
     public override bool DrawConditions()
     {
-        return PluginService.DeepDungeonService.InDeepDungeon(); // && PluginService.DeepDungeonService.ready;
+        return PluginService.DeepDungeonService.InDeepDungeon() && PluginService.DeepDungeonService.ready;
     }
 
     private void DrawTrapStatus()

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Authors>Jukka</Authors>
-        <Version>1.0.1</Version>
+        <Version>1.0.2.0</Version>
         <Description>A sample plugin.</Description>
         <PackageProjectUrl>https://github.com/goatcorp/NecroLens</PackageProjectUrl>
     </PropertyGroup>
@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="data\*.json" />
+        <None Remove="data\*.json"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -42,7 +42,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.10" />
+        <PackageReference Include="DalamudPackager" Version="2.1.10"/>
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>

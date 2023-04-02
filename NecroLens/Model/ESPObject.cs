@@ -55,34 +55,50 @@ public class ESPObject
         GameObject = gameObject;
         this.mobInfo = mobInfo;
 
-        if (this.mobInfo != null && DeepDungeonContentInfo.ContentMobInfoChanges.TryGetValue(
-                PluginService.DeepDungeonService.currentContentId,
-                out var overrideInfos))
+        // Mob info exists? check floor overrides
+        if (this.mobInfo != null)
         {
-            var npc = (BattleNpc)gameObject;
-            var mob = overrideInfos.FirstOrDefault(m => m.Id == npc.NameId);
-            if (mob != null)
+            if (DeepDungeonContentInfo.ContentMobInfoChanges.TryGetValue(
+                    PluginService.DeepDungeonService.currentContentId, out var overrideInfos))
             {
-                this.mobInfo.Patrol = mob.Patrol ?? this.mobInfo.Patrol;
-                this.mobInfo.AggroType = mob.AggroType ?? this.mobInfo.AggroType;
+                var npc = (BattleNpc)gameObject;
+                var mob = overrideInfos.FirstOrDefault(m => m.Id == npc.NameId);
+                if (mob != null)
+                {
+                    this.mobInfo.Patrol = mob.Patrol ?? this.mobInfo.Patrol;
+                    this.mobInfo.AggroType = mob.AggroType ?? this.mobInfo.AggroType;
+                }
             }
         }
 
-        var dataId = gameObject.DataId;
+        // No MobInfo? Must be an other object
+        else
+        {
+            var dataId = gameObject.DataId;
 
-        if (clientState.LocalPlayer != null && clientState.LocalPlayer.ObjectId == gameObject.ObjectId)
-            Type = ESPType.Player;
-
-        if (DataIds.BronzeChestIDs.Contains(dataId)) Type = ESPType.BronzeChest;
-        if (DataIds.SilverChest == dataId) Type = ESPType.SilverChest;
-        if (DataIds.GoldChest == dataId) Type = ESPType.GoldChest;
-        if (DataIds.MimicChest == dataId) Type = ESPType.MimicChest;
-        if (DataIds.AccursedHoardIDs.Contains(dataId)) Type = ESPType.AccursedHoard;
-        if (DataIds.PassageIDs.Contains(dataId)) Type = ESPType.Passage;
-        if (DataIds.ReturnIDs.Contains(dataId)) Type = ESPType.Return;
-        if (DataIds.TrapIDs.ContainsKey(dataId)) Type = ESPType.Trap;
-        if (DataIds.FriendlyIDs.Contains(dataId)) Type = ESPType.FriendlyEnemy;
-        if (DataIds.MimicIDs.Contains(dataId)) Type = ESPType.Mimic;
+            if (clientState.LocalPlayer != null && clientState.LocalPlayer.ObjectId == gameObject.ObjectId)
+                Type = ESPType.Player;
+            else if (DataIds.BronzeChestIDs.Contains(dataId))
+                Type = ESPType.BronzeChest;
+            else if (DataIds.SilverChest == dataId)
+                Type = ESPType.SilverChest;
+            else if (DataIds.GoldChest == dataId)
+                Type = ESPType.GoldChest;
+            else if (DataIds.MimicChest == dataId)
+                Type = ESPType.MimicChest;
+            else if (DataIds.AccursedHoardIDs.Contains(dataId))
+                Type = ESPType.AccursedHoard;
+            else if (DataIds.PassageIDs.Contains(dataId))
+                Type = ESPType.Passage;
+            else if (DataIds.ReturnIDs.Contains(dataId))
+                Type = ESPType.Return;
+            else if (DataIds.TrapIDs.ContainsKey(dataId))
+                Type = ESPType.Trap;
+            else if (DataIds.FriendlyIDs.Contains(dataId))
+                Type = ESPType.FriendlyEnemy;
+            else if (DataIds.MimicIDs.Contains(dataId))
+                Type = ESPType.Mimic;
+        }
     }
 
     public GameObject GameObject { get; }
@@ -131,9 +147,9 @@ public class ESPObject
     {
         return Type switch
         {
-            ESPType.BronzeChest => 3.3f,
-            ESPType.SilverChest => 4.5f,
-            ESPType.GoldChest => 4.5f,
+            ESPType.BronzeChest => 3.1f,
+            ESPType.SilverChest => 4.4f,
+            ESPType.GoldChest => 4.4f,
             _ => 2f
         };
     }
@@ -221,7 +237,7 @@ public class ESPObject
 
         name += Type switch
         {
-            ESPType.Trap => DataIds.TrapIDs[GameObject.DataId],
+            ESPType.Trap => DataIds.TrapIDs.TryGetValue(GameObject.DataId, out var value) ? value : "Trap",
             ESPType.AccursedHoard => "Accursed Hoard",
             ESPType.BronzeChest => "Bronze Chest",
             ESPType.SilverChest => "Silver Chest",
