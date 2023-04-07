@@ -2,9 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Authors>Jukka</Authors>
-        <Version>1.0.2.1</Version>
-        <Description>A sample plugin.</Description>
-        <PackageProjectUrl>https://github.com/goatcorp/NecroLens</PackageProjectUrl>
+        <Version>1.0.2.2</Version>
+        <Description>NecroLens Dalamud Plugin</Description>
+        <PackageProjectUrl>https://github.com/Jukkales/NecroLens</PackageProjectUrl>
     </PropertyGroup>
 
     <PropertyGroup>

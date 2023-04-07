@@ -160,6 +160,7 @@ public partial class DeepDungeonService : IDisposable
         floorSetInfo = null;
         nextFloorTransfer = false;
         ready = false;
+        PluginService.Plugin.CloseMainWindow();
     }
 
     private void OnTimerUpdate(object? sender, ElapsedEventArgs e)

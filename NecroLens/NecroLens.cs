@@ -32,7 +32,8 @@ public sealed class NecroLens : IDalamudPlugin
         pluginInterface?.Create<PluginService>();
         PluginService.Plugin = this;
 
-        PluginService.Configuration = new Configuration();
+        PluginService.Configuration =
+            PluginService.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         pluginCommands = new PluginCommands();
         configWindow = new ConfigWindow();
@@ -84,6 +85,11 @@ public sealed class NecroLens : IDalamudPlugin
     public void ShowMainWindow()
     {
         mainWindow.IsOpen = true;
+    }
+    
+    public void CloseMainWindow()
+    {
+        mainWindow.IsOpen = false;
     }
 
     public void ShowConfigWindow()

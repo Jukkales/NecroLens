@@ -16,13 +16,15 @@ public class MainWindow : Window, IDisposable
 {
     public MainWindow() : base("NecroLens",
                                ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse |
-                               ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize)
+                               ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | 
+                               ImGuiWindowFlags.NoFocusOnAppearing)
     {
         SizeConstraints = new WindowSizeConstraints
         {
             MinimumSize = new Vector2(340, 260),
             MaximumSize = new Vector2(340, 260)
         };
+        RespectCloseHotkey = false;
     }
 
     public void Dispose() { }
