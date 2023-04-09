@@ -238,6 +238,7 @@ public class ESPService : IDisposable
         PluginLog.Debug("ESP Background scan started");
         // Keep scanner alive till Dispose()
         while (active)
+        {
             if (ShouldDraw())
             {
                 var entityList = new List<ESPObject>();
@@ -266,7 +267,8 @@ public class ESPService : IDisposable
                 mapObjects.Clear();
                 mapObjects.AddRange(entityList);
                 Monitor.Exit(mapObjects);
-                Thread.Sleep(Tick);
             }
+            Thread.Sleep(Tick);
+        }
     }
 }
