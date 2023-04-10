@@ -21,7 +21,7 @@ public static class DataIds
 
     public static readonly HashSet<uint> PalaceOfTheDeadMapIds = new()
     {
-        561, 562, 563, 564, 565, 593, 594, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604, 605
+        561, 562, 563, 564, 565, 593, 594, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604, 605, 606, 607
     };
 
     public static readonly HashSet<uint> HeavenOnHighMapIds = new()
