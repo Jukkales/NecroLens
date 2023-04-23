@@ -1,4 +1,6 @@
-﻿namespace NecroLens
+﻿// ReSharper disable all
+
+namespace NecroLens
 {
     ////////////////////////////////////////////////////////////////////////////////
     /// Lobby Connection IPC Codes

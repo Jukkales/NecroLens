@@ -114,6 +114,15 @@ public class ConfigWindow : Window, IDisposable
 
     private void DrawESPTab()
     {
+        
+        var playerDotColor = ImGui.ColorConvertU32ToFloat4(conf.PlayerDotColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("##playerDot", ref playerDotColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.PlayerDotColor = ImGui.ColorConvertFloat4ToU32(playerDotColor.WithAlpha(0xCC));
+            conf.Save();
+        }
+        ImGui.SameLine();
+        
         var showPlayerDot = conf.ShowPlayerDot;
         if (ImGui.Checkbox("Show Player Dot", ref showPlayerDot))
         {
@@ -138,8 +147,24 @@ public class ConfigWindow : Window, IDisposable
         ImGui.Indent(15);
         ImGui.Text("Draw sight-, proximity- and sound-range.\nSound Mobs will also have hit box.");
         ImGui.Unindent(15);
-        ImGui.EndGroup();
+        
+        var normalAggroColor = ImGui.ColorConvertU32ToFloat4(conf.NormalAggroColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("Proximity and Sight   ", ref normalAggroColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.NormalAggroColor = ImGui.ColorConvertFloat4ToU32(normalAggroColor.WithAlpha(0xFF));
+            conf.Save();
+        }
         ImGui.SameLine();
+        var soundAggroColor = ImGui.ColorConvertU32ToFloat4(conf.SoundAggroColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("Sound", ref soundAggroColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.SoundAggroColor = ImGui.ColorConvertFloat4ToU32(soundAggroColor.WithAlpha(0xFF));
+            conf.Save();
+        }
+        ImGui.EndGroup();
+        
+        ImGui.SameLine();
+        
         ImGui.BeginGroup();
         var showPatrolArrow = conf.ShowPatrolArrow;
         if (ImGui.Checkbox("Show Arrow on Patrol", ref showPatrolArrow))
@@ -180,6 +205,13 @@ public class ConfigWindow : Window, IDisposable
             PluginService.Configuration.Save();
         }
 
+        var passageColor = ImGui.ColorConvertU32ToFloat4(conf.PassageColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("##passage", ref passageColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.PassageColor = ImGui.ColorConvertFloat4ToU32(passageColor.WithAlpha(0xFF));
+            conf.Save();
+        }
+        ImGui.SameLine();
         var highlightPassage = conf.HighlightPassage;
         if (ImGui.Checkbox("Passage", ref highlightPassage))
         {
@@ -194,6 +226,13 @@ public class ConfigWindow : Window, IDisposable
         ImGui.Text("Show the following treasure coffers in the overlay:");
         ImGui.Indent(15);
 
+        var bronzeCofferColor = ImGui.ColorConvertU32ToFloat4(conf.BronzeCofferColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("##bronzeCoffer", ref bronzeCofferColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.BronzeCofferColor = ImGui.ColorConvertFloat4ToU32(bronzeCofferColor.WithAlpha(0xFF));
+            conf.Save();
+        }
+        ImGui.SameLine();
         var showBronzeCoffers = conf.ShowBronzeCoffers;
         if (ImGui.Checkbox("Bronze Chests", ref showBronzeCoffers))
         {
@@ -201,6 +240,13 @@ public class ConfigWindow : Window, IDisposable
             PluginService.Configuration.Save();
         }
 
+        var silverCofferColor = ImGui.ColorConvertU32ToFloat4(conf.SilverCofferColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("##silverCoffer", ref silverCofferColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.SilverCofferColor = ImGui.ColorConvertFloat4ToU32(silverCofferColor.WithAlpha(0xFF));
+            conf.Save();
+        }
+        ImGui.SameLine();
         var showSilverCoffers = conf.ShowSilverCoffers;
         if (ImGui.Checkbox("Silver Chests", ref showSilverCoffers))
         {
@@ -208,6 +254,13 @@ public class ConfigWindow : Window, IDisposable
             PluginService.Configuration.Save();
         }
 
+        var goldCofferColor = ImGui.ColorConvertU32ToFloat4(conf.GoldCofferColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("##goldCoffer", ref goldCofferColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.GoldCofferColor = ImGui.ColorConvertFloat4ToU32(goldCofferColor.WithAlpha(0xFF));
+            conf.Save();
+        }
+        ImGui.SameLine();
         var showGoldCoffers = conf.ShowGoldCoffers;
         if (ImGui.Checkbox("Gold Chests", ref showGoldCoffers))
         {
@@ -215,6 +268,13 @@ public class ConfigWindow : Window, IDisposable
             PluginService.Configuration.Save();
         }
 
+        var hoardColor = ImGui.ColorConvertU32ToFloat4(conf.HoardColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("##hoard", ref hoardColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.HoardColor = ImGui.ColorConvertFloat4ToU32(hoardColor.WithAlpha(0xFF));
+            conf.Save();
+        }
+        ImGui.SameLine();
         var showHoards = conf.ShowHoards;
         if (ImGui.Checkbox("Accursed Hoards", ref showHoards))
         {

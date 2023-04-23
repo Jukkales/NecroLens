@@ -276,43 +276,52 @@ public partial class DeepDungeonService : IDisposable
 
     private void OnSystemLogMessage(IntPtr dataPtr, int logId)
     {
-        if (InDeepDungeon() && logId == DataIds.SystemLogPomanderUsed)
-            OnPomanderUsed((Pomander)Marshal.ReadByte(dataPtr, 16));
-        else if (InDeepDungeon() && logId == DataIds.SystemLogDutyEnded)
-            ExitDeepDungeon();
-        else if (InDeepDungeon() && logId == DataIds.SystemLogTransferenceInitiated)
-            nextFloorTransfer = true;
+        if (InDeepDungeon())
+        {
+            if (logId == DataIds.SystemLogPomanderUsed)
+                OnPomanderUsed((Pomander)Marshal.ReadByte(dataPtr, 16));
+            else if (logId == DataIds.SystemLogDutyEnded)
+                ExitDeepDungeon();
+            else if (logId == DataIds.SystemLogTransferenceInitiated)
+                nextFloorTransfer = true;
+        }
     }
-
+    
     private void OnPomanderUsed(Pomander pomander)
     {
-        PluginLog.Debug("Pomander ID: " + pomander);
+        PluginLog.Debug($"Pomander ID: {pomander}");
         switch (pomander)
         {
             case Pomander.Safety:
+            case Pomander.SafetyProtomander:
                 floorEffects.Add(pomander);
                 trapStatus = DeepDungeonTrapStatus.Inactive;
                 break;
 
             case Pomander.Sight:
+            case Pomander.SightProtomander:
                 floorEffects.Add(pomander);
                 if (trapStatus == DeepDungeonTrapStatus.Active)
                     trapStatus = DeepDungeonTrapStatus.Visible;
                 break;
 
             case Pomander.Affluence:
+            case Pomander.AffluenceProtomander:
                 nextFloorAffluence = true;
                 break;
 
             case Pomander.Flight:
+            case Pomander.FlightProtomander:
                 nextFloorFlight = true;
                 break;
 
             case Pomander.Alteration:
+            case Pomander.AlterationProtomander:
                 nextFloorAlteration = true;
                 break;
 
             case Pomander.Fortune:
+            case Pomander.FortuneProtomander:
                 floorEffects.Add(pomander);
                 break;
         }

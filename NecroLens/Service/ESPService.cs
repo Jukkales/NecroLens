@@ -150,7 +150,7 @@ public class ESPService : IDisposable
             !espObject.InCombat())
         {
             if (conf.ShowPatrolArrow && espObject.IsPatrol())
-                ESPUtils.DrawFacingDirectionArrow(drawList, espObject, Color.Red, 0.6f);
+                ESPUtils.DrawFacingDirectionArrow(drawList, espObject, Color.Red.ToUint(), 0.6f);
 
             if (espObject.Distance() <= 50)
             {
@@ -158,17 +158,17 @@ public class ESPService : IDisposable
                 {
                     case ESPObject.ESPAggroType.Proximity:
                         ESPUtils.DrawCircle(drawList, espObject, espObject.AggroDistance(),
-                                            Color.Brown, ESPUtils.DefaultFilledOpacity);
+                                            conf.NormalAggroColor, ESPUtils.DefaultFilledOpacity);
                         break;
                     case ESPObject.ESPAggroType.Sound:
                         ESPUtils.DrawCircle(drawList, espObject, espObject.AggroDistance(),
-                                            Color.Fuchsia, ESPUtils.DefaultFilledOpacity);
+                                            conf.SoundAggroColor, ESPUtils.DefaultFilledOpacity);
                         ESPUtils.DrawCircleFilled(drawList, espObject, espObject.GameObject.HitboxRadius,
-                                                  Color.Fuchsia, ESPUtils.DefaultFilledOpacity);
+                                                  conf.SoundAggroColor, ESPUtils.DefaultFilledOpacity);
                         break;
                     case ESPObject.ESPAggroType.Sight:
                         ESPUtils.DrawConeFromCenterPoint(drawList, espObject, espObject.SightRadian,
-                                                         espObject.AggroDistance(), Color.Brown);
+                                                         espObject.AggroDistance(), conf.NormalAggroColor);
                         break;
                     default:
                         PluginLog.Error($"Unable to process AggroType {espObject.AggroType().ToString()}");

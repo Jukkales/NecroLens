@@ -37,12 +37,12 @@ public static class ESPUtils
         var textSize = ImGui.CalcTextSize(name);
         // Center name on position
         var textPosition = new Vector2(position.X - (textSize.X / 2f), position.Y + (textSize.Y / 2f));
-        drawList.AddText(textPosition, espObject.RenderColor().ToUint(), name);
+        drawList.AddText(textPosition, espObject.RenderColor(), name);
     }
 
     public static void DrawPlayerDot(ImDrawListPtr drawList, Vector2 position)
     {
-        drawList.AddCircleFilled(position, 3f, Color.Red.ToUint(0.8f), 100);
+        drawList.AddCircleFilled(position, 3f, PluginService.Configuration.PlayerDotColor, 100);
     }
 
     public static void DrawInteractionCircle(ImDrawListPtr drawList, ESPObject espObject, float radius)
@@ -53,13 +53,12 @@ public static class ESPUtils
     }
 
     public static void DrawConeFromCenterPoint(
-        ImDrawListPtr drawList, ESPObject espObject, float angleRadian, float radius, Color color)
+        ImDrawListPtr drawList, ESPObject espObject, float angleRadian, float radius, uint outlineColor)
     {
         var position = espObject.GameObject.Position;
         var rotation = espObject.GameObject.Rotation + (MathF.PI / 4);
         var partialCircleSegmentRotation = angleRadian / CircleSegments;
-        var outlineColor = color.ToUint();
-        var coneColor = color.ToUint(0.2f);
+        var coneColor = outlineColor.SetAlpha(0.2f);
 
         PluginService.GameGui.WorldToScreen(new Vector3(position.X, position.Y, position.Z),
                                             out var originPositionOnScreen);
@@ -93,11 +92,10 @@ public static class ESPUtils
     }
 
     public static void DrawCircleFilled(
-        ImDrawListPtr drawList, ESPObject espObject, float radius, Color color,
+        ImDrawListPtr drawList, ESPObject espObject, float radius, uint circleColor,
         float thickness = DefaultCircleThickness)
     {
-        var circleColor = color.ToUint();
-        var filledColor = color.ToUint(0.15f);
+        var filledColor = circleColor.SetAlpha(0.15f);
 
         DrawCircleInternal(drawList, espObject, radius, circleColor, false, thickness);
         DrawCircleInternal(drawList, espObject, radius, filledColor, true, thickness);
@@ -105,10 +103,10 @@ public static class ESPUtils
     }
 
     public static void DrawCircle(
-        ImDrawListPtr drawList, ESPObject espObject, float radius, Color color,
+        ImDrawListPtr drawList, ESPObject espObject, float radius, uint color,
         float opacity = 1f, float thickness = DefaultCircleThickness)
     {
-        DrawCircleInternal(drawList, espObject, radius, color.ToUint(opacity), false, thickness);
+        DrawCircleInternal(drawList, espObject, radius, color.SetAlpha(opacity), false, thickness);
         drawList.PathClear();
     }
 
@@ -131,7 +129,7 @@ public static class ESPUtils
     }
 
     public static void DrawFacingDirectionArrow(
-        ImDrawListPtr drawList, ESPObject espObject, Color color,
+        ImDrawListPtr drawList, ESPObject espObject, uint color,
         float opacity = 1f, float thickness = DefaultCircleThickness)
     {
         var points = new List<(float, float)>
@@ -141,7 +139,7 @@ public static class ESPUtils
         foreach (var (radian, steps) in points)
             drawList.PathLineTo(CreatePointAroundObjectOnScreen(espObject, radian, steps));
 
-        drawList.PathStroke(color.ToUint(opacity), ImDrawFlags.RoundCornersDefault, thickness);
+        drawList.PathStroke(color.SetAlpha(opacity), ImDrawFlags.RoundCornersDefault, thickness);
         drawList.PathClear();
     }
 

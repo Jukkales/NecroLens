@@ -41,7 +41,7 @@ public class ESPTestService : IDisposable
                 // drawList.PathStroke(ColorUtils.ToUint(Color.Red, 0.8f), ImDrawFlags.RoundCornersDefault, 2f);
                 // drawList.PathClear();
 
-                ESPUtils.DrawFacingDirectionArrow(drawList, espObject, Color.Red, 1f, 4f);
+                ESPUtils.DrawFacingDirectionArrow(drawList, espObject, Color.Red.ToUint(), 1f, 4f);
             }
         }
     }

@@ -164,36 +164,37 @@ public class ESPObject
         return Type is ESPType.BronzeChest or ESPType.SilverChest or ESPType.GoldChest or ESPType.AccursedHoard;
     }
 
-    public Color RenderColor()
+    public uint RenderColor()
     {
         switch (Type)
         {
             case ESPType.Enemy:
                 return DangerLevel() switch
                 {
-                    ESPDangerLevel.Danger => Color.Red,
-                    ESPDangerLevel.Caution => Color.OrangeRed,
-                    _ => Color.White
+                    ESPDangerLevel.Danger => Color.Red.ToUint(),
+                    ESPDangerLevel.Caution => Color.OrangeRed.ToUint(),
+                    _ => Color.White.ToUint()
                 };
             case ESPType.FriendlyEnemy:
-                return Color.LightGreen;
+                return Color.LightGreen.ToUint();
             case ESPType.Mimic:
             case ESPType.MimicChest:
             case ESPType.Trap:
-                return Color.Red;
+                return Color.Red.ToUint();
             case ESPType.Return:
-                return Color.LightBlue;
+                return Color.LightBlue.ToUint();
             case ESPType.Passage:
-                return Color.Turquoise;
+                return PluginService.Configuration.PassageColor;
             case ESPType.AccursedHoard:
+                return PluginService.Configuration.HoardColor;
             case ESPType.GoldChest:
-                return Color.Gold;
+                return PluginService.Configuration.GoldCofferColor;
             case ESPType.SilverChest:
-                return Color.Silver;
+                return PluginService.Configuration.SilverCofferColor;
             case ESPType.BronzeChest:
-                return Color.SaddleBrown;
+                return PluginService.Configuration.BronzeCofferColor;
             default:
-                return Color.White;
+                return Color.White.ToUint();
         }
     }
 
