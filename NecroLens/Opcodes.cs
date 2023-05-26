@@ -1,6 +1,6 @@
 ﻿// ReSharper disable all
 
-namespace FFXIVOpcodes.Global
+namespace NecroLens
 {
     ////////////////////////////////////////////////////////////////////////////////
     /// Lobby Connection IPC Codes
