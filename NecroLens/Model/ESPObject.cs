@@ -200,7 +200,16 @@ public class ESPObject
 
     public bool InCombat()
     {
-        return GameObject is BattleNpc npc && (npc.StatusFlags & StatusFlags.InCombat) != 0;
+        try
+        {
+            return GameObject is BattleNpc npc && (npc.StatusFlags & StatusFlags.InCombat) != 0;
+        }
+        catch (AccessViolationException ave)
+        {
+            // 6.4: accessing StatusFlags sometimes causes access violations
+            // we ignore them and assume "yes" here to disable rendering
+            return true;
+        }
     }
 
     public string? NameSymbol()

@@ -239,35 +239,43 @@ public class ESPService : IDisposable
         // Keep scanner alive till Dispose()
         while (active)
         {
-            if (ShouldDraw())
+            try
             {
-                var entityList = new List<ESPObject>();
-                foreach (var obj in PluginService.ObjectTable)
+                if (ShouldDraw())
                 {
-                    // Ignore every player object
-                    if (obj.IsValid() && !ESPUtils.IsIgnoredObject(obj))
+                    var entityList = new List<ESPObject>();
+                    foreach (var obj in PluginService.ObjectTable)
                     {
-                        MobInfo mobInfo = null!;
-                        if (obj is BattleNpc npcObj)
-                            PluginService.MobInfoService.MobInfoDictionary.TryGetValue(npcObj.NameId, out mobInfo!);
+                        // Ignore every player object
+                        if (obj.IsValid() && !ESPUtils.IsIgnoredObject(obj))
+                        {
+                            MobInfo mobInfo = null!;
+                            if (obj is BattleNpc npcObj)
+                                PluginService.MobInfoService.MobInfoDictionary.TryGetValue(npcObj.NameId, out mobInfo!);
 
-                        var espObj = new ESPObject(obj, PluginService.ClientState, mobInfo);
+                            var espObj = new ESPObject(obj, PluginService.ClientState, mobInfo);
 
-                        TryInteract(espObj);
+                            TryInteract(espObj);
 
-                        entityList.Add(espObj);
+                            entityList.Add(espObj);
+                        }
+
+                        if (PluginService.ClientState.LocalPlayer != null &&
+                            PluginService.ClientState.LocalPlayer.ObjectId == obj.ObjectId)
+                            entityList.Add(new ESPObject(obj, PluginService.ClientState, null));
                     }
 
-                    if (PluginService.ClientState.LocalPlayer != null &&
-                        PluginService.ClientState.LocalPlayer.ObjectId == obj.ObjectId)
-                        entityList.Add(new ESPObject(obj, PluginService.ClientState, null));
+                    Monitor.Enter(mapObjects);
+                    mapObjects.Clear();
+                    mapObjects.AddRange(entityList);
+                    Monitor.Exit(mapObjects);
                 }
-
-                Monitor.Enter(mapObjects);
-                mapObjects.Clear();
-                mapObjects.AddRange(entityList);
-                Monitor.Exit(mapObjects);
             }
+            catch (Exception e)
+            {
+                PluginLog.Error(e.ToString());
+            }
+
             Thread.Sleep(Tick);
         }
     }
