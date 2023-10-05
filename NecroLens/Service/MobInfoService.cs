@@ -4,7 +4,6 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Dalamud.Logging;
 using NecroLens.Model;
 using Newtonsoft.Json;
 
@@ -27,7 +26,7 @@ public class MobInfoService : IDisposable
 
     private void LoadDeepDungeonMobInfos()
     {
-        PluginLog.Log("Loading Mob infos...");
+        PluginService.PluginLog.Info("Loading Mob infos...");
         try
         {
             LoadMobInfoFile(Path.Combine(PluginService.PluginInterface.AssemblyLocation.Directory?.FullName!,
@@ -35,15 +34,15 @@ public class MobInfoService : IDisposable
         }
         catch (Exception e)
         {
-            PluginLog.Error("Unable to load MobInfo!", e);
+            PluginService.PluginLog.Error("Unable to load MobInfo!", e);
         }
-        
+
 
         if (MobInfoDictionary.Count <= 0)
         {
             try
             {
-                PluginLog.Log("Mob infos empty. Retry backup method.");
+                PluginService.PluginLog.Info("Mob infos empty. Retry backup method.");
                 const string uri =
                     "https://raw.githubusercontent.com/Jukkales/NecroLens/main/NecroLens/Data/allMobs.json";
                 var result = Load<List<MobInfo>>(new Uri(uri));
@@ -57,17 +56,17 @@ public class MobInfoService : IDisposable
                 else
                 {
                     MobInfoDictionary.Clear();
-                    PluginLog.Error("Unable to load MobInfo from backup location! Panic!");
+                    PluginService.PluginLog.Error("Unable to load MobInfo from backup location! Panic!");
                 }
             }
             catch (Exception e)
             {
-                PluginLog.Error("Unable to load MobInfo from backup location! Panic!", e);
+                PluginService.PluginLog.Error("Unable to load MobInfo from backup location! Panic!", e);
                 throw;
             }
         }
-        
-        PluginLog.Information($"Loaded infos for {MobInfoDictionary.Count} mobs!");
+
+        PluginService.PluginLog.Information($"Loaded infos for {MobInfoDictionary.Count} mobs!");
     }
 
     public static async Task<T?> Load<T>(Uri uri)
@@ -87,7 +86,7 @@ public class MobInfoService : IDisposable
         else
         {
             MobInfoDictionary.Clear();
-            PluginLog.Error($"Unable to load MobInfo file {path}!");
+            PluginService.PluginLog.Error($"Unable to load MobInfo file {path}!");
         }
     }
 

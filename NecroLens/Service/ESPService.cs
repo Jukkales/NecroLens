@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiNET;
 using NecroLens.Model;
@@ -29,7 +28,7 @@ public class ESPService : IDisposable
 
     public ESPService()
     {
-        PluginLog.Debug("ESP Service loading...");
+        PluginService.PluginLog.Debug("ESP Service loading...");
 
         mapObjects = new List<ESPObject>();
         InteractionList = new List<uint>();
@@ -50,17 +49,17 @@ public class ESPService : IDisposable
         PluginService.PluginInterface.UiBuilder.Draw -= OnUpdate;
         PluginService.ClientState.TerritoryChanged -= OnCleanup;
         active = false;
-        while (!mapScanner.IsCompleted) PluginLog.Debug("wait till scanner is stopped...");
+        while (!mapScanner.IsCompleted) PluginService.PluginLog.Debug("wait till scanner is stopped...");
         mapObjects.Clear();
         InteractionList.Clear();
-        PluginLog.Information("ESP Service unloaded");
+        PluginService.PluginLog.Information("ESP Service unloaded");
     }
 
 
     /**
      * Clears the drawable GameObjects on MapChange.
      */
-    private void OnCleanup(object? sender, ushort e)
+    private void OnCleanup(ushort e)
     {
         InteractionList.Clear();
         Monitor.Enter(mapObjects);
@@ -171,7 +170,8 @@ public class ESPService : IDisposable
                                                          espObject.AggroDistance(), conf.NormalAggroColor);
                         break;
                     default:
-                        PluginLog.Error($"Unable to process AggroType {espObject.AggroType().ToString()}");
+                        PluginService.PluginLog.Error(
+                            $"Unable to process AggroType {espObject.AggroType().ToString()}");
                         break;
                 }
             }
@@ -235,7 +235,7 @@ public class ESPService : IDisposable
      */
     private void MapScanner()
     {
-        PluginLog.Debug("ESP Background scan started");
+        PluginService.PluginLog.Debug("ESP Background scan started");
         // Keep scanner alive till Dispose()
         while (active)
         {
@@ -273,7 +273,7 @@ public class ESPService : IDisposable
             }
             catch (Exception e)
             {
-                PluginLog.Error(e.ToString());
+                PluginService.PluginLog.Error(e.ToString());
             }
 
             Thread.Sleep(Tick);

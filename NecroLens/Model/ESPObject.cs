@@ -4,9 +4,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
-using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Plugin.Services;
 using NecroLens.Service;
 using NecroLens.util;
 
@@ -46,10 +46,10 @@ public class ESPObject
         Passage
     }
 
-    private ClientState clientState;
+    private IClientState clientState;
     private MobInfo? mobInfo;
 
-    public ESPObject(GameObject gameObject, ClientState clientState, MobInfo? mobInfo)
+    public ESPObject(GameObject gameObject, IClientState clientState, MobInfo? mobInfo)
     {
         this.clientState = clientState;
         GameObject = gameObject;

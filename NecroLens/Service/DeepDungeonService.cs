@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Timers;
 using Dalamud.Game.Network;
-using Dalamud.Logging;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using NecroLens.Model;
 using NecroLens.util;
@@ -67,7 +66,7 @@ public partial class DeepDungeonService : IDisposable
     {
         floorSetInfo = info;
         currentContentId = contentId;
-        PluginLog.Debug($"Entering ContentID {currentContentId} - StartFloor: {info.StartFloor}");
+        PluginService.PluginLog.Debug($"Entering ContentID {currentContentId} - StartFloor: {info.StartFloor}");
 
         currentFloor = info.StartFloor - 1; // NextFloor() adds 1
         floorTimes.Clear();
@@ -93,7 +92,7 @@ public partial class DeepDungeonService : IDisposable
     {
         if (nextFloorTransfer)
         {
-            PluginLog.Debug($"ContentID {currentContentId} - NextFloor: {currentFloor + 1}");
+            PluginService.PluginLog.Debug($"ContentID {currentContentId} - NextFloor: {currentFloor + 1}");
 
             // Reset
             floorEffects.Clear();
@@ -142,7 +141,7 @@ public partial class DeepDungeonService : IDisposable
                 var floor = int.Parse(resultString);
                 if (currentFloor != floor)
                 {
-                    PluginLog.Information("Floor number mismatch - adjusting");
+                    PluginService.PluginLog.Information("Floor number mismatch - adjusting");
                     currentFloor = floor;
                 }
 
@@ -153,7 +152,7 @@ public partial class DeepDungeonService : IDisposable
 
     private void ExitDeepDungeon()
     {
-        PluginLog.Debug($"ContentID {currentContentId} - Exiting");
+        PluginService.PluginLog.Debug($"ContentID {currentContentId} - Exiting");
 
         passageProgress = -1;
         floorTimer.Stop();
@@ -167,7 +166,7 @@ public partial class DeepDungeonService : IDisposable
     {
         if (!InDeepDungeon())
         {
-            PluginLog.Debug("Failsafe exit");
+            PluginService.PluginLog.Debug("Failsafe exit");
             ExitDeepDungeon();
         }
 
@@ -286,10 +285,10 @@ public partial class DeepDungeonService : IDisposable
                 nextFloorTransfer = true;
         }
     }
-    
+
     private void OnPomanderUsed(Pomander pomander)
     {
-        PluginLog.Debug($"Pomander ID: {pomander}");
+        PluginService.PluginLog.Debug($"Pomander ID: {pomander}");
         switch (pomander)
         {
             case Pomander.Safety:
