@@ -5,37 +5,27 @@ on:
 
 jobs:
   build:
-    if: "! contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
-    runs-on: [ windows-2022 ]
+    runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.5.2
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3.0.3
         with:
-          vs-prerelease: true
+          dotnet-version: '7.x.x'
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.0.5
-
-      - name: Restore NuGet Packages
+      - name: Restore
         run: dotnet restore
 
       - name: Download Dalamud
-        if: "!contains(github.event.head_commit.message, '[stg]')"
-        run: |
-          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest.zip
-          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
-          
-      - name: Download Dalamud staging
-        if: "contains(github.event.head_commit.message, '[stg]')"
         run: |
           Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/stg/latest.zip -OutFile latest.zip
-          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev"
+          Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev\"
           
       - name: Build
-        run: msbuild NecroLens.sln /p:Configuration=Release /target:NecroLens
+        run: |
+          dotnet build --no-restore --configuration Release --nologo
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2.2.1
