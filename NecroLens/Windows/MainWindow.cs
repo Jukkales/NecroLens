@@ -6,6 +6,7 @@ using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
+using NecroLens.Data;
 using NecroLens.Model;
 using NecroLens.Service;
 using NecroLens.util;
@@ -16,7 +17,7 @@ public class MainWindow : Window, IDisposable
 {
     public MainWindow() : base("NecroLens",
                                ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse |
-                               ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | 
+                               ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize |
                                ImGuiWindowFlags.NoFocusOnAppearing)
     {
         SizeConstraints = new WindowSizeConstraints
@@ -56,19 +57,19 @@ public class MainWindow : Window, IDisposable
     {
         var status = PluginService.DeepDungeonService.trapStatus;
 
-        ImGui.Text(@"Traps:");
+        ImGui.Text(Strings.MainWindow_TrapStatus_Title);
         ImGui.SameLine();
 
         switch (status)
         {
             case DeepDungeonTrapStatus.Active:
-                ImGui.TextColored(Color.Red.ToV4(), @"Active");
+                ImGui.TextColored(Color.Red.ToV4(), Strings.MainWindow_TrapStatus_Active);
                 break;
             case DeepDungeonTrapStatus.Visible:
-                ImGui.TextColored(Color.Yellow.ToV4(), @"Visible");
+                ImGui.TextColored(Color.Yellow.ToV4(), Strings.MainWindow_TrapStatus_Visible);
                 break;
             case DeepDungeonTrapStatus.Inactive:
-                ImGui.TextColored(Color.Green.ToV4(), @"Inactive");
+                ImGui.TextColored(Color.Green.ToV4(), Strings.MainWindow_TrapStatus_Inactive);
                 break;
         }
     }
@@ -76,13 +77,13 @@ public class MainWindow : Window, IDisposable
     private void DrawPassageStatus()
     {
         var progress = PluginService.DeepDungeonService.passageProgress;
-        ImGui.Text(@"Passage:");
+        ImGui.Text(Strings.MainWindow_PassageStatus_Title);
         ImGui.SameLine();
         if (progress == 100)
-            ImGui.TextColored(Color.Green.ToV4(), @"Open");
+            ImGui.TextColored(Color.Green.ToV4(), Strings.MainWindow_PassageStatus_Open);
         else
         {
-            ImGui.TextColored(Color.Red.ToV4(), @"Closed");
+            ImGui.TextColored(Color.Red.ToV4(), Strings.MainWindow_PassageStatus_Closed);
 
             if (progress > 0)
             {
@@ -105,7 +106,7 @@ public class MainWindow : Window, IDisposable
     private void DrawTimeSet()
     {
         ImGui.BeginGroup();
-        ImGui.Text(@"Times:");
+        ImGui.Text(Strings.MainWindow_TimeSet_Title);
 
         var first = PluginService.DeepDungeonService.floorTimes.Take(5);
         ImGui.BeginGroup();
@@ -133,7 +134,7 @@ public class MainWindow : Window, IDisposable
         {
             ImGui.BeginTooltip();
             ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35.0f);
-            ImGui.TextUnformatted("Active on next Floor");
+            ImGui.TextUnformatted(Strings.MainWindow_NextFloorMark_ActiveNextFloor);
             ImGui.PopTextWrapPos();
             ImGui.EndTooltip();
         }
@@ -145,35 +146,42 @@ public class MainWindow : Window, IDisposable
         var colorWhite = Color.White.ToV4();
         var colorGrey = Color.DimGray.ToV4();
         ImGui.BeginGroup();
-        ImGui.Text(@"Current Floor Effects:");
+        ImGui.Text(Strings.MainWindow_CurrentFloorEffects_Title);
         ImGui.Indent(15);
-        ImGui.TextColored(effects.Contains(Pomander.Affluence) ? colorWhite : colorGrey, @"Affluence");
+        ImGui.TextColored(effects.Contains(Pomander.Affluence) ? colorWhite : colorGrey,
+                          Strings.MainWindow_CurrentFloorEffects_Affluence);
         if (PluginService.DeepDungeonService.nextFloorAffluence)
             DrawNextFloorMark();
 
-        ImGui.TextColored(effects.Contains(Pomander.Flight) ? colorWhite : colorGrey, @"Flight");
+        ImGui.TextColored(effects.Contains(Pomander.Flight) ? colorWhite : colorGrey,
+                          Strings.MainWindow_CurrentFloorEffects_Flight);
         if (PluginService.DeepDungeonService.nextFloorFlight)
             DrawNextFloorMark();
 
-        ImGui.TextColored(effects.Contains(Pomander.Alteration) ? colorWhite : colorGrey, @"Alteration");
+        ImGui.TextColored(effects.Contains(Pomander.Alteration) ? colorWhite : colorGrey,
+                          Strings.MainWindow_CurrentFloorEffects_Alteration);
         if (PluginService.DeepDungeonService.nextFloorAlteration)
             DrawNextFloorMark();
 
-        ImGui.TextColored(effects.Contains(Pomander.Safety) ? colorWhite : colorGrey, @"Safety");
-        ImGui.TextColored(effects.Contains(Pomander.Sight) ? colorWhite : colorGrey, @"Sight");
-        ImGui.TextColored(effects.Contains(Pomander.Fortune) ? colorWhite : colorGrey, @"Fortune");
+        ImGui.TextColored(effects.Contains(Pomander.Safety) ? colorWhite : colorGrey,
+                          Strings.MainWindow_CurrentFloorEffects_Safety);
+        ImGui.TextColored(effects.Contains(Pomander.Sight) ? colorWhite : colorGrey,
+                          Strings.MainWindow_CurrentFloorEffects_Sight);
+        ImGui.TextColored(effects.Contains(Pomander.Fortune) ? colorWhite : colorGrey,
+                          Strings.MainWindow_CurrentFloorEffects_Fortune);
         ImGui.EndGroup();
     }
 
     public override void Draw()
     {
         ImGui.BeginGroup();
-        ImGui.Text($"Floor: {PluginService.DeepDungeonService.currentFloor}");
+        ImGui.Text(string.Format(Strings.MainWindow_Floor, PluginService.DeepDungeonService.currentFloor));
 
         if (PluginService.DeepDungeonService.HasRespawn())
         {
             ImGui.SameLine(80);
-            ImGui.Text($"Respawns: {FormatTime(PluginService.DeepDungeonService.TimeTillRespawn())}");
+            ImGui.Text(string.Format(Strings.MainWindow_Respawns,
+                                     FormatTime(PluginService.DeepDungeonService.TimeTillRespawn())));
         }
 
         ImGui.Spacing();
@@ -186,7 +194,7 @@ public class MainWindow : Window, IDisposable
 
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + ImGui.GetColumnWidth() - 135);
         var showAggro = PluginService.Configuration.ShowMobViews;
-        if (ImGui.Checkbox("Show Aggro", ref showAggro))
+        if (ImGui.Checkbox(Strings.MainWindow_ShowAggro, ref showAggro))
         {
             PluginService.Configuration.ShowMobViews = showAggro;
             PluginService.Configuration.Save();
@@ -198,7 +206,7 @@ public class MainWindow : Window, IDisposable
 
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + ImGui.GetColumnWidth() - 135);
         var openChests = PluginService.Configuration.OpenChests;
-        if (ImGui.Checkbox("Open Chests", ref openChests))
+        if (ImGui.Checkbox(Strings.MainWindow_OpenChests, ref openChests))
         {
             PluginService.Configuration.OpenChests = openChests;
             PluginService.Configuration.Save();
@@ -206,7 +214,7 @@ public class MainWindow : Window, IDisposable
 
         ImGui.SameLine();
         HelpMarker(
-            "Toggle Open Chests respecting your settings.\n\nIMPORTANT:\nIf you're stuck near a chest and cant move anymore disable this option!");
+            Strings.MainWindow_OpenChests_Help);
 
         ImGui.EndGroup();
 

@@ -1,0 +1,250 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="ConfigWindow_ChestsTab_OpenChests" xml:space="preserve">
+        <value>Schatztruhen automatisch öffnen</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenFollowingChests" xml:space="preserve">
+        <value>Diese Schatztruhen öffnen:</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenUnsafeChests" xml:space="preserve">
+        <value>Unsichere Schatztruhen öffnen</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Silver" xml:space="preserve">
+        <value>Silber</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Gold" xml:space="preserve">
+        <value>Gold</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Bronze" xml:space="preserve">
+        <value>Bronze</value>
+    </data>
+    <data name="ConfigWindow_Tab_General" xml:space="preserve">
+        <value>Allgemein</value>
+    </data>
+    <data name="ConfigWindow_Tab_ESPSettings" xml:space="preserve">
+        <value>Radar Einstellungen</value>
+    </data>
+    <data name="ConfigWindow_Tab_Chests" xml:space="preserve">
+        <value>Schatztruhen</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Hoards" xml:space="preserve">
+        <value>Verborgene Schätze</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenUnsafeChests_Details" xml:space="preserve">
+        <value>Auch Truhen öffnen die Mimics sein könnten.</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenChests_Details" xml:space="preserve">
+        <value>Versucht eine Sachatztruhe automatisch zu öffnen sobald du in Reichweite bist.
+Es wird nur einmal versucht eine Truhe zu öffnen, sollte es fehlschlagen.</value>
+    </data>
+    <data name="ConfigWindow_Title" xml:space="preserve">
+        <value>NecroLens Konfiguration</value>
+    </data>
+    <data name="Traps_Unknown" xml:space="preserve">
+        <value>Falle</value>
+    </data>
+    <data name="Traps_Landmine" xml:space="preserve">
+        <value>Sprengfalle</value>
+    </data>
+    <data name="Traps_Luring_Trap" xml:space="preserve">
+        <value>Ziehfalle</value>
+    </data>
+    <data name="Traps_Odder_Trap" xml:space="preserve">
+        <value>Otterfalle</value>
+    </data>
+    <data name="Traps_Owlet_Trap" xml:space="preserve">
+        <value>Eulenfalle</value>
+    </data>
+    <data name="Traps_Toad_Trap" xml:space="preserve">
+        <value>Froschfalle</value>
+    </data>
+    <data name="Traps_Enfeebling_Trap" xml:space="preserve">
+        <value>Schwächefalle</value>
+    </data>
+    <data name="Traps_Impeding_Trap" xml:space="preserve">
+        <value>Behinderungsfalle</value>
+    </data>
+    <data name="PluginCommands_OpenOverlay_Help" xml:space="preserve">
+        <value>Öffnet das Hauptfenster.</value>
+    </data>
+    <data name="PluginCommands_OpenConfig_Help" xml:space="preserve">
+        <value>Öffnet die Konfiguration.</value>
+    </data>
+    <data name="MainWindow_TrapStatus_Visible" xml:space="preserve">
+        <value>Sichtbar</value>
+    </data>
+    <data name="MainWindow_TrapStatus_Title" xml:space="preserve">
+        <value>Fallen:</value>
+    </data>
+    <data name="MainWindow_TrapStatus_Inactive" xml:space="preserve">
+        <value>Inaktiv</value>
+    </data>
+    <data name="MainWindow_TrapStatus_Active" xml:space="preserve">
+        <value>Aktiv</value>
+    </data>
+    <data name="MainWindow_TimeSet_Title" xml:space="preserve">
+        <value>Zeiten:</value>
+    </data>
+    <data name="MainWindow_PassageStatus_Open" xml:space="preserve">
+        <value>Offen</value>
+    </data>
+    <data name="MainWindow_PassageStatus_Closed" xml:space="preserve">
+        <value>Geschlossen</value>
+    </data>
+    <data name="MainWindow_PassageStatus_Title" xml:space="preserve">
+        <value>Wegleuchte:</value>
+    </data>
+    <data name="MainWindow_Respawns" xml:space="preserve">
+        <value>Respawns: {0}</value>
+    </data>
+    <data name="MainWindow_ShowAggro" xml:space="preserve">
+        <value>Sichtbereiche anzeigen</value>
+    </data>
+    <data name="MainWindow_OpenChests" xml:space="preserve">
+        <value>Kisten öffnen</value>
+    </data>
+    <data name="MainWindow_OpenChests_Help" xml:space="preserve">
+        <value>Öffnet Kisten entsprechend der Einstellung.
+
+WICHTIG:
+Wenn du dich neben einer Kiste nicht mehr bewegen kannst, deaktiviere diese Option!</value>
+    </data>
+    <data name="MainWindow_NextFloorMark_ActiveNextFloor" xml:space="preserve">
+        <value>Auf der nächsten Ebene aktiv</value>
+    </data>
+    <data name="MainWindow_Floor" xml:space="preserve">
+        <value>Ebene: {0}</value>
+    </data>
+    <data name="MainWindow_CurrentFloorEffects_Title" xml:space="preserve">
+        <value>Ebeneneffekte:</value>
+    </data>
+    <data name="MainWindow_CurrentFloorEffects_Sight" xml:space="preserve">
+        <value>Sicht</value>
+    </data>
+    <data name="MainWindow_CurrentFloorEffects_Safety" xml:space="preserve">
+        <value>Sigelbruch</value>
+    </data>
+    <data name="MainWindow_CurrentFloorEffects_Fortune" xml:space="preserve">
+        <value>Glück</value>
+    </data>
+    <data name="MainWindow_CurrentFloorEffects_Flight" xml:space="preserve">
+        <value>Feindtod</value>
+    </data>
+    <data name="MainWindow_CurrentFloorEffects_Alteration" xml:space="preserve">
+        <value>Feindwandlung</value>
+    </data>
+    <data name="MainWindow_CurrentFloorEffects_Affluence" xml:space="preserve">
+        <value>Schätze</value>
+    </data>
+    <data name="ConfigWindow_GeneralTab_OpenChests" xml:space="preserve">
+        <value>Kisten öffnen aktivieren</value>
+    </data>
+    <data name="ConfigWindow_GeneralTab_EnableOverlay" xml:space="preserve">
+        <value>Radar aktivieren</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowPlayerDot" xml:space="preserve">
+        <value>Spieler Hitbox anzeigen</value>
+    </data>
+    <data name="ConfigWindow_GeneralTab_OpenChests_Details" xml:space="preserve">
+        <value>EXPERIMENTELLES FEATURE
+Öffnet Kisten automatisch sobald du in reichweite bist.
+Kisten die auf der Ebene eine Mimic sein könnten werden normalerweise NICHT geöffnet.
+
+Es kann passieren das man sich neben einer Kiste nicht mehr bewegen kann.
+In dem falle das Feature deaktivieren.</value>
+    </data>
+    <data name="ConfigWindow_GeneralTab_EnableOverlay_Details" xml:space="preserve">
+        <value>Zeigt eine Radaransicht mit der Position von Kisten, Monstern und deren Sichtfeldern.
+Unter Radar Einstellungen kannst du genau einstellen, was du sehen möchtest.
+Wichtig: Nur Objekte die dem Client bekannt sind werden angezeigt.
+Es ist NICHT möglich Objekte außerhalb der Renderdistanz anzuzeigen.</value>
+    </data>
+    <data name="ConfigWindow_GeneralTab_AutomaticallyOpen_Details" xml:space="preserve">
+        <value>Öffnet das das Hauptfenster automatisch wenn du ein Tiefes Gewöbe betrittst.
+Es zeigt nützliche Informationen und Schnelleinstellungen an.</value>
+    </data>
+    <data name="ConfigWindow_GeneralTab_AutomaticallyOpen" xml:space="preserve">
+        <value>Automatisch im Tiefen Gewöbe öffnen</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowPlayerDot_Details" xml:space="preserve">
+        <value>Zeichnet einen kleinen Punkt unter dir, der deine Hitbox ist.</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowPatrolArrow" xml:space="preserve">
+        <value>Laufrichtung von Patrouille anzeigen</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowPatrolArrow_Details" xml:space="preserve">
+        <value>Zeichnet einen Pfeil in die Richtung in die Patrouille laufen.</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowCofferInteractionRange" xml:space="preserve">
+        <value>Schatztruhen Reichweite anzeigen</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowCofferInteractionRange_Details" xml:space="preserve">
+        <value>Wenn du dich einer Schatztruhe nährst wird angezeigt an wann du sie öffnen kannst.</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowAggroRange_Sound" xml:space="preserve">
+        <value>Ton</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowAggroRange_Proximity_and_Sight" xml:space="preserve">
+        <value>Abstand und Sicht</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowAggroRange" xml:space="preserve">
+        <value>Aggro Sichtfelder anzeigen</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_ShowAggroRange_Details" xml:space="preserve">
+        <value>Zeigt Aggressionsbereiche für Monster mit Sicht, Abstand und Ton.
+Mobs mit Ton haben außerdem eine Hitboxanzeige.</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Gold" xml:space="preserve">
+        <value>Goldene Schatztruhen</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Silver" xml:space="preserve">
+        <value>Silberne Schatztruhen</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Bronze" xml:space="preserve">
+        <value>Bronzene Schatztruhen</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Hoards" xml:space="preserve">
+        <value>Verborgene Schätze</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_HighlightTreasureChests" xml:space="preserve">
+        <value>Zeigt folgende Schatztruhen im Overlay:</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_HighlightObjects_TreasureChests" xml:space="preserve">
+        <value>Schatztruhen</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_HighlightObjects_Passage" xml:space="preserve">
+        <value>Wegleuchte</value>
+    </data>
+    <data name="ConfigWindow_ESPTab_HighlightObjects" xml:space="preserve">
+        <value>Objekte bei Annährung hervorheben:</value>
+    </data>
+    <data name="ConfigWindow_ChestsTab_OpenChests_EXPERIMENTAL" xml:space="preserve">
+        <value>EXPERIMENTELL</value>
+    </data>
+    <data name="Chest_Silver_Chest" xml:space="preserve">
+        <value>Silberne Schatztruhe</value>
+    </data>
+    <data name="Chest_Gold_Chest" xml:space="preserve">
+        <value>Goldene Schatztruhe</value>
+    </data>
+    <data name="Chest_Mimic" xml:space="preserve">
+        <value>Mimik</value>
+    </data>
+    <data name="Chest_Bronze_Chest" xml:space="preserve">
+        <value>Bronzene Schatztruhe</value>
+    </data>
+    <data name="Chest_Accursed_Hoard" xml:space="preserve">
+        <value>Verborgenre Schatz</value>
+    </data>
+</root>

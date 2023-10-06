@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Authors>Jukka</Authors>
-        <Version>1.0.3.7</Version>
+        <Version>1.0.4.0</Version>
         <Description>NecroLens Dalamud Plugin</Description>
         <PackageProjectUrl>https://github.com/Jukkales/NecroLens</PackageProjectUrl>
     </PropertyGroup>
@@ -40,7 +40,7 @@
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
         <DefineConstants>TRACE</DefineConstants>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="DalamudPackager" Version="2.1.12"/>
         <Reference Include="FFXIVClientStructs">
@@ -71,6 +71,21 @@
             <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
             <Private>false</Private>
         </Reference>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <EmbeddedResource Update="data\Strings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Update="data\Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NecroLens.Data;
 
 namespace NecroLens.util;
 
@@ -69,13 +70,13 @@ public static class DataIds
 
     public static readonly Dictionary<uint, string> TrapIDs = new()
     {
-        { 2007182, "Landmine" },
-        { 2007183, "Luring Trap" },
-        { 2007184, "Enfeebling Trap" },
-        { 2007185, "Impeding Trap" },
-        { 2007186, "Toad Trap" },
-        { 2009504, "Odder Trap" },
-        { 2013284, "Owlet Trap" }
+        { 2007182, Strings.Traps_Landmine },
+        { 2007183, Strings.Traps_Luring_Trap },
+        { 2007184, Strings.Traps_Enfeebling_Trap },
+        { 2007185, Strings.Traps_Impeding_Trap },
+        { 2007186, Strings.Traps_Toad_Trap },
+        { 2009504, Strings.Traps_Odder_Trap },
+        { 2013284, Strings.Traps_Owlet_Trap }
     };
 
     public static readonly HashSet<uint> PassageIDs = new()

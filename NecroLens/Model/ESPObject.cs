@@ -7,6 +7,7 @@ using System.Linq;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
+using NecroLens.Data;
 using NecroLens.Service;
 using NecroLens.util;
 
@@ -204,7 +205,7 @@ public class ESPObject
         {
             return GameObject is BattleNpc npc && (npc.StatusFlags & StatusFlags.InCombat) != 0;
         }
-        catch (AccessViolationException ave)
+        catch (AccessViolationException)
         {
             // 6.4: accessing StatusFlags sometimes causes access violations
             // we ignore them and assume "yes" here to disable rendering
@@ -247,12 +248,12 @@ public class ESPObject
 
         name += Type switch
         {
-            ESPType.Trap => DataIds.TrapIDs.TryGetValue(GameObject.DataId, out var value) ? value : "Trap",
-            ESPType.AccursedHoard => "Accursed Hoard",
-            ESPType.BronzeChest => "Bronze Chest",
-            ESPType.SilverChest => "Silver Chest",
-            ESPType.GoldChest => "Gold Chest",
-            ESPType.MimicChest => "Mimic",
+            ESPType.Trap => DataIds.TrapIDs.TryGetValue(GameObject.DataId, out var value) ? value : Strings.Traps_Unknown,
+            ESPType.AccursedHoard => Strings.Chest_Accursed_Hoard,
+            ESPType.BronzeChest => Strings.Chest_Bronze_Chest,
+            ESPType.SilverChest => Strings.Chest_Silver_Chest,
+            ESPType.GoldChest => Strings.Chest_Gold_Chest,
+            ESPType.MimicChest => Strings.Chest_Mimic,
             _ => GameObject.Name.TextValue
         };
 

@@ -1,6 +1,7 @@
 ﻿#undef DEBUG
 
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using NecroLens.Model;
@@ -54,10 +55,15 @@ public sealed class NecroLens : IDalamudPlugin
 #endif
         PluginService.PluginInterface.UiBuilder.Draw += DrawUI;
         PluginService.PluginInterface.UiBuilder.OpenConfigUi += ShowConfigWindow;
+
+        CultureInfo.DefaultThreadCurrentUICulture = PluginService.ClientState.ClientLanguage switch
+        {
+            Dalamud.ClientLanguage.French => CultureInfo.GetCultureInfo("fr"),
+            Dalamud.ClientLanguage.German => CultureInfo.GetCultureInfo("de"),
+            Dalamud.ClientLanguage.Japanese => CultureInfo.GetCultureInfo("ja"),
+            _ => CultureInfo.GetCultureInfo("en")
+        };
     }
-
-    public string Name => "NecroLens";
-
 
     public void Dispose()
     {
@@ -86,7 +92,7 @@ public sealed class NecroLens : IDalamudPlugin
     {
         mainWindow.IsOpen = true;
     }
-    
+
     public void CloseMainWindow()
     {
         mainWindow.IsOpen = false;

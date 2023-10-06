@@ -2,6 +2,7 @@
 using System.Drawing;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
+using NecroLens.Data;
 using NecroLens.Model;
 using NecroLens.Service;
 using NecroLens.util;
@@ -12,7 +13,7 @@ public class ConfigWindow : Window, IDisposable
 {
     private readonly Configuration conf;
 
-    public ConfigWindow() : base("NecroLens Configuration", ImGuiWindowFlags.AlwaysAutoResize)
+    public ConfigWindow() : base(Strings.ConfigWindow_Title, ImGuiWindowFlags.AlwaysAutoResize)
     {
         conf = PluginService.Configuration;
     }
@@ -23,19 +24,19 @@ public class ConfigWindow : Window, IDisposable
     {
         if (ImGui.BeginTabBar("MyTabBar", ImGuiTabBarFlags.None))
         {
-            if (ImGui.BeginTabItem("General"))
+            if (ImGui.BeginTabItem(Strings.ConfigWindow_Tab_General))
             {
                 DrawGeneralTab();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("ESP Settings"))
+            if (ImGui.BeginTabItem(Strings.ConfigWindow_Tab_ESPSettings))
             {
-                DrawESPTab();
+                DrawEspTab();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Chests"))
+            if (ImGui.BeginTabItem(Strings.ConfigWindow_Tab_Chests))
             {
                 DrawChestsTab();
                 ImGui.EndTabItem();
@@ -48,25 +49,24 @@ public class ConfigWindow : Window, IDisposable
     private void DrawChestsTab()
     {
         var openChests = conf.OpenChests;
-        if (ImGui.Checkbox("Open Chests", ref openChests))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenChests, ref openChests))
         {
             conf.OpenChests = openChests;
             PluginService.Configuration.Save();
         }
 
         ImGui.SameLine();
-        ImGui.TextColored(Color.Red.ToV4(), "EXPERIMENTAL");
+        ImGui.TextColored(Color.Red.ToV4(), Strings.ConfigWindow_ChestsTab_OpenChests_EXPERIMENTAL);
         ImGui.Indent(15);
-        ImGui.Text("Automatically opens chest for you once you're in interaction range.\n" +
-                   "The plugin only tries to open a chest one time!");
+        ImGui.Text(Strings.ConfigWindow_ChestsTab_OpenChests_Details);
         ImGui.Unindent(15);
         ImGui.Separator();
         ImGui.Spacing();
-        ImGui.Text("Open the following chests:");
+        ImGui.Text(Strings.ConfigWindow_ChestsTab_OpenFollowingChests);
         ImGui.Indent(15);
 
         var openBronzeCoffers = conf.OpenBronzeCoffers;
-        if (ImGui.Checkbox("Bronze", ref openBronzeCoffers))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenFollowingChests_Bronze, ref openBronzeCoffers))
         {
             conf.OpenBronzeCoffers = openBronzeCoffers;
             PluginService.Configuration.Save();
@@ -74,7 +74,7 @@ public class ConfigWindow : Window, IDisposable
 
         ImGui.SameLine();
         var openSilverCoffers = conf.OpenSilverCoffers;
-        if (ImGui.Checkbox("Silver", ref openSilverCoffers))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenFollowingChests_Silver, ref openSilverCoffers))
         {
             conf.OpenSilverCoffers = openSilverCoffers;
             PluginService.Configuration.Save();
@@ -82,7 +82,7 @@ public class ConfigWindow : Window, IDisposable
 
         ImGui.SameLine();
         var openGoldCoffers = conf.OpenGoldCoffers;
-        if (ImGui.Checkbox("Gold", ref openGoldCoffers))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenFollowingChests_Gold, ref openGoldCoffers))
         {
             conf.OpenGoldCoffers = openGoldCoffers;
             PluginService.Configuration.Save();
@@ -90,7 +90,7 @@ public class ConfigWindow : Window, IDisposable
 
         ImGui.SameLine();
         var openHoards = conf.OpenHoards;
-        if (ImGui.Checkbox("Hoards", ref openHoards))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenFollowingChests_Hoards, ref openHoards))
         {
             conf.OpenHoards = openHoards;
             PluginService.Configuration.Save();
@@ -101,18 +101,18 @@ public class ConfigWindow : Window, IDisposable
         ImGui.Spacing();
 
         var openUnsafeChests = conf.OpenUnsafeChests;
-        if (ImGui.Checkbox("Open unsafe chests", ref openUnsafeChests))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenUnsafeChests, ref openUnsafeChests))
         {
             conf.OpenUnsafeChests = openUnsafeChests;
             PluginService.Configuration.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text("Even open chests which can be Mimics on the current floor");
+        ImGui.Text(Strings.ConfigWindow_ChestsTab_OpenUnsafeChests_Details);
         ImGui.Unindent(15);
     }
 
-    private void DrawESPTab()
+    private void DrawEspTab()
     {
         
         var playerDotColor = ImGui.ColorConvertU32ToFloat4(conf.PlayerDotColor).WithoutAlpha();
@@ -124,39 +124,39 @@ public class ConfigWindow : Window, IDisposable
         ImGui.SameLine();
         
         var showPlayerDot = conf.ShowPlayerDot;
-        if (ImGui.Checkbox("Show Player Dot", ref showPlayerDot))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowPlayerDot, ref showPlayerDot))
         {
             conf.ShowPlayerDot = showPlayerDot;
             PluginService.Configuration.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text("A little dot showing your hit box.");
+        ImGui.Text(Strings.ConfigWindow_ESPTab_ShowPlayerDot_Details);
         ImGui.Unindent(15);
         ImGui.Separator();
         ImGui.Spacing();
 
         ImGui.BeginGroup();
         var showMobViews = conf.ShowMobViews;
-        if (ImGui.Checkbox("Show aggro range", ref showMobViews))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowAggroRange, ref showMobViews))
         {
             conf.ShowMobViews = showMobViews;
             PluginService.Configuration.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text("Draw sight-, proximity- and sound-range.\nSound Mobs will also have hit box.");
+        ImGui.Text(Strings.ConfigWindow_ESPTab_ShowAggroRange_Details);
         ImGui.Unindent(15);
         
         var normalAggroColor = ImGui.ColorConvertU32ToFloat4(conf.NormalAggroColor).WithoutAlpha();
-        if (ImGui.ColorEdit3("Proximity and Sight   ", ref normalAggroColor, ImGuiColorEditFlags.NoInputs))
+        if (ImGui.ColorEdit3(Strings.ConfigWindow_ESPTab_ShowAggroRange_Proximity_and_Sight, ref normalAggroColor, ImGuiColorEditFlags.NoInputs))
         {
             conf.NormalAggroColor = ImGui.ColorConvertFloat4ToU32(normalAggroColor.WithAlpha(0xFF));
             conf.Save();
         }
         ImGui.SameLine();
         var soundAggroColor = ImGui.ColorConvertU32ToFloat4(conf.SoundAggroColor).WithoutAlpha();
-        if (ImGui.ColorEdit3("Sound", ref soundAggroColor, ImGuiColorEditFlags.NoInputs))
+        if (ImGui.ColorEdit3(Strings.ConfigWindow_ESPTab_ShowAggroRange_Sound, ref soundAggroColor, ImGuiColorEditFlags.NoInputs))
         {
             conf.SoundAggroColor = ImGui.ColorConvertFloat4ToU32(soundAggroColor.WithAlpha(0xFF));
             conf.Save();
@@ -167,14 +167,14 @@ public class ConfigWindow : Window, IDisposable
         
         ImGui.BeginGroup();
         var showPatrolArrow = conf.ShowPatrolArrow;
-        if (ImGui.Checkbox("Show Arrow on Patrol", ref showPatrolArrow))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowPatrolArrow, ref showPatrolArrow))
         {
             conf.ShowPatrolArrow = showPatrolArrow;
             PluginService.Configuration.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text("Draw an arrow pointing in movement direction.");
+        ImGui.Text(Strings.ConfigWindow_ESPTab_ShowPatrolArrow_Details);
         ImGui.Unindent(15);
         ImGui.EndGroup();
 
@@ -182,24 +182,24 @@ public class ConfigWindow : Window, IDisposable
         ImGui.Spacing();
 
         var showCofferInteractionRange = conf.ShowCofferInteractionRange;
-        if (ImGui.Checkbox("Show interaction range for coffers", ref showCofferInteractionRange))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowCofferInteractionRange, ref showCofferInteractionRange))
         {
             conf.ShowCofferInteractionRange = showCofferInteractionRange;
             PluginService.Configuration.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text("Once you approach a treasure coffer a light circle shows up the maximum distance to open.");
+        ImGui.Text(Strings.ConfigWindow_ESPTab_ShowCofferInteractionRange_Details);
         ImGui.Unindent(15);
 
         ImGui.Separator();
         ImGui.Spacing();
 
-        ImGui.Text("Highlight the following objects once near:");
+        ImGui.Text(Strings.ConfigWindow_ESPTab_HighlightObjects);
 
         ImGui.Indent(15);
         var highlightCoffers = conf.HighlightCoffers;
-        if (ImGui.Checkbox("Treasure Chests", ref highlightCoffers))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightObjects_TreasureChests, ref highlightCoffers))
         {
             conf.HighlightCoffers = highlightCoffers;
             PluginService.Configuration.Save();
@@ -213,7 +213,7 @@ public class ConfigWindow : Window, IDisposable
         }
         ImGui.SameLine();
         var highlightPassage = conf.HighlightPassage;
-        if (ImGui.Checkbox("Passage", ref highlightPassage))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightObjects_Passage, ref highlightPassage))
         {
             conf.HighlightPassage = highlightPassage;
             PluginService.Configuration.Save();
@@ -223,7 +223,7 @@ public class ConfigWindow : Window, IDisposable
 
         ImGui.Separator();
         ImGui.Spacing();
-        ImGui.Text("Show the following treasure coffers in the overlay:");
+        ImGui.Text(Strings.ConfigWindow_ESPTab_HighlightTreasureChests);
         ImGui.Indent(15);
 
         var bronzeCofferColor = ImGui.ColorConvertU32ToFloat4(conf.BronzeCofferColor).WithoutAlpha();
@@ -234,7 +234,7 @@ public class ConfigWindow : Window, IDisposable
         }
         ImGui.SameLine();
         var showBronzeCoffers = conf.ShowBronzeCoffers;
-        if (ImGui.Checkbox("Bronze Chests", ref showBronzeCoffers))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Bronze, ref showBronzeCoffers))
         {
             conf.ShowBronzeCoffers = showBronzeCoffers;
             PluginService.Configuration.Save();
@@ -248,7 +248,7 @@ public class ConfigWindow : Window, IDisposable
         }
         ImGui.SameLine();
         var showSilverCoffers = conf.ShowSilverCoffers;
-        if (ImGui.Checkbox("Silver Chests", ref showSilverCoffers))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Silver, ref showSilverCoffers))
         {
             conf.ShowSilverCoffers = showSilverCoffers;
             PluginService.Configuration.Save();
@@ -262,7 +262,7 @@ public class ConfigWindow : Window, IDisposable
         }
         ImGui.SameLine();
         var showGoldCoffers = conf.ShowGoldCoffers;
-        if (ImGui.Checkbox("Gold Chests", ref showGoldCoffers))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Gold, ref showGoldCoffers))
         {
             conf.ShowGoldCoffers = showGoldCoffers;
             PluginService.Configuration.Save();
@@ -276,7 +276,7 @@ public class ConfigWindow : Window, IDisposable
         }
         ImGui.SameLine();
         var showHoards = conf.ShowHoards;
-        if (ImGui.Checkbox("Accursed Hoards", ref showHoards))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Hoards, ref showHoards))
         {
             conf.ShowHoards = showHoards;
             PluginService.Configuration.Save();
@@ -289,46 +289,38 @@ public class ConfigWindow : Window, IDisposable
     private void DrawGeneralTab()
     {
         var autoOpen = conf.AutoOpenOnEnter;
-        if (ImGui.Checkbox("Automatically open in DeepDungeon", ref autoOpen))
+        if (ImGui.Checkbox(Strings.ConfigWindow_GeneralTab_AutomaticallyOpen, ref autoOpen))
         {
             conf.AutoOpenOnEnter = autoOpen;
             PluginService.Configuration.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text("Opens the Main window when you enter a DeepDungeon.\n" +
-                   "It shows some handy information and quick access to Settings.");
+        ImGui.Text(Strings.ConfigWindow_GeneralTab_AutomaticallyOpen_Details);
         ImGui.Unindent(15);
         ImGui.Separator();
 
         var enableEsp = conf.EnableESP;
-        if (ImGui.Checkbox("Enable ESP Overlay", ref enableEsp))
+        if (ImGui.Checkbox(Strings.ConfigWindow_GeneralTab_EnableOverlay, ref enableEsp))
         {
             conf.EnableESP = enableEsp;
             PluginService.Configuration.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text("Draws the ESP overlay showing the positions of Chests, Mobs and all aggro ranges.\n" +
-                   "You can configure everything you want to see under ESP Settings.\n" +
-                   "Important: The ESP can only show objects in the games render distance.\n" +
-                   "This is fixed and CAN NOT be changed!");
+        ImGui.Text(Strings.ConfigWindow_GeneralTab_EnableOverlay_Details);
         ImGui.Unindent(15);
         ImGui.Separator();
 
         var openChests = conf.OpenChests;
-        if (ImGui.Checkbox("Enable OpenChests", ref openChests))
+        if (ImGui.Checkbox(Strings.ConfigWindow_GeneralTab_OpenChests, ref openChests))
         {
             conf.OpenChests = openChests;
             PluginService.Configuration.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text("EXPERIMENTAL FEATURE\n" +
-                   "Automatically opens chest for you once you're in interaction range.\n" +
-                   "By default it will NOT open chests which can be Mimics this set!\n\n" +
-                   "This feature can cause your character being stuck next to a chest!\n" +
-                   "If this happens disable this feature.");
+        ImGui.Text(Strings.ConfigWindow_GeneralTab_OpenChests_Details);
         ImGui.Unindent(15);
     }
 }
