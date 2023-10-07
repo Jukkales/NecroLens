@@ -1,6 +1,9 @@
 [![Build](https://github.com/Jukkales/NecroLens/actions/workflows/build-plugin.yml/badge.svg)](https://github.com/Jukkales/NecroLens/actions/workflows/build-plugin.yml)
 [![Github Downloads (total)](https://img.shields.io/github/downloads/Jukkales/NecroLens/total.svg)]()
 
+### Want to help with localization?
+https://crowdin.com/project/necrolens
+
 # NecroLens
 
 ![image](icon.png)

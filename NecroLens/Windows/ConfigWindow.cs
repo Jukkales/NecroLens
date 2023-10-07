@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
@@ -22,6 +23,9 @@ public class ConfigWindow : Window, IDisposable
 
     public override void Draw()
     {
+        if (ImGui.Button("Want to help with localization?"))
+            Process.Start(new ProcessStartInfo
+                              { FileName = "https://crowdin.com/project/necrolens", UseShellExecute = true });
         if (ImGui.BeginTabBar("MyTabBar", ImGuiTabBarFlags.None))
         {
             if (ImGui.BeginTabItem(Strings.ConfigWindow_Tab_General))
@@ -114,15 +118,15 @@ public class ConfigWindow : Window, IDisposable
 
     private void DrawEspTab()
     {
-        
         var playerDotColor = ImGui.ColorConvertU32ToFloat4(conf.PlayerDotColor).WithoutAlpha();
         if (ImGui.ColorEdit3("##playerDot", ref playerDotColor, ImGuiColorEditFlags.NoInputs))
         {
             conf.PlayerDotColor = ImGui.ColorConvertFloat4ToU32(playerDotColor.WithAlpha(0xCC));
             conf.Save();
         }
+
         ImGui.SameLine();
-        
+
         var showPlayerDot = conf.ShowPlayerDot;
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowPlayerDot, ref showPlayerDot))
         {
@@ -147,24 +151,28 @@ public class ConfigWindow : Window, IDisposable
         ImGui.Indent(15);
         ImGui.Text(Strings.ConfigWindow_ESPTab_ShowAggroRange_Details);
         ImGui.Unindent(15);
-        
+
         var normalAggroColor = ImGui.ColorConvertU32ToFloat4(conf.NormalAggroColor).WithoutAlpha();
-        if (ImGui.ColorEdit3(Strings.ConfigWindow_ESPTab_ShowAggroRange_Proximity_and_Sight, ref normalAggroColor, ImGuiColorEditFlags.NoInputs))
+        if (ImGui.ColorEdit3(Strings.ConfigWindow_ESPTab_ShowAggroRange_Proximity_and_Sight, ref normalAggroColor,
+                             ImGuiColorEditFlags.NoInputs))
         {
             conf.NormalAggroColor = ImGui.ColorConvertFloat4ToU32(normalAggroColor.WithAlpha(0xFF));
             conf.Save();
         }
+
         ImGui.SameLine();
         var soundAggroColor = ImGui.ColorConvertU32ToFloat4(conf.SoundAggroColor).WithoutAlpha();
-        if (ImGui.ColorEdit3(Strings.ConfigWindow_ESPTab_ShowAggroRange_Sound, ref soundAggroColor, ImGuiColorEditFlags.NoInputs))
+        if (ImGui.ColorEdit3(Strings.ConfigWindow_ESPTab_ShowAggroRange_Sound, ref soundAggroColor,
+                             ImGuiColorEditFlags.NoInputs))
         {
             conf.SoundAggroColor = ImGui.ColorConvertFloat4ToU32(soundAggroColor.WithAlpha(0xFF));
             conf.Save();
         }
+
         ImGui.EndGroup();
-        
+
         ImGui.SameLine();
-        
+
         ImGui.BeginGroup();
         var showPatrolArrow = conf.ShowPatrolArrow;
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowPatrolArrow, ref showPatrolArrow))
@@ -211,6 +219,7 @@ public class ConfigWindow : Window, IDisposable
             conf.PassageColor = ImGui.ColorConvertFloat4ToU32(passageColor.WithAlpha(0xFF));
             conf.Save();
         }
+
         ImGui.SameLine();
         var highlightPassage = conf.HighlightPassage;
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightObjects_Passage, ref highlightPassage))
@@ -232,6 +241,7 @@ public class ConfigWindow : Window, IDisposable
             conf.BronzeCofferColor = ImGui.ColorConvertFloat4ToU32(bronzeCofferColor.WithAlpha(0xFF));
             conf.Save();
         }
+
         ImGui.SameLine();
         var showBronzeCoffers = conf.ShowBronzeCoffers;
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Bronze, ref showBronzeCoffers))
@@ -246,6 +256,7 @@ public class ConfigWindow : Window, IDisposable
             conf.SilverCofferColor = ImGui.ColorConvertFloat4ToU32(silverCofferColor.WithAlpha(0xFF));
             conf.Save();
         }
+
         ImGui.SameLine();
         var showSilverCoffers = conf.ShowSilverCoffers;
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Silver, ref showSilverCoffers))
@@ -260,6 +271,7 @@ public class ConfigWindow : Window, IDisposable
             conf.GoldCofferColor = ImGui.ColorConvertFloat4ToU32(goldCofferColor.WithAlpha(0xFF));
             conf.Save();
         }
+
         ImGui.SameLine();
         var showGoldCoffers = conf.ShowGoldCoffers;
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Gold, ref showGoldCoffers))
@@ -274,6 +286,7 @@ public class ConfigWindow : Window, IDisposable
             conf.HoardColor = ImGui.ColorConvertFloat4ToU32(hoardColor.WithAlpha(0xFF));
             conf.Save();
         }
+
         ImGui.SameLine();
         var showHoards = conf.ShowHoards;
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Hoards, ref showHoards))
