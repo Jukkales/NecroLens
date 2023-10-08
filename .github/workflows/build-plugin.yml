@@ -30,4 +30,4 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2.2.1
         with:
-          path: ./NecroLens/bin/x64/Release/*
+          path: ./NecroLens/bin/x64/Release/NecroLens/latest.zip
