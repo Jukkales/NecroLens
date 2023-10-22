@@ -27,7 +27,11 @@ jobs:
         run: |
           dotnet build --no-restore --configuration Release --nologo
 
+      - run: |
+          rm -R ./NecroLens/bin/x64/Release/NecroLens
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2.2.1
         with:
-          path: ./NecroLens/bin/x64/Release/*
+          name: latest
+          path: ./NecroLens/bin/x64/Release/
