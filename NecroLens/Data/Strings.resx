@@ -254,4 +254,10 @@ If you're stuck near a chest and cant move anymore disable this option!</value>
     <data name="Traps_Unknown" xml:space="preserve">
         <value>Trap</value>
     </data>
+    <data name="PluginCommands_OpenChest_Help" xml:space="preserve">
+        <value>Try top open a Chest near to you.</value>
+    </data>
+    <data name="MainWindow_OpenChestButton_Help" xml:space="preserve">
+        <value>Try to open the nearest chest to you.</value>
+    </data>
 </root>

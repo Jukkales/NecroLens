@@ -247,4 +247,10 @@ Mobs mit Ton haben außerdem eine Hitboxanzeige.</value>
     <data name="Chest_Accursed_Hoard" xml:space="preserve">
         <value>Verborgenre Schatz</value>
     </data>
+    <data name="PluginCommands_OpenChest_Help" xml:space="preserve">
+        <value>Versucht eine Kiste in deiner nähe zu öffnen.</value>
+    </data>
+    <data name="MainWindow_OpenChestButton_Help" xml:space="preserve">
+        <value>Versucht die Kiste zu öffnen, der du am nähsten bist.</value>
+    </data>
 </root>

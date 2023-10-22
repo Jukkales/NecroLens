@@ -22,6 +22,13 @@ public class PluginCommands : IDisposable
                 HelpMessage = Strings.PluginCommands_OpenConfig_Help,
                 ShowInHelp = true
             });
+        
+        PluginService.CommandManager.AddHandler("/openchest",
+            new CommandInfo((_, _) => PluginService.DeepDungeonService.TryNearestOpenChest())
+            {
+                HelpMessage = Strings.PluginCommands_OpenChest_Help,
+                ShowInHelp = true
+            });
     }
 
     public void Dispose()

@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using ImGuiNET;
 using NecroLens.Model;
 using NecroLens.util;
-using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace NecroLens.Service;
 
@@ -21,7 +19,6 @@ public class ESPService : IDisposable
     private const ushort Tick = 250;
     private readonly Configuration conf;
 
-    private readonly List<uint> InteractionList;
     private readonly List<ESPObject> mapObjects;
     private readonly Task mapScanner;
     private bool active;
@@ -31,7 +28,6 @@ public class ESPService : IDisposable
         PluginService.PluginLog.Debug("ESP Service loading...");
 
         mapObjects = new List<ESPObject>();
-        InteractionList = new List<uint>();
         conf = PluginService.Configuration;
 
         active = true;
@@ -51,7 +47,6 @@ public class ESPService : IDisposable
         active = false;
         while (!mapScanner.IsCompleted) PluginService.PluginLog.Debug("wait till scanner is stopped...");
         mapObjects.Clear();
-        InteractionList.Clear();
         PluginService.PluginLog.Information("ESP Service unloaded");
     }
 
@@ -61,7 +56,6 @@ public class ESPService : IDisposable
      */
     private void OnCleanup(ushort e)
     {
-        InteractionList.Clear();
         Monitor.Enter(mapObjects);
         mapObjects.Clear();
         Monitor.Exit(mapObjects);
@@ -191,45 +185,6 @@ public class ESPService : IDisposable
                PluginService.ClientState.LocalContentId > 0 && PluginService.ObjectTable.Length > 0;
     }
 
-    private bool CheckChestOpenSafe(ESPObject.ESPType type)
-    {
-        var info = PluginService.DeepDungeonService.floorSetInfo;
-        var unsafeChest = false;
-        if (info != null)
-        {
-            unsafeChest = (info.MimicChests == DeepDungeonContentInfo.MimicChests.Silver &&
-                           type == ESPObject.ESPType.SilverChest) ||
-                          (info.MimicChests == DeepDungeonContentInfo.MimicChests.Gold &&
-                           type == ESPObject.ESPType.GoldChest);
-        }
-
-        return !unsafeChest || (unsafeChest && conf.OpenUnsafeChests);
-    }
-
-    private unsafe void TryInteract(ESPObject espObj)
-    {
-        var player = PluginService.ClientState.LocalPlayer!;
-        if ((player.StatusFlags & StatusFlags.InCombat) == 0 && conf.OpenChests && espObj.IsChest())
-        {
-            var type = espObj.Type;
-
-            if (!conf.OpenBronzeCoffers && type == ESPObject.ESPType.BronzeChest) return;
-            if (!conf.OpenSilverCoffers && type == ESPObject.ESPType.SilverChest) return;
-            if (!conf.OpenGoldCoffers && type == ESPObject.ESPType.GoldChest) return;
-            if (!conf.OpenHoards && type == ESPObject.ESPType.AccursedHoard) return;
-
-            // We dont want to kill the player
-            if (type == ESPObject.ESPType.SilverChest && player.CurrentHp <= player.MaxHp * 0.77) return;
-
-            if (CheckChestOpenSafe(type) && espObj.Distance() <= espObj.InteractionDistance()
-                                         && !InteractionList.Contains(espObj.GameObject.ObjectId))
-            {
-                TargetSystem.Instance()->InteractWithObject((GameObject*)espObj.GameObject.Address);
-                InteractionList.Add(espObj.GameObject.ObjectId);
-            }
-        }
-    }
-
     /**
      * Not-Drawing Scanner method updating mapObjects every Tick.
      */
@@ -253,16 +208,16 @@ public class ESPService : IDisposable
                             if (obj is BattleNpc npcObj)
                                 PluginService.MobInfoService.MobInfoDictionary.TryGetValue(npcObj.NameId, out mobInfo!);
 
-                            var espObj = new ESPObject(obj, PluginService.ClientState, mobInfo);
+                            var espObj = new ESPObject(obj, mobInfo);
 
-                            TryInteract(espObj);
+                            PluginService.DeepDungeonService.TryInteract(espObj);
 
                             entityList.Add(espObj);
                         }
 
                         if (PluginService.ClientState.LocalPlayer != null &&
                             PluginService.ClientState.LocalPlayer.ObjectId == obj.ObjectId)
-                            entityList.Add(new ESPObject(obj, PluginService.ClientState, null));
+                            entityList.Add(new ESPObject(obj));
                     }
 
                     Monitor.Enter(mapObjects);

@@ -539,6 +539,15 @@ namespace NecroLens.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Try to open the nearest chest to you..
+        /// </summary>
+        internal static string MainWindow_OpenChestButton_Help {
+            get {
+                return ResourceManager.GetString("MainWindow_OpenChestButton_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open Chests.
         /// </summary>
         internal static string MainWindow_OpenChests {
@@ -646,6 +655,15 @@ namespace NecroLens.Data {
         internal static string MainWindow_TrapStatus_Visible {
             get {
                 return ResourceManager.GetString("MainWindow_TrapStatus_Visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try top open a Chest near to you..
+        /// </summary>
+        internal static string PluginCommands_OpenChest_Help {
+            get {
+                return ResourceManager.GetString("PluginCommands_OpenChest_Help", resourceCulture);
             }
         }
         

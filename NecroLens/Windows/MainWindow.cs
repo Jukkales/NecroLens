@@ -22,8 +22,8 @@ public class MainWindow : Window, IDisposable
     {
         SizeConstraints = new WindowSizeConstraints
         {
-            MinimumSize = new Vector2(340, 260),
-            MaximumSize = new Vector2(340, 260)
+            MinimumSize = new Vector2(370, 260),
+            MaximumSize = new Vector2(370, 260)
         };
         RespectCloseHotkey = false;
     }
@@ -192,7 +192,7 @@ public class MainWindow : Window, IDisposable
         ImGui.SameLine();
         ImGui.BeginGroup();
 
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + ImGui.GetColumnWidth() - 135);
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + ImGui.GetColumnWidth() - 160);
         var showAggro = PluginService.Configuration.ShowMobViews;
         if (ImGui.Checkbox(Strings.MainWindow_ShowAggro, ref showAggro))
         {
@@ -204,7 +204,7 @@ public class MainWindow : Window, IDisposable
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + ImGui.GetColumnWidth() - 20);
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Cog)) PluginService.Plugin.ShowConfigWindow();
 
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + ImGui.GetColumnWidth() - 135);
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + ImGui.GetColumnWidth() - 160);
         var openChests = PluginService.Configuration.OpenChests;
         if (ImGui.Checkbox(Strings.MainWindow_OpenChests, ref openChests))
         {
@@ -213,8 +213,19 @@ public class MainWindow : Window, IDisposable
         }
 
         ImGui.SameLine();
-        HelpMarker(
-            Strings.MainWindow_OpenChests_Help);
+        HelpMarker(Strings.MainWindow_OpenChests_Help);
+        
+        ImGui.SameLine();
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + ImGui.GetColumnWidth() - 20);
+        if (ImGuiComponents.IconButton(FontAwesomeIcon.Toolbox)) PluginService.DeepDungeonService.TryNearestOpenChest();
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.BeginTooltip();
+            ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35.0f);
+            ImGui.TextUnformatted(Strings.MainWindow_OpenChestButton_Help);
+            ImGui.PopTextWrapPos();
+            ImGui.EndTooltip();
+        }
 
         ImGui.EndGroup();
 

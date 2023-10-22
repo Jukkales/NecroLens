@@ -30,7 +30,7 @@ public class ESPTestService : IDisposable
         {
             var drawList = ImGui.GetBackgroundDrawList();
             var player = PluginService.ClientState.LocalPlayer;
-            var espObject = new ESPObject(player!, PluginService.ClientState, null);
+            var espObject = new ESPObject(player!);
 
             var onScreen = PluginService.GameGui.WorldToScreen(player!.Position, out _);
             if (onScreen)

@@ -4,7 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Timers;
+using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Network;
+using FFXIVClientStructs.FFXIV.Client.Game.Control;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using NecroLens.Model;
 using NecroLens.util;
@@ -18,9 +21,12 @@ namespace NecroLens.Service;
 [SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
 public partial class DeepDungeonService : IDisposable
 {
+    private readonly Configuration conf;
     public readonly List<Pomander> floorEffects;
     private readonly Timer floorTimer;
     public readonly Dictionary<int, int> floorTimes;
+
+    private readonly List<uint> InteractionList;
     public int currentContentId;
 
     public int currentFloor;
@@ -52,6 +58,8 @@ public partial class DeepDungeonService : IDisposable
         nextFloorTransfer = false;
         ready = false;
         floorVerified = false;
+        conf = PluginService.Configuration;
+        InteractionList = new List<uint>();
     }
 
     public void Dispose()
@@ -84,6 +92,8 @@ public partial class DeepDungeonService : IDisposable
         if (PluginService.Configuration.AutoOpenOnEnter)
             PluginService.Plugin.ShowMainWindow();
 
+        InteractionList.Clear();
+
         floorTimer.Start();
         ready = true;
     }
@@ -96,6 +106,7 @@ public partial class DeepDungeonService : IDisposable
 
             // Reset
             floorEffects.Clear();
+            InteractionList.Clear();
 
             // Apply effects
             if (nextFloorFlight)
@@ -342,5 +353,64 @@ public partial class DeepDungeonService : IDisposable
     {
         var mapId = PluginService.ClientState.TerritoryType;
         return !(currentFloor % 10 == 0 || (DataIds.EurekaOrthosMapIds.Contains(mapId) && currentFloor == 99));
+    }
+
+    private bool CheckChestOpenSafe(ESPObject.ESPType type)
+    {
+        var info = PluginService.DeepDungeonService.floorSetInfo;
+        var unsafeChest = false;
+        if (info != null)
+        {
+            unsafeChest = (info.MimicChests == DeepDungeonContentInfo.MimicChests.Silver &&
+                           type == ESPObject.ESPType.SilverChest) ||
+                          (info.MimicChests == DeepDungeonContentInfo.MimicChests.Gold &&
+                           type == ESPObject.ESPType.GoldChest);
+        }
+
+        return !unsafeChest || (unsafeChest && conf.OpenUnsafeChests);
+    }
+
+    internal unsafe void TryInteract(ESPObject espObj)
+    {
+        var player = PluginService.ClientState.LocalPlayer!;
+        if ((player.StatusFlags & StatusFlags.InCombat) == 0 && conf.OpenChests && espObj.IsChest())
+        {
+            var type = espObj.Type;
+
+            if (!conf.OpenBronzeCoffers && type == ESPObject.ESPType.BronzeChest) return;
+            if (!conf.OpenSilverCoffers && type == ESPObject.ESPType.SilverChest) return;
+            if (!conf.OpenGoldCoffers && type == ESPObject.ESPType.GoldChest) return;
+            if (!conf.OpenHoards && type == ESPObject.ESPType.AccursedHoard) return;
+
+            // We dont want to kill the player
+            if (type == ESPObject.ESPType.SilverChest && player.CurrentHp <= player.MaxHp * 0.77) return;
+
+            if (CheckChestOpenSafe(type) && espObj.Distance() <= espObj.InteractionDistance()
+                                         && !InteractionList.Contains(espObj.GameObject.ObjectId))
+            {
+                TargetSystem.Instance()->InteractWithObject((GameObject*)espObj.GameObject.Address);
+                InteractionList.Add(espObj.GameObject.ObjectId);
+            }
+        }
+    }
+
+    public unsafe void TryNearestOpenChest()
+    {
+        // Checks every object to be a chest and try to open the  
+        foreach (var obj in PluginService.ObjectTable)
+            if (obj.IsValid())
+            {
+                var dataId = obj.DataId;
+                if (DataIds.BronzeChestIDs.Contains(dataId) || DataIds.SilverChest == dataId ||
+                    DataIds.GoldChest == dataId || DataIds.AccursedHoardIDs.Contains(dataId))
+                {
+                    var espObj = new ESPObject(obj);
+                    if (CheckChestOpenSafe(espObj.Type) && espObj.Distance() <= espObj.InteractionDistance())
+                    {
+                        TargetSystem.Instance()->InteractWithObject((GameObject*)espObj.GameObject.Address);
+                        break;
+                    }
+                }
+            }
     }
 }

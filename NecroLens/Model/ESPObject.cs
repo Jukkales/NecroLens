@@ -50,9 +50,9 @@ public class ESPObject
     private IClientState clientState;
     private MobInfo? mobInfo;
 
-    public ESPObject(GameObject gameObject, IClientState clientState, MobInfo? mobInfo)
+    public ESPObject(GameObject gameObject, MobInfo? mobInfo = null)
     {
-        this.clientState = clientState;
+        this.clientState = PluginService.ClientState;
         GameObject = gameObject;
         this.mobInfo = mobInfo;
 
