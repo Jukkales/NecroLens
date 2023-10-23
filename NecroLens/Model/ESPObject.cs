@@ -41,6 +41,7 @@ public class ESPObject
         SilverChest,
         GoldChest,
         AccursedHoard,
+        AccursedHoardCoffer,
         MimicChest,
         Trap,
         Return,
@@ -87,8 +88,10 @@ public class ESPObject
                 Type = ESPType.GoldChest;
             else if (DataIds.MimicChest == dataId)
                 Type = ESPType.MimicChest;
-            else if (DataIds.AccursedHoardIDs.Contains(dataId))
+            else if (DataIds.AccursedHoard == dataId)
                 Type = ESPType.AccursedHoard;
+            else if (DataIds.AccursedHoardCoffer == dataId)
+                Type = ESPType.AccursedHoardCoffer;
             else if (DataIds.PassageIDs.Contains(dataId))
                 Type = ESPType.Passage;
             else if (DataIds.ReturnIDs.Contains(dataId))
@@ -151,6 +154,7 @@ public class ESPObject
             ESPType.BronzeChest => 3.1f,
             ESPType.SilverChest => 4.4f,
             ESPType.GoldChest => 4.4f,
+            ESPType.AccursedHoardCoffer => 4.4f,
             _ => 2f
         };
     }
@@ -162,7 +166,7 @@ public class ESPObject
 
     public bool IsChest()
     {
-        return Type is ESPType.BronzeChest or ESPType.SilverChest or ESPType.GoldChest or ESPType.AccursedHoard;
+        return Type is ESPType.BronzeChest or ESPType.SilverChest or ESPType.GoldChest or ESPType.AccursedHoardCoffer;
     }
 
     public uint RenderColor()
@@ -187,6 +191,7 @@ public class ESPObject
             case ESPType.Passage:
                 return PluginService.Configuration.PassageColor;
             case ESPType.AccursedHoard:
+            case ESPType.AccursedHoardCoffer:
                 return PluginService.Configuration.HoardColor;
             case ESPType.GoldChest:
                 return PluginService.Configuration.GoldCofferColor;

@@ -106,24 +106,31 @@ public class ESPService : IDisposable
         var onScreen = PluginService.GameGui.WorldToScreen(espObject.GameObject.Position, out var position2D);
         if (onScreen)
         {
+            var distance = espObject.Distance();
+            
             if (conf.ShowPlayerDot && type == ESPObject.ESPType.Player)
                 ESPUtils.DrawPlayerDot(drawList, position2D);
 
             if (DoDrawName(espObject))
                 ESPUtils.DrawName(drawList, espObject, position2D);
 
+            if (espObject.Type == ESPObject.ESPType.AccursedHoard && conf.ShowHoards)
+            {
+                var chestRadius = type == ESPObject.ESPType.AccursedHoard ? 2.2f : 1f; // Make Hoards bigger
+
+                if (distance <= 35 && conf.HighlightCoffers)
+                    ESPUtils.DrawCircleFilled(drawList, espObject, chestRadius, espObject.RenderColor(), 1f);
+            }
+            
             if (espObject.IsChest())
             {
                 if (!conf.ShowBronzeCoffers && type == ESPObject.ESPType.BronzeChest) return;
                 if (!conf.ShowSilverCoffers && type == ESPObject.ESPType.SilverChest) return;
                 if (!conf.ShowGoldCoffers && type == ESPObject.ESPType.GoldChest) return;
-                if (!conf.ShowHoards && type == ESPObject.ESPType.AccursedHoard) return;
-
-                var distance = espObject.Distance();
-                var chestRadius = type == ESPObject.ESPType.AccursedHoard ? 2.2f : 1f; // Make Hoards bigger
-
+                if (!conf.ShowHoards && type == ESPObject.ESPType.AccursedHoardCoffer) return;
+                
                 if (distance <= 35 && conf.HighlightCoffers)
-                    ESPUtils.DrawCircleFilled(drawList, espObject, chestRadius, espObject.RenderColor(), 1f);
+                    ESPUtils.DrawCircleFilled(drawList, espObject, 1f, espObject.RenderColor(), 1f);
                 if (distance <= 10 && conf.ShowCofferInteractionRange)
                     ESPUtils.DrawInteractionCircle(drawList, espObject, espObject.InteractionDistance());
             }

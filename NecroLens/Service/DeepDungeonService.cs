@@ -380,7 +380,7 @@ public partial class DeepDungeonService : IDisposable
             if (!conf.OpenBronzeCoffers && type == ESPObject.ESPType.BronzeChest) return;
             if (!conf.OpenSilverCoffers && type == ESPObject.ESPType.SilverChest) return;
             if (!conf.OpenGoldCoffers && type == ESPObject.ESPType.GoldChest) return;
-            if (!conf.OpenHoards && type == ESPObject.ESPType.AccursedHoard) return;
+            if (!conf.OpenHoards && type == ESPObject.ESPType.AccursedHoardCoffer) return;
 
             // We dont want to kill the player
             if (type == ESPObject.ESPType.SilverChest && player.CurrentHp <= player.MaxHp * 0.77) return;
@@ -402,7 +402,7 @@ public partial class DeepDungeonService : IDisposable
             {
                 var dataId = obj.DataId;
                 if (DataIds.BronzeChestIDs.Contains(dataId) || DataIds.SilverChest == dataId ||
-                    DataIds.GoldChest == dataId || DataIds.AccursedHoardIDs.Contains(dataId))
+                    DataIds.GoldChest == dataId || DataIds.AccursedHoardCoffer == dataId)
                 {
                     var espObj = new ESPObject(obj);
                     if (CheckChestOpenSafe(espObj.Type) && espObj.Distance() <= espObj.InteractionDistance())

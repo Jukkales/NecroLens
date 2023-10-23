@@ -19,6 +19,9 @@ public static class DataIds
     public const uint SilverChest = 2007357;
     public const uint GoldChest = 2007358;
     public const uint MimicChest = 2006020;
+    
+    public const uint AccursedHoard = 2007542;
+    public const uint AccursedHoardCoffer = 2007543;
 
     public static readonly HashSet<uint> PalaceOfTheDeadMapIds = new()
     {
@@ -61,11 +64,6 @@ public static class DataIds
         1036, 1037, 1038, 1039, 1040, 1041, 1042, 1043, 1044, 1045, 1046, 1047, 1048, 1049,
         // EO
         1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554
-    };
-
-    public static readonly HashSet<uint> AccursedHoardIDs = new()
-    {
-        2007542, 2007543
     };
 
     public static readonly Dictionary<uint, string> TrapIDs = new()
