@@ -76,8 +76,8 @@ public class DeepDungeonContentInfo
         {
             60019, new List<MobInfo>
             {
-                // deep palace sprite (5479) 101+ Sound, 181+ Sight
-                new() { Id = 5479, AggroType = ESPObject.ESPAggroType.Sight }
+                // deep palace sprite (5480) 101+ Sound, 181+ Sight
+                new() { Id = 5480, AggroType = ESPObject.ESPAggroType.Sight }
             }
         },
         {
