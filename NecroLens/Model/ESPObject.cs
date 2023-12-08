@@ -115,11 +115,11 @@ public class ESPObject
     public float SightRadian { get; set; } = 1.571f;
 
     /**
-     * Most monsters have different aggro distances. 10.8y is roughly a safe value. Expect PotD Mimics ... 14 ._.
+     * Most monsters have different aggro distances. 10.8y is roughly a safe value. Expect PotD Mimics ... 14.6 ._.
      */
     public float AggroDistance()
     {
-        return Type == ESPType.Mimic && DataIds.PalaceOfTheDeadMapIds.Contains(clientState.TerritoryType) ? 14f : 10.8f;
+        return Type == ESPType.Mimic && DataIds.PalaceOfTheDeadMapIds.Contains(clientState.TerritoryType) ? 14.6f : 10.8f;
     }
 
     public ESPAggroType AggroType()
