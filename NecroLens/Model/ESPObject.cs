@@ -1,6 +1,4 @@
-﻿#undef DEBUG
-
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
@@ -268,13 +266,13 @@ public class ESPObject
             _ => ""
         };
 
-#if DEBUG
-        if (Type == ESPType.Enemy) // Enemy is default
+
+        if (PluginService.Configuration.ShowDebugInformation)
         {
-            name += "\nD: " + GameObject.DataId;
-            if (GameObject is BattleNpc npc2) name += " - N: " + npc2.NameId;
+            name += "\nD:" + GameObject.DataId;
+            if (GameObject is BattleNpc npc2) name += " N:" + npc2.NameId;
         }
-#endif
+
         return name;
     }
 }

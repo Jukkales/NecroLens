@@ -50,6 +50,8 @@ public class Configuration : IPluginConfiguration
     public uint SilverCofferColor { get; set; } = 0xFFC0C0C0;
     public uint GoldCofferColor { get; set; } = 0xFF00D7FF;
     public uint HoardColor { get; set; } = 0xFF00D7FF;
+    
+    public bool ShowDebugInformation { get; set; } = false;
 
     public void Save()
     {

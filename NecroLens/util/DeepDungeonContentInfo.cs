@@ -83,8 +83,8 @@ public class DeepDungeonContentInfo
         {
             60020, new List<MobInfo>
             {
-                // Onyx Dragon (5020) 141+ Sight, 191+ Proximity
-                new() { Id = 5020, AggroType = ESPObject.ESPAggroType.Proximity },
+                // Onyx Dragon (5420) 141+ Sight, 191+ Proximity
+                new() { Id = 5420, AggroType = ESPObject.ESPAggroType.Proximity },
                 // Hippogryph (5364) 100+ proximity, 191+ Sight
                 new() { Id = 5364, AggroType = ESPObject.ESPAggroType.Sight }
             }

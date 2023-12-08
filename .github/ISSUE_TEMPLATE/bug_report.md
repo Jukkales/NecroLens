@@ -14,3 +14,5 @@ A clear and concise description of what the bug is.
 Instance: PotD - HoH - Eureka
 Floor: 1+
 Mob or Objectname:
+
+Please provide a Screenshot with enabled Debug Information or at least the Information from Debug.

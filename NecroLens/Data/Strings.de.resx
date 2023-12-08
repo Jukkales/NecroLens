@@ -253,4 +253,15 @@ Mobs mit Ton haben außerdem eine Hitboxanzeige.</value>
     <data name="MainWindow_OpenChestButton_Help" xml:space="preserve">
         <value>Versucht die Kiste zu öffnen, der du am nähsten bist.</value>
     </data>
+    <data name="ConfigWindow_Tab_Debug" xml:space="preserve">
+        <value>Debug</value>
+    </data>
+    <data name="ConfigWindow_DebugTab_ShowDebugInformation" xml:space="preserve">
+        <value>Debuginformationen anzeigen</value>
+    </data>
+    <data name="ConfigWindow_DebugTab_ShowDebugInformation_Details" xml:space="preserve">
+        <value>Zeigt die IDs von Elementen an. 
+Bitte aktiviere diese Option, wenn du eine Problem meldest. 
+Dies hilft mir diese schneller zu lösen.</value>
+    </data>
 </root>

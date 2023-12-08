@@ -45,11 +45,31 @@ public class ConfigWindow : Window, IDisposable
                 DrawChestsTab();
                 ImGui.EndTabItem();
             }
+            if (ImGui.BeginTabItem(Strings.ConfigWindow_Tab_Debug))
+            {
+                DrawDebugTab();
+                ImGui.EndTabItem();
+            }
 
             ImGui.EndTabBar();
         }
     }
 
+    private void DrawDebugTab()
+    {
+        var showDebugInformation = conf.ShowDebugInformation;
+        if (ImGui.Checkbox(Strings.ConfigWindow_DebugTab_ShowDebugInformation, ref showDebugInformation))
+        {
+            conf.ShowDebugInformation = showDebugInformation;
+            PluginService.Configuration.Save();
+        }
+
+        ImGui.Indent(15);
+        ImGui.Text(Strings.ConfigWindow_DebugTab_ShowDebugInformation_Details);
+        ImGui.Unindent(15);
+        ImGui.Separator();
+    }
+    
     private void DrawChestsTab()
     {
         var openChests = conf.OpenChests;
