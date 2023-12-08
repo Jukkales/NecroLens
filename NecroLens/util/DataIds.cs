@@ -53,7 +53,7 @@ public static class DataIds
 
     public static readonly HashSet<uint> MimicIDs = new()
     {
-        2566, 6362, 6363, 7392, 7393, 7394, 5832, 15997, 15998, 15999, 16002, 16003
+        2566, 6362, 6363, 7392, 7393, 7394, 5832, 5834, 5835, 15997, 15998, 15999, 16002, 16003
     };
 
     public static readonly HashSet<uint> BronzeChestIDs = new()

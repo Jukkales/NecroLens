@@ -116,7 +116,7 @@ public class ESPService : IDisposable
 
             if (espObject.Type == ESPObject.ESPType.AccursedHoard && conf.ShowHoards)
             {
-                var chestRadius = type == ESPObject.ESPType.AccursedHoard ? 2.2f : 1f; // Make Hoards bigger
+                var chestRadius = type == ESPObject.ESPType.AccursedHoard ? 2.0f : 1f; // Make Hoards bigger
 
                 if (distance <= 35 && conf.HighlightCoffers)
                     ESPUtils.DrawCircleFilled(drawList, espObject, chestRadius, espObject.RenderColor(), 1f);
@@ -136,7 +136,7 @@ public class ESPService : IDisposable
             }
 
             if (conf.ShowTraps && type == ESPObject.ESPType.Trap)
-                ESPUtils.DrawCircleFilled(drawList, espObject, 1.2f, espObject.RenderColor());
+                ESPUtils.DrawCircleFilled(drawList, espObject, 1.7f, espObject.RenderColor());
 
             if (conf.ShowMimicCoffer && type == ESPObject.ESPType.MimicChest)
                 ESPUtils.DrawCircleFilled(drawList, espObject, 1f, espObject.RenderColor());
@@ -145,7 +145,7 @@ public class ESPService : IDisposable
                 ESPUtils.DrawCircleFilled(drawList, espObject, 2f, espObject.RenderColor());
         }
 
-        if (PluginService.Configuration.ShowMobViews && type is ESPObject.ESPType.Enemy &&
+        if (PluginService.Configuration.ShowMobViews && (type == ESPObject.ESPType.Enemy || type == ESPObject.ESPType.Mimic) &&
             BattleNpcSubKind.Enemy.Equals((BattleNpcSubKind)espObject.GameObject.SubKind) &&
             !espObject.InCombat())
         {
