@@ -142,6 +142,11 @@ public class ESPObject
 
     public bool IsPatrol()
     {
+        // heavenly onmitsu exists twice, one partol one not. Only DataId differs
+        if (mobInfo != null && mobInfo.Id == 7305)
+        {
+            return GameObject.DataId == 8922;
+        }
         return mobInfo?.Patrol ?? false;
     }
 
