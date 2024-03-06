@@ -26,15 +26,14 @@ public class MobInfoService : IDisposable
 
     private void LoadDeepDungeonMobInfos()
     {
-        PluginService.PluginLog.Info("Loading Mob infos...");
+        PluginLog.Info("Loading Mob infos...");
         try
         {
-            LoadMobInfoFile(Path.Combine(PluginService.PluginInterface.AssemblyLocation.Directory?.FullName!,
-                                         "data/allMobs.json"));
+            LoadMobInfoFile(Path.Combine(PluginInterface.AssemblyLocation.Directory?.FullName!, "data/allMobs.json"));
         }
         catch (Exception e)
         {
-            PluginService.PluginLog.Error("Unable to load MobInfo!", e);
+            PluginLog.Error("Unable to load MobInfo!", e);
         }
 
 
@@ -42,7 +41,7 @@ public class MobInfoService : IDisposable
         {
             try
             {
-                PluginService.PluginLog.Info("Mob infos empty. Retry backup method.");
+                PluginLog.Info("Mob infos empty. Retry backup method.");
                 const string uri =
                     "https://raw.githubusercontent.com/Jukkales/NecroLens/main/NecroLens/Data/allMobs.json";
                 var result = Load<List<MobInfo>>(new Uri(uri));
@@ -56,17 +55,17 @@ public class MobInfoService : IDisposable
                 else
                 {
                     MobInfoDictionary.Clear();
-                    PluginService.PluginLog.Error("Unable to load MobInfo from backup location! Panic!");
+                    PluginLog.Error("Unable to load MobInfo from backup location! Panic!");
                 }
             }
             catch (Exception e)
             {
-                PluginService.PluginLog.Error("Unable to load MobInfo from backup location! Panic!", e);
+                PluginLog.Error("Unable to load MobInfo from backup location! Panic!", e);
                 throw;
             }
         }
 
-        PluginService.PluginLog.Information($"Loaded infos for {MobInfoDictionary.Count} mobs!");
+        PluginLog.Information($"Loaded infos for {MobInfoDictionary.Count} mobs!");
     }
 
     public static async Task<T?> Load<T>(Uri uri)
@@ -86,7 +85,7 @@ public class MobInfoService : IDisposable
         else
         {
             MobInfoDictionary.Clear();
-            PluginService.PluginLog.Error($"Unable to load MobInfo file {path}!");
+            PluginLog.Error($"Unable to load MobInfo file {path}!");
         }
     }
 

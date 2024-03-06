@@ -13,20 +13,20 @@ public enum Pomander
     Fortune,
     Witching,
     Serenity,
-    Rage,
-    Lust,
+    Rage,                // PotD Unique
+    Lust,                // PotD Unique
     Intuition,
     Raising,
-    Resolution,
-    Frailty,
-    Concealment,
-    Petrification,
-    LethargyProtomander,
-    StormsProtomander,
-    DreadProtomander,
-    SafetyProtomander,
-    SightProtomander,
-    StrengthProtomander,
+    Resolution,          // PotD Unique
+    Frailty,             // HoH Unique
+    Concealment,         // HoH Unique
+    Petrification,       // HoH Unique
+    LethargyProtomander, // EO Unique
+    StormsProtomander,   // EO Unique
+    DreadProtomander,    // EO Unique
+    SafetyProtomander,   // = 23 -> 22 + Safety
+    SightProtomander,    // = 24 -> 22 + Sight
+    StrengthProtomander, // ...
     SteelProtomander,
     AffluenceProtomander,
     FlightProtomander,
@@ -34,7 +34,7 @@ public enum Pomander
     PurityProtomander,
     FortuneProtomander,
     WitchingProtomander,
-    SerenityProtomander,
-    IntuitionProtomander,
-    RaisingProtomander,
+    SerenityProtomander,  // = 33 -> 22 + Serenity
+    IntuitionProtomander, // = 34 -> 20 + Intuition
+    RaisingProtomander,   // = 35 -> 20 + Raising
 }

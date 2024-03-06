@@ -52,7 +52,7 @@ public class PluginService
     [PluginService]
     public static IPluginLog PluginLog { get; private set; } = null!;
 
-    public static MobInfoService MobInfoService { get; set; } = null!;
-    public static Configuration Configuration { get; set; } = null!;
-    public static DeepDungeonService DeepDungeonService { get; set; } = null!;
+    public static MobInfoService MobService { get; set; } = null!;
+    public static Configuration Config { get; set; } = null!;
+    public static DeepDungeonService DungeonService { get; set; } = null!;
 }

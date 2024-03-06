@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
+using ECommons;
 using NecroLens.Model;
 using NecroLens.Service;
 using NecroLens.Windows;
@@ -31,10 +32,11 @@ public sealed class NecroLens : IDalamudPlugin
     public NecroLens(DalamudPluginInterface? pluginInterface)
     {
         pluginInterface?.Create<PluginService>();
-        PluginService.Plugin = this;
+        Plugin = this;
 
-        PluginService.Configuration =
-            PluginService.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        ECommonsMain.Init(pluginInterface, this);
+
+        Config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         pluginCommands = new PluginCommands();
         configWindow = new ConfigWindow();
@@ -44,19 +46,19 @@ public sealed class NecroLens : IDalamudPlugin
         WindowSystem.AddWindow(configWindow);
 
         mobInfoService = new MobInfoService();
-        PluginService.MobInfoService = mobInfoService;
+        MobService = mobInfoService;
 
         espService = new ESPService();
 
         deepDungeonService = new DeepDungeonService();
-        PluginService.DeepDungeonService = deepDungeonService;
+        DungeonService = deepDungeonService;
 #if DEBUG
         espTestService = new ESPTestService();
 #endif
-        PluginService.PluginInterface.UiBuilder.Draw += DrawUI;
-        PluginService.PluginInterface.UiBuilder.OpenConfigUi += ShowConfigWindow;
+        PluginInterface.UiBuilder.Draw += DrawUI;
+        PluginInterface.UiBuilder.OpenConfigUi += ShowConfigWindow;
 
-        CultureInfo.DefaultThreadCurrentUICulture = PluginService.ClientState.ClientLanguage switch
+        CultureInfo.DefaultThreadCurrentUICulture = ClientState.ClientLanguage switch
         {
             Dalamud.ClientLanguage.French => CultureInfo.GetCultureInfo("fr"),
             Dalamud.ClientLanguage.German => CultureInfo.GetCultureInfo("de"),
@@ -69,8 +71,8 @@ public sealed class NecroLens : IDalamudPlugin
     {
         WindowSystem.RemoveAllWindows();
 
-        PluginService.PluginInterface.UiBuilder.Draw -= DrawUI;
-        PluginService.PluginInterface.UiBuilder.OpenConfigUi -= ShowConfigWindow;
+        PluginInterface.UiBuilder.Draw -= DrawUI;
+        PluginInterface.UiBuilder.OpenConfigUi -= ShowConfigWindow;
 
         configWindow.Dispose();
         pluginCommands.Dispose();

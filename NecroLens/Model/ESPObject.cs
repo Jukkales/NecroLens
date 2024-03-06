@@ -6,7 +6,6 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
 using NecroLens.Data;
-using NecroLens.Service;
 using NecroLens.util;
 
 namespace NecroLens.Model;
@@ -51,7 +50,7 @@ public class ESPObject
 
     public ESPObject(GameObject gameObject, MobInfo? mobInfo = null)
     {
-        this.clientState = PluginService.ClientState;
+        this.clientState = ClientState;
         GameObject = gameObject;
         this.mobInfo = mobInfo;
 
@@ -59,7 +58,7 @@ public class ESPObject
         if (this.mobInfo != null)
         {
             if (DeepDungeonContentInfo.ContentMobInfoChanges.TryGetValue(
-                    PluginService.DeepDungeonService.currentContentId, out var overrideInfos))
+                    DungeonService.currentContentId, out var overrideInfos))
             {
                 var npc = (BattleNpc)gameObject;
                 var mob = overrideInfos.FirstOrDefault(m => m.Id == npc.NameId);
@@ -117,7 +116,7 @@ public class ESPObject
      */
     public float AggroDistance()
     {
-        return Type == ESPType.Mimic && DataIds.PalaceOfTheDeadMapIds.Contains(clientState.TerritoryType) ? 14.6f : 10.8f;
+        return Type == ESPType.Mimic && DeepDungeonUtil.InPotD ? 14.6f : 10.8f;
     }
 
     public ESPAggroType AggroType()
@@ -147,6 +146,7 @@ public class ESPObject
         {
             return GameObject.DataId == 8922;
         }
+
         return mobInfo?.Patrol ?? false;
     }
 
@@ -192,16 +192,16 @@ public class ESPObject
             case ESPType.Return:
                 return Color.LightBlue.ToUint();
             case ESPType.Passage:
-                return PluginService.Configuration.PassageColor;
+                return Config.PassageColor;
             case ESPType.AccursedHoard:
             case ESPType.AccursedHoardCoffer:
-                return PluginService.Configuration.HoardColor;
+                return Config.HoardColor;
             case ESPType.GoldChest:
-                return PluginService.Configuration.GoldCofferColor;
+                return Config.GoldCofferColor;
             case ESPType.SilverChest:
-                return PluginService.Configuration.SilverCofferColor;
+                return Config.SilverCofferColor;
             case ESPType.BronzeChest:
-                return PluginService.Configuration.BronzeCofferColor;
+                return Config.BronzeCofferColor;
             default:
                 return Color.White.ToUint();
         }
@@ -256,7 +256,9 @@ public class ESPObject
 
         name += Type switch
         {
-            ESPType.Trap => DataIds.TrapIDs.TryGetValue(GameObject.DataId, out var value) ? value : Strings.Traps_Unknown,
+            ESPType.Trap => DataIds.TrapIDs.TryGetValue(GameObject.DataId, out var value)
+                                ? value
+                                : Strings.Traps_Unknown,
             ESPType.AccursedHoard => Strings.Chest_Accursed_Hoard,
             ESPType.BronzeChest => Strings.Chest_Bronze_Chest,
             ESPType.SilverChest => Strings.Chest_Silver_Chest,
@@ -272,7 +274,7 @@ public class ESPObject
         };
 
 
-        if (PluginService.Configuration.ShowDebugInformation)
+        if (Config.ShowDebugInformation)
         {
             name += "\nD:" + GameObject.DataId;
             if (GameObject is BattleNpc npc2) name += " N:" + npc2.NameId;

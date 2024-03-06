@@ -16,7 +16,7 @@ public class ConfigWindow : Window, IDisposable
 
     public ConfigWindow() : base(Strings.ConfigWindow_Title, ImGuiWindowFlags.AlwaysAutoResize)
     {
-        conf = PluginService.Configuration;
+        conf = Config;
     }
 
     public void Dispose() { }
@@ -45,6 +45,7 @@ public class ConfigWindow : Window, IDisposable
                 DrawChestsTab();
                 ImGui.EndTabItem();
             }
+
             if (ImGui.BeginTabItem(Strings.ConfigWindow_Tab_Debug))
             {
                 DrawDebugTab();
@@ -61,7 +62,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_DebugTab_ShowDebugInformation, ref showDebugInformation))
         {
             conf.ShowDebugInformation = showDebugInformation;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);
@@ -69,14 +70,14 @@ public class ConfigWindow : Window, IDisposable
         ImGui.Unindent(15);
         ImGui.Separator();
     }
-    
+
     private void DrawChestsTab()
     {
         var openChests = conf.OpenChests;
         if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenChests, ref openChests))
         {
             conf.OpenChests = openChests;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.SameLine();
@@ -93,7 +94,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenFollowingChests_Bronze, ref openBronzeCoffers))
         {
             conf.OpenBronzeCoffers = openBronzeCoffers;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.SameLine();
@@ -101,7 +102,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenFollowingChests_Silver, ref openSilverCoffers))
         {
             conf.OpenSilverCoffers = openSilverCoffers;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.SameLine();
@@ -109,7 +110,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenFollowingChests_Gold, ref openGoldCoffers))
         {
             conf.OpenGoldCoffers = openGoldCoffers;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.SameLine();
@@ -117,7 +118,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenFollowingChests_Hoards, ref openHoards))
         {
             conf.OpenHoards = openHoards;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Unindent(15);
@@ -128,7 +129,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ChestsTab_OpenUnsafeChests, ref openUnsafeChests))
         {
             conf.OpenUnsafeChests = openUnsafeChests;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);
@@ -151,7 +152,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowPlayerDot, ref showPlayerDot))
         {
             conf.ShowPlayerDot = showPlayerDot;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);
@@ -165,7 +166,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowAggroRange, ref showMobViews))
         {
             conf.ShowMobViews = showMobViews;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);
@@ -198,7 +199,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowPatrolArrow, ref showPatrolArrow))
         {
             conf.ShowPatrolArrow = showPatrolArrow;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);
@@ -213,7 +214,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_ShowCofferInteractionRange, ref showCofferInteractionRange))
         {
             conf.ShowCofferInteractionRange = showCofferInteractionRange;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);
@@ -230,7 +231,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightObjects_TreasureChests, ref highlightCoffers))
         {
             conf.HighlightCoffers = highlightCoffers;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         var passageColor = ImGui.ColorConvertU32ToFloat4(conf.PassageColor).WithoutAlpha();
@@ -245,7 +246,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightObjects_Passage, ref highlightPassage))
         {
             conf.HighlightPassage = highlightPassage;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Unindent(15);
@@ -267,7 +268,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Bronze, ref showBronzeCoffers))
         {
             conf.ShowBronzeCoffers = showBronzeCoffers;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         var silverCofferColor = ImGui.ColorConvertU32ToFloat4(conf.SilverCofferColor).WithoutAlpha();
@@ -282,7 +283,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Silver, ref showSilverCoffers))
         {
             conf.ShowSilverCoffers = showSilverCoffers;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         var goldCofferColor = ImGui.ColorConvertU32ToFloat4(conf.GoldCofferColor).WithoutAlpha();
@@ -297,7 +298,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Gold, ref showGoldCoffers))
         {
             conf.ShowGoldCoffers = showGoldCoffers;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         var hoardColor = ImGui.ColorConvertU32ToFloat4(conf.HoardColor).WithoutAlpha();
@@ -312,7 +313,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightTreasureChests_Hoards, ref showHoards))
         {
             conf.ShowHoards = showHoards;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Unindent(15);
@@ -325,7 +326,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_GeneralTab_AutomaticallyOpen, ref autoOpen))
         {
             conf.AutoOpenOnEnter = autoOpen;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);
@@ -337,7 +338,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_GeneralTab_EnableOverlay, ref enableEsp))
         {
             conf.EnableESP = enableEsp;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);
@@ -349,7 +350,7 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_GeneralTab_OpenChests, ref openChests))
         {
             conf.OpenChests = openChests;
-            PluginService.Configuration.Save();
+            Config.Save();
         }
 
         ImGui.Indent(15);

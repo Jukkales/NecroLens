@@ -6,11 +6,14 @@ using System.Text.RegularExpressions;
 using System.Timers;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Network;
+using ECommons.Automation;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using NecroLens.Model;
 using NecroLens.util;
+using static NecroLens.util.DeepDungeonUtil;
 
 namespace NecroLens.Service;
 
@@ -47,9 +50,11 @@ public partial class DeepDungeonService : IDisposable
     // public int remainingKills;
     public DeepDungeonTrapStatus trapStatus;
 
+    private readonly TaskManager taskManager;
+
     public DeepDungeonService()
     {
-        PluginService.GameNetwork.NetworkMessage += NetworkMessage;
+        GameNetwork.NetworkMessage += NetworkMessage;
         floorTimes = new Dictionary<int, int>();
         floorEffects = new List<Pomander>();
         floorTimer = new Timer();
@@ -58,13 +63,16 @@ public partial class DeepDungeonService : IDisposable
         nextFloorTransfer = false;
         ready = false;
         floorVerified = false;
-        conf = PluginService.Configuration;
+        conf = Config;
         InteractionList = new List<uint>();
+
+        taskManager = new TaskManager();
+        taskManager.TimeoutSilently = true;
     }
 
     public void Dispose()
     {
-        PluginService.GameNetwork.NetworkMessage -= NetworkMessage;
+        GameNetwork.NetworkMessage -= NetworkMessage;
     }
 
     [GeneratedRegex("\\d+")]
@@ -74,12 +82,12 @@ public partial class DeepDungeonService : IDisposable
     {
         floorSetInfo = info;
         currentContentId = contentId;
-        PluginService.PluginLog.Debug($"Entering ContentID {currentContentId} - StartFloor: {info.StartFloor}");
+        PluginLog.Debug($"Entering ContentID {currentContentId} - StartFloor: {info.StartFloor}");
 
         currentFloor = info.StartFloor - 1; // NextFloor() adds 1
         floorTimes.Clear();
 
-        PluginService.MobInfoService.TryReloadIfEmpty();
+        MobService.TryReloadIfEmpty();
 
         for (var i = info.StartFloor; i < info.StartFloor + 10; i++)
             floorTimes[i] = 0;
@@ -89,8 +97,8 @@ public partial class DeepDungeonService : IDisposable
         nextFloorTransfer = true;
         NextFloor();
 
-        if (PluginService.Configuration.AutoOpenOnEnter)
-            PluginService.Plugin.ShowMainWindow();
+        if (Config.AutoOpenOnEnter)
+            Plugin.ShowMainWindow();
 
         InteractionList.Clear();
 
@@ -102,7 +110,7 @@ public partial class DeepDungeonService : IDisposable
     {
         if (nextFloorTransfer)
         {
-            PluginService.PluginLog.Debug($"ContentID {currentContentId} - NextFloor: {currentFloor + 1}");
+            PluginLog.Debug($"ContentID {currentContentId} - NextFloor: {currentFloor + 1}");
 
             // Reset
             floorEffects.Clear();
@@ -134,7 +142,7 @@ public partial class DeepDungeonService : IDisposable
     [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
     private unsafe void VerifyFloorNumber()
     {
-        var addon = (AtkUnitBase*)PluginService.GameGui.GetAddonByName("DeepDungeonMap");
+        var addon = (AtkUnitBase*)GameGui.GetAddonByName("DeepDungeonMap");
         if (addon != null)
         {
             // Searching backwards - the first found TextNode
@@ -152,7 +160,7 @@ public partial class DeepDungeonService : IDisposable
                 var floor = int.Parse(resultString);
                 if (currentFloor != floor)
                 {
-                    PluginService.PluginLog.Information("Floor number mismatch - adjusting");
+                    PluginLog.Information("Floor number mismatch - adjusting");
                     currentFloor = floor;
                 }
 
@@ -163,21 +171,21 @@ public partial class DeepDungeonService : IDisposable
 
     private void ExitDeepDungeon()
     {
-        PluginService.PluginLog.Debug($"ContentID {currentContentId} - Exiting");
+        PluginLog.Debug($"ContentID {currentContentId} - Exiting");
 
         passageProgress = -1;
         floorTimer.Stop();
         floorSetInfo = null;
         nextFloorTransfer = false;
         ready = false;
-        PluginService.Plugin.CloseMainWindow();
+        Plugin.CloseMainWindow();
     }
 
     private void OnTimerUpdate(object? sender, ElapsedEventArgs e)
     {
-        if (!InDeepDungeon())
+        if (!InDeepDungeon)
         {
-            PluginService.PluginLog.Debug("Failsafe exit");
+            PluginLog.Debug("Failsafe exit");
             ExitDeepDungeon();
         }
 
@@ -191,12 +199,7 @@ public partial class DeepDungeonService : IDisposable
         UpdatePassageProgress();
     }
 
-    public bool InDeepDungeon()
-    {
-        var mapId = PluginService.ClientState.TerritoryType;
-        return DataIds.PalaceOfTheDeadMapIds.Contains(mapId) || DataIds.HeavenOnHighMapIds.Contains(mapId) ||
-               DataIds.EurekaOrthosMapIds.Contains(mapId);
-    }
+
 
     public void UpdatePassageProgress()
     {
@@ -207,7 +210,7 @@ public partial class DeepDungeonService : IDisposable
     [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
     private unsafe ushort? GetPassagePart()
     {
-        var addon = (AtkUnitBase*)PluginService.GameGui.GetAddonByName("DeepDungeonMap");
+        var addon = (AtkUnitBase*)GameGui.GetAddonByName("DeepDungeonMap");
         if (addon != null)
         {
             // Searching backwards in nodelist. First is always return, second passage
@@ -286,7 +289,7 @@ public partial class DeepDungeonService : IDisposable
 
     private void OnSystemLogMessage(IntPtr dataPtr, int logId)
     {
-        if (InDeepDungeon())
+        if (InDeepDungeon)
         {
             if (logId == DataIds.SystemLogPomanderUsed)
                 OnPomanderUsed((Pomander)Marshal.ReadByte(dataPtr, 16));
@@ -299,7 +302,7 @@ public partial class DeepDungeonService : IDisposable
 
     private void OnPomanderUsed(Pomander pomander)
     {
-        PluginService.PluginLog.Debug($"Pomander ID: {pomander}");
+        PluginLog.Debug($"Pomander ID: {pomander}");
         switch (pomander)
         {
             case Pomander.Safety:
@@ -351,13 +354,12 @@ public partial class DeepDungeonService : IDisposable
 
     public bool HasRespawn()
     {
-        var mapId = PluginService.ClientState.TerritoryType;
-        return !(currentFloor % 10 == 0 || (DataIds.EurekaOrthosMapIds.Contains(mapId) && currentFloor == 99));
+        return !(currentFloor % 10 == 0 || (InEO && currentFloor == 99));
     }
 
     private bool CheckChestOpenSafe(ESPObject.ESPType type)
     {
-        var info = PluginService.DeepDungeonService.floorSetInfo;
+        var info = DungeonService.floorSetInfo;
         var unsafeChest = false;
         if (info != null)
         {
@@ -372,7 +374,7 @@ public partial class DeepDungeonService : IDisposable
 
     internal unsafe void TryInteract(ESPObject espObj)
     {
-        var player = PluginService.ClientState.LocalPlayer!;
+        var player = ClientState.LocalPlayer!;
         if ((player.StatusFlags & StatusFlags.InCombat) == 0 && conf.OpenChests && espObj.IsChest())
         {
             var type = espObj.Type;
@@ -397,7 +399,7 @@ public partial class DeepDungeonService : IDisposable
     public unsafe void TryNearestOpenChest()
     {
         // Checks every object to be a chest and try to open the  
-        foreach (var obj in PluginService.ObjectTable)
+        foreach (var obj in ObjectTable)
             if (obj.IsValid())
             {
                 var dataId = obj.DataId;
@@ -413,4 +415,24 @@ public partial class DeepDungeonService : IDisposable
                 }
             }
     }
+
+    public unsafe void OnPomanderCommand(string pomanderName)
+    {
+        if (TryFindPomanderByName(pomanderName, out var pomander) && IsPomanderUsable(pomander))
+        {
+            PrintChatMessage($"Using found pomander: {pomander}");
+            if (!TryGetAddonByName<AtkUnitBase>("DeepDungeonStatus", out _))
+            {
+                AgentDeepDungeonStatus.Instance()->AgentInterface.Show();
+            }
+        
+            taskManager.Enqueue(() => TryGetAddonByName<AtkUnitBase>("DeepDungeonStatus", out var addon) && IsAddonReady(addon));
+            taskManager.Enqueue(() =>
+            {
+                TryGetAddonByName<AtkUnitBase>("DeepDungeonStatus", out var addon);
+                Callback.Fire(addon, true, 11, (int) pomander);
+            });
+        }
+    }
+    
 }

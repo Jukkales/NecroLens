@@ -22,6 +22,8 @@ public static class DataIds
     
     public const uint AccursedHoard = 2007542;
     public const uint AccursedHoardCoffer = 2007543;
+    
+    public const uint ItemPenaltyStatusId = 1094;
 
     public static readonly HashSet<uint> PalaceOfTheDeadMapIds = new()
     {
