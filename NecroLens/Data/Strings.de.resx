@@ -133,7 +133,7 @@ Wenn du dich neben einer Kiste nicht mehr bewegen kannst, deaktiviere diese Opti
         <value>Sicht</value>
     </data>
     <data name="MainWindow_CurrentFloorEffects_Safety" xml:space="preserve">
-        <value>Sigelbruch</value>
+        <value>Siegelbruch</value>
     </data>
     <data name="MainWindow_CurrentFloorEffects_Fortune" xml:space="preserve">
         <value>Glück</value>
@@ -245,7 +245,7 @@ Mobs mit Ton haben außerdem eine Hitboxanzeige.</value>
         <value>Bronzene Schatztruhe</value>
     </data>
     <data name="Chest_Accursed_Hoard" xml:space="preserve">
-        <value>Verborgenre Schatz</value>
+        <value>Verborgener Schatz</value>
     </data>
     <data name="PluginCommands_OpenChest_Help" xml:space="preserve">
         <value>Versucht eine Kiste in deiner nähe zu öffnen.</value>
