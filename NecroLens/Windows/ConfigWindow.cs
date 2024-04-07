@@ -5,7 +5,6 @@ using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using NecroLens.Data;
 using NecroLens.Model;
-using NecroLens.Service;
 using NecroLens.util;
 
 namespace NecroLens.Windows;
@@ -46,7 +45,7 @@ public class ConfigWindow : Window, IDisposable
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem(Strings.ConfigWindow_Tab_Debug))
+            if (ImGui.BeginTabItem(Strings.ConfigWindow_Tab_Extras))
             {
                 DrawDebugTab();
                 ImGui.EndTabItem();
@@ -58,17 +57,36 @@ public class ConfigWindow : Window, IDisposable
 
     private void DrawDebugTab()
     {
+        var optInCollection = conf.OptInDataCollection;
+        if (ImGui.Checkbox("Opt-In Data Collection", ref optInCollection))
+        {
+            conf.OptInDataCollection = optInCollection;
+            if (conf.OptInDataCollection && conf.UniqueId == null)
+            {
+                conf.UniqueId = Guid.NewGuid().ToString();
+            }
+            Config.Save();
+        }
+
+        ImGui.Indent(15);
+        ImGui.Text("Help me improve NecroLens by enabling data collection.\n" +
+                   "This will send information about every enemy and some other objects anonymously to my server.\n" +
+                   "It contains only enemy and object id's and names per floor and a \'party-id\' for separation.\n\n" +
+                   "Absolutely no information linking to any players or accounts will be collected.");
+        ImGui.Unindent(15);
+        
+        ImGui.Separator();
         var showDebugInformation = conf.ShowDebugInformation;
-        if (ImGui.Checkbox(Strings.ConfigWindow_DebugTab_ShowDebugInformation, ref showDebugInformation))
+        if (ImGui.Checkbox(Strings.ConfigWindow_ExtrasTab_ShowDebugInformation, ref showDebugInformation))
         {
             conf.ShowDebugInformation = showDebugInformation;
             Config.Save();
         }
 
         ImGui.Indent(15);
-        ImGui.Text(Strings.ConfigWindow_DebugTab_ShowDebugInformation_Details);
+        ImGui.Text(Strings.ConfigWindow_ExtrasTab_ShowDebugInformation_Details);
         ImGui.Unindent(15);
-        ImGui.Separator();
+        
     }
 
     private void DrawChestsTab()

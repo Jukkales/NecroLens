@@ -89,7 +89,7 @@ public class ESPService : IDisposable
             ESPObject.ESPType.BronzeChest => conf.ShowBronzeCoffers,
             ESPObject.ESPType.SilverChest => conf.ShowSilverCoffers,
             ESPObject.ESPType.GoldChest => conf.ShowGoldCoffers,
-            ESPObject.ESPType.AccursedHoard => conf.ShowHoards,
+            ESPObject.ESPType.AccursedHoard => conf.ShowHoards && !DungeonService.FloorDetails.HoardFound,
             ESPObject.ESPType.MimicChest => conf.ShowMimicCoffer,
             ESPObject.ESPType.Trap => conf.ShowTraps,
             ESPObject.ESPType.Return => conf.ShowReturn,
@@ -115,7 +115,7 @@ public class ESPService : IDisposable
             if (DoDrawName(espObject))
                 DrawName(drawList, espObject, position2D);
 
-            if (espObject.Type == ESPObject.ESPType.AccursedHoard && conf.ShowHoards)
+            if (espObject.Type == ESPObject.ESPType.AccursedHoard && conf.ShowHoards && !DungeonService.FloorDetails.HoardFound)
             {
                 var chestRadius = type == ESPObject.ESPType.AccursedHoard ? 2.0f : 1f; // Make Hoards bigger
 
@@ -191,7 +191,8 @@ public class ESPService : IDisposable
                  Condition[ConditionFlag.BetweenAreas] ||
                  Condition[ConditionFlag.BetweenAreas51]) &&
                DeepDungeonUtil.InDeepDungeon && ClientState.LocalPlayer != null &&
-               ClientState.LocalContentId > 0 && ObjectTable.Length > 0;
+               ClientState.LocalContentId > 0 && ObjectTable.Length > 0 && 
+               !DungeonService.FloorDetails.FloorTransfer;
     }
 
     /**
@@ -218,10 +219,17 @@ public class ESPService : IDisposable
                                 MobService.MobInfoDictionary.TryGetValue(npcObj.NameId, out mobInfo!);
 
                             var espObj = new ESPObject(obj, mobInfo);
+                            
+                            if (obj.DataId == DataIds.GoldChest 
+                                && DungeonService.FloorDetails.DoubleChests.TryGetValue(obj.ObjectId, out var value))
+                            {
+                                espObj.ContainingPomander = value;
+                            }
 
                             DungeonService.TryInteract(espObj);
 
                             entityList.Add(espObj);
+                            DungeonService.TrackFloorObjects(espObj);
                         }
 
                         if (ClientState.LocalPlayer != null &&
@@ -243,4 +251,5 @@ public class ESPService : IDisposable
             Thread.Sleep(Tick);
         }
     }
+
 }

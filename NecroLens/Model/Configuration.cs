@@ -51,6 +51,9 @@ public class Configuration : IPluginConfiguration
     public uint HoardColor { get; set; } = 0xFF00D7FF;
     
     public bool ShowDebugInformation { get; set; } = false;
+    
+    public string? UniqueId { get; set; }
+    public bool OptInDataCollection { get; set; } = false;
 
     public void Save()
     {

@@ -1,73 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Timers;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Network;
 using ECommons.Automation;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using Lumina.Excel.GeneratedSheets;
 using NecroLens.Model;
 using NecroLens.util;
 using static NecroLens.util.DeepDungeonUtil;
+using GameObject = FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject;
 
 namespace NecroLens.Service;
 
 /**
  * Tracks the progress when inside a DeepDungeon.
  */
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-[SuppressMessage("ReSharper", "MemberCanBeMadeStatic.Local")]
-public partial class DeepDungeonService : IDisposable
+public class DeepDungeonService : IDisposable
 {
     private readonly Configuration conf;
-    public readonly List<Pomander> floorEffects;
     private readonly Timer floorTimer;
-    public readonly Dictionary<int, int> floorTimes;
-
-    private readonly List<uint> InteractionList;
-    public int currentContentId;
-
-    public int currentFloor;
-    public DeepDungeonContentInfo.DeepDungeonFloorSetInfo? floorSetInfo;
-    private DateTime floorStartTime;
-    private bool floorVerified;
-    public bool nextFloorAffluence;
-    public bool nextFloorAlteration;
-
-    public bool nextFloorFlight;
-    private bool nextFloorTransfer;
-
-    private DateTime nextRespawn;
-    public int passageProgress;
-
-    public bool ready;
-
-    // public int remainingKills;
-    public DeepDungeonTrapStatus trapStatus;
-
+    public readonly Dictionary<int, int> FloorTimes;
+    public int CurrentContentId;
+    public DeepDungeonContentInfo.DeepDungeonFloorSetInfo? FloorSetInfo;
+    public bool Ready;
     private readonly TaskManager taskManager;
+    public readonly FloorDetails FloorDetails;
+    public readonly Dictionary<Pomander, string> PomanderNames;
 
     public DeepDungeonService()
     {
         GameNetwork.NetworkMessage += NetworkMessage;
-        floorTimes = new Dictionary<int, int>();
-        floorEffects = new List<Pomander>();
+        FloorTimes = new Dictionary<int, int>();
         floorTimer = new Timer();
         floorTimer.Elapsed += OnTimerUpdate;
         floorTimer.Interval = 1000;
-        nextFloorTransfer = false;
-        ready = false;
-        floorVerified = false;
+        Ready = false;
         conf = Config;
-        InteractionList = new List<uint>();
-
+        FloorDetails = new FloorDetails();
         taskManager = new TaskManager();
         taskManager.TimeoutSilently = true;
+        PomanderNames = new Dictionary<Pomander, string>();
+        
+        foreach (var pomander in DataManager.GetExcelSheet<DeepDungeonItem>(ClientState.ClientLanguage)!.Skip(1))
+        {
+            PomanderNames[(Pomander)pomander.RowId] = pomander.Name;
+        }
     }
 
     public void Dispose()
@@ -75,109 +57,41 @@ public partial class DeepDungeonService : IDisposable
         GameNetwork.NetworkMessage -= NetworkMessage;
     }
 
-    [GeneratedRegex("\\d+")]
-    private static partial Regex FloorNumber();
-
     private void EnterDeepDungeon(int contentId, DeepDungeonContentInfo.DeepDungeonFloorSetInfo info)
     {
-        floorSetInfo = info;
-        currentContentId = contentId;
-        PluginLog.Debug($"Entering ContentID {currentContentId} - StartFloor: {info.StartFloor}");
+        FloorSetInfo = info;
+        CurrentContentId = contentId;
+        PluginLog.Debug($"Entering ContentID {CurrentContentId}");
 
-        currentFloor = info.StartFloor - 1; // NextFloor() adds 1
-        floorTimes.Clear();
+        FloorTimes.Clear();
 
         MobService.TryReloadIfEmpty();
 
         for (var i = info.StartFloor; i < info.StartFloor + 10; i++)
-            floorTimes[i] = 0;
+            FloorTimes[i] = 0;
 
-        floorStartTime = DateTime.Now;
-        nextRespawn = DateTime.Now.AddSeconds(info.RespawnTime);
-        nextFloorTransfer = true;
-        NextFloor();
+        FloorDetails.CurrentFloor = info.StartFloor - 1; // NextFloor() adds 1
+        FloorDetails.RespawnTime = info.RespawnTime;
+        FloorDetails.FloorTransfer = true;
+        FloorDetails.NextFloor();
 
         if (Config.AutoOpenOnEnter)
             Plugin.ShowMainWindow();
 
-        InteractionList.Clear();
-
         floorTimer.Start();
-        ready = true;
-    }
-
-    private void NextFloor()
-    {
-        if (nextFloorTransfer)
-        {
-            PluginLog.Debug($"ContentID {currentContentId} - NextFloor: {currentFloor + 1}");
-
-            // Reset
-            floorEffects.Clear();
-            InteractionList.Clear();
-
-            // Apply effects
-            if (nextFloorFlight)
-                floorEffects.Add(Pomander.Flight);
-            if (nextFloorAffluence)
-                floorEffects.Add(Pomander.Affluence);
-            if (nextFloorAlteration)
-                floorEffects.Add(Pomander.Alteration);
-
-            nextFloorFlight = false;
-            nextFloorAffluence = false;
-            nextFloorAlteration = false;
-
-            floorTimes[currentFloor] = (int)(DateTime.Now - floorStartTime).TotalSeconds;
-
-            currentFloor++;
-            floorStartTime = DateTime.Now;
-            trapStatus = DeepDungeonTrapStatus.Active;
-            nextRespawn = DateTime.Now.AddSeconds(floorSetInfo!.RespawnTime);
-            passageProgress = -1;
-            nextFloorTransfer = false;
-        }
-    }
-
-    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
-    private unsafe void VerifyFloorNumber()
-    {
-        var addon = (AtkUnitBase*)GameGui.GetAddonByName("DeepDungeonMap");
-        if (addon != null)
-        {
-            // Searching backwards - the first found TextNode
-            for (var i = addon->UldManager.NodeListCount - 1; i >= 0; i--)
-            {
-                var atkResNode = addon->UldManager.NodeList[i];
-                if (atkResNode == null) continue;
-
-                var atkTextNode = atkResNode->GetAsAtkTextNode();
-                if (atkTextNode == null) continue;
-
-                var resultString = FloorNumber().Match(atkTextNode->NodeText.ToString()).Value;
-                if (string.IsNullOrWhiteSpace(resultString)) continue;
-
-                var floor = int.Parse(resultString);
-                if (currentFloor != floor)
-                {
-                    PluginLog.Information("Floor number mismatch - adjusting");
-                    currentFloor = floor;
-                }
-
-                floorVerified = true;
-            }
-        }
+        Ready = true;
     }
 
     private void ExitDeepDungeon()
     {
-        PluginLog.Debug($"ContentID {currentContentId} - Exiting");
+        PluginLog.Debug($"ContentID {CurrentContentId} - Exiting");
 
-        passageProgress = -1;
+        FloorDetails.DumpFloorObjects(CurrentContentId);
+
         floorTimer.Stop();
-        floorSetInfo = null;
-        nextFloorTransfer = false;
-        ready = false;
+        FloorSetInfo = null;
+        FloorDetails.Clear();
+        Ready = false;
         Plugin.CloseMainWindow();
     }
 
@@ -190,60 +104,11 @@ public partial class DeepDungeonService : IDisposable
         }
 
         // If the plugin is loaded mid-dungeon then verify the floor
-        if (!floorVerified)
-            VerifyFloorNumber();
+        if (!FloorDetails.FloorVerified)
+            FloorDetails.VerifyFloorNumber();
 
-        var now = DateTime.Now;
-        floorTimes[currentFloor] = (int)(now - floorStartTime).TotalSeconds;
-        if (now > nextRespawn) nextRespawn = now.AddSeconds(floorSetInfo!.RespawnTime);
-        UpdatePassageProgress();
-    }
-
-
-
-    public void UpdatePassageProgress()
-    {
-        var part = GetPassagePart();
-        passageProgress = part != null ? (int)(part * 10) : -1;
-    }
-
-    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
-    private unsafe ushort? GetPassagePart()
-    {
-        var addon = (AtkUnitBase*)GameGui.GetAddonByName("DeepDungeonMap");
-        if (addon != null)
-        {
-            // Searching backwards in nodelist. First is always return, second passage
-            var skipReturn = false;
-            for (var i = addon->UldManager.NodeListCount - 1; i >= 0; i--)
-            {
-                var atkResNode = addon->UldManager.NodeList[i];
-                if (atkResNode == null) continue;
-
-                var atkComponentNode = atkResNode->GetAsAtkComponentNode();
-                if (atkComponentNode == null) continue;
-
-                // Its a component with 2 child's, second is the image
-                var atkImageNode = atkComponentNode->Component->UldManager.NodeListCount > 1
-                                       ? atkComponentNode->Component->UldManager.NodeList[1]->GetAsAtkImageNode()
-                                       : null;
-                if (atkImageNode == null) continue;
-
-                // Texture contains 11 states
-                if (atkImageNode->PartsList->PartCount == 11)
-                {
-                    if (!skipReturn)
-                    {
-                        skipReturn = true;
-                        continue;
-                    }
-
-                    return atkImageNode->PartId;
-                }
-            }
-        }
-
-        return null;
+        var time = FloorDetails.UpdateFloorTime();
+        FloorTimes[FloorDetails.CurrentFloor] = time;
     }
 
     private void NetworkMessage(
@@ -274,14 +139,18 @@ public partial class DeepDungeonService : IDisposable
                 case DataIds.DirectorUpdateDutyCommenced:
                 {
                     var contentId = ReadNumber(dataPtr, 4, 2);
-                    if (!ready && DeepDungeonContentInfo.ContentInfo.TryGetValue(contentId, out var info))
+                    if (!Ready && DeepDungeonContentInfo.ContentInfo.TryGetValue(contentId, out var info))
                         EnterDeepDungeon(contentId, info);
                     break;
                 }
                 // OnDutyRecommenced
                 case DataIds.DirectorUpdateDutyRecommenced:
-                    if (ready && nextFloorTransfer)
-                        NextFloor();
+                    if (Ready && FloorDetails.FloorTransfer)
+                    {
+                        FloorDetails.DumpFloorObjects(CurrentContentId);
+                        FloorDetails.NextFloor();
+                    }
+
                     break;
             }
         }
@@ -291,52 +160,40 @@ public partial class DeepDungeonService : IDisposable
     {
         if (InDeepDungeon)
         {
-            if (logId == DataIds.SystemLogPomanderUsed)
-                OnPomanderUsed((Pomander)Marshal.ReadByte(dataPtr, 16));
-            else if (logId == DataIds.SystemLogDutyEnded)
-                ExitDeepDungeon();
-            else if (logId == DataIds.SystemLogTransferenceInitiated)
-                nextFloorTransfer = true;
-        }
-    }
+            switch ((uint)logId)
+            {
+                case DataIds.SystemLogPomanderUsed:
+                    FloorDetails.OnPomanderUsed((Pomander)Marshal.ReadByte(dataPtr, 16));
+                    break;
+                case DataIds.SystemLogDutyEnded:
+                    ExitDeepDungeon();
+                    break;
+                case DataIds.SystemLogTransferenceInitiated:
+                    FloorDetails.FloorTransfer = true;
+                    break;
+                case 0x1C6A:
+                case 0x1C6B:
+                case 0x1C6C:
+                    FloorDetails.HoardFound = true;
+                    break;
+                case 0x1C36:
+                case 0x23F8:
+                // case 0x282F: // Demiclone
+                    var pomander = (Pomander)Marshal.ReadByte(dataPtr, 12);
+                    if (pomander > 0)
+                    {
+                        var player = ClientState.LocalPlayer!;
+                        var chest = ObjectTable
+                                    .Where(o => o.DataId == DataIds.GoldChest)
+                                    .First(o => o.Position.Distance2D(player.Position) <= 4.6f);
+                        if (chest)
+                        {
+                            FloorDetails.DoubleChests[chest.ObjectId] = pomander;
+                        }
+                    }
 
-    private void OnPomanderUsed(Pomander pomander)
-    {
-        PluginLog.Debug($"Pomander ID: {pomander}");
-        switch (pomander)
-        {
-            case Pomander.Safety:
-            case Pomander.SafetyProtomander:
-                floorEffects.Add(pomander);
-                trapStatus = DeepDungeonTrapStatus.Inactive;
-                break;
-
-            case Pomander.Sight:
-            case Pomander.SightProtomander:
-                floorEffects.Add(pomander);
-                if (trapStatus == DeepDungeonTrapStatus.Active)
-                    trapStatus = DeepDungeonTrapStatus.Visible;
-                break;
-
-            case Pomander.Affluence:
-            case Pomander.AffluenceProtomander:
-                nextFloorAffluence = true;
-                break;
-
-            case Pomander.Flight:
-            case Pomander.FlightProtomander:
-                nextFloorFlight = true;
-                break;
-
-            case Pomander.Alteration:
-            case Pomander.AlterationProtomander:
-                nextFloorAlteration = true;
-                break;
-
-            case Pomander.Fortune:
-            case Pomander.FortuneProtomander:
-                floorEffects.Add(pomander);
-                break;
+                    break;
+            }
         }
     }
 
@@ -347,19 +204,9 @@ public partial class DeepDungeonService : IDisposable
         return BitConverter.ToInt32(bytes);
     }
 
-    public int TimeTillRespawn()
-    {
-        return (int)(DateTime.Now - nextRespawn).TotalSeconds;
-    }
-
-    public bool HasRespawn()
-    {
-        return !(currentFloor % 10 == 0 || (InEO && currentFloor == 99));
-    }
-
     private bool CheckChestOpenSafe(ESPObject.ESPType type)
     {
-        var info = DungeonService.floorSetInfo;
+        var info = DungeonService.FloorSetInfo;
         var unsafeChest = false;
         if (info != null)
         {
@@ -388,10 +235,10 @@ public partial class DeepDungeonService : IDisposable
             if (type == ESPObject.ESPType.SilverChest && player.CurrentHp <= player.MaxHp * 0.77) return;
 
             if (CheckChestOpenSafe(type) && espObj.Distance() <= espObj.InteractionDistance()
-                                         && !InteractionList.Contains(espObj.GameObject.ObjectId))
+                                         && !FloorDetails.InteractionList.Contains(espObj.GameObject.ObjectId))
             {
                 TargetSystem.Instance()->InteractWithObject((GameObject*)espObj.GameObject.Address);
-                InteractionList.Add(espObj.GameObject.ObjectId);
+                FloorDetails.InteractionList.Add(espObj.GameObject.ObjectId);
             }
         }
     }
@@ -425,14 +272,19 @@ public partial class DeepDungeonService : IDisposable
             {
                 AgentDeepDungeonStatus.Instance()->AgentInterface.Show();
             }
-        
-            taskManager.Enqueue(() => TryGetAddonByName<AtkUnitBase>("DeepDungeonStatus", out var addon) && IsAddonReady(addon));
+
+            taskManager.Enqueue(() => TryGetAddonByName<AtkUnitBase>("DeepDungeonStatus", out var addon) &&
+                                      IsAddonReady(addon));
             taskManager.Enqueue(() =>
             {
                 TryGetAddonByName<AtkUnitBase>("DeepDungeonStatus", out var addon);
-                Callback.Fire(addon, true, 11, (int) pomander);
+                Callback.Fire(addon, true, 11, (int)pomander);
             });
         }
     }
-    
+
+    public void TrackFloorObjects(ESPObject espObj)
+    {
+        FloorDetails.TrackFloorObjects(espObj, CurrentContentId);
+    }
 }

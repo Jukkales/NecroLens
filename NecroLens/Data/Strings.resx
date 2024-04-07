@@ -260,13 +260,13 @@ If you're stuck near a chest and cant move anymore disable this option!</value>
     <data name="MainWindow_OpenChestButton_Help" xml:space="preserve">
         <value>Try to open the nearest chest to you.</value>
     </data>
-    <data name="ConfigWindow_Tab_Debug" xml:space="preserve">
-        <value>Debug</value>
+    <data name="ConfigWindow_Tab_Extras" xml:space="preserve">
+        <value>Extras</value>
     </data>
-    <data name="ConfigWindow_DebugTab_ShowDebugInformation" xml:space="preserve">
+    <data name="ConfigWindow_ExtrasTab_ShowDebugInformation" xml:space="preserve">
         <value>Show Debug Information</value>
     </data>
-    <data name="ConfigWindow_DebugTab_ShowDebugInformation_Details" xml:space="preserve">
+    <data name="ConfigWindow_ExtrasTab_ShowDebugInformation_Details" xml:space="preserve">
         <value>Show the ID for elements. 
 Please turn this on before you submit a bug report. 
 It helps me to identify problems faster.</value>

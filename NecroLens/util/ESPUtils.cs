@@ -33,6 +33,12 @@ public static class ESPUtils
     public static void DrawName(ImDrawListPtr drawList, ESPObject espObject, Vector2 position)
     {
         var name = espObject.Name();
+
+        if (espObject.Type == ESPObject.ESPType.GoldChest && espObject.ContainingPomander != null)
+        {
+            name += "\n" + DungeonService.PomanderNames[espObject.ContainingPomander.Value];
+        }
+
         var textSize = ImGui.CalcTextSize(name);
         // Center name on position
         var textPosition = new Vector2(position.X - (textSize.X / 2f), position.Y + (textSize.Y / 2f));

@@ -51,6 +51,7 @@ public class ESPObject
     public ESPObject(GameObject gameObject, MobInfo? mobInfo = null)
     {
         this.clientState = ClientState;
+        ContainingPomander = null;
         GameObject = gameObject;
         this.mobInfo = mobInfo;
 
@@ -58,7 +59,7 @@ public class ESPObject
         if (this.mobInfo != null)
         {
             if (DeepDungeonContentInfo.ContentMobInfoChanges.TryGetValue(
-                    DungeonService.currentContentId, out var overrideInfos))
+                    DungeonService.CurrentContentId, out var overrideInfos))
             {
                 var npc = (BattleNpc)gameObject;
                 var mob = overrideInfos.FirstOrDefault(m => m.Id == npc.NameId);
@@ -101,6 +102,8 @@ public class ESPObject
                 Type = ESPType.Mimic;
         }
     }
+    
+    public Pomander? ContainingPomander { get; set; }
 
     public GameObject GameObject { get; }
 

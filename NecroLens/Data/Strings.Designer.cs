@@ -196,26 +196,6 @@ namespace NecroLens.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show Debug Information.
-        /// </summary>
-        internal static string ConfigWindow_DebugTab_ShowDebugInformation {
-            get {
-                return ResourceManager.GetString("ConfigWindow_DebugTab_ShowDebugInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show the ID for elements. 
-        ///Please turn this on before you submit a bug report. 
-        ///It helps me to identify problems faster..
-        /// </summary>
-        internal static string ConfigWindow_DebugTab_ShowDebugInformation_Details {
-            get {
-                return ResourceManager.GetString("ConfigWindow_DebugTab_ShowDebugInformation_Details", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Highlight the following objects once near:.
         /// </summary>
         internal static string ConfigWindow_ESPTab_HighlightObjects {
@@ -379,6 +359,26 @@ namespace NecroLens.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Debug Information.
+        /// </summary>
+        internal static string ConfigWindow_ExtrasTab_ShowDebugInformation {
+            get {
+                return ResourceManager.GetString("ConfigWindow_ExtrasTab_ShowDebugInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show the ID for elements. 
+        ///Please turn this on before you submit a bug report. 
+        ///It helps me to identify problems faster..
+        /// </summary>
+        internal static string ConfigWindow_ExtrasTab_ShowDebugInformation_Details {
+            get {
+                return ResourceManager.GetString("ConfigWindow_ExtrasTab_ShowDebugInformation_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically open in DeepDungeon.
         /// </summary>
         internal static string ConfigWindow_GeneralTab_AutomaticallyOpen {
@@ -451,20 +451,20 @@ namespace NecroLens.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Debug.
-        /// </summary>
-        internal static string ConfigWindow_Tab_Debug {
-            get {
-                return ResourceManager.GetString("ConfigWindow_Tab_Debug", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to ESP Settings.
         /// </summary>
         internal static string ConfigWindow_Tab_ESPSettings {
             get {
                 return ResourceManager.GetString("ConfigWindow_Tab_ESPSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extras.
+        /// </summary>
+        internal static string ConfigWindow_Tab_Extras {
+            get {
+                return ResourceManager.GetString("ConfigWindow_Tab_Extras", resourceCulture);
             }
         }
         
