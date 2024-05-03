@@ -6,43 +6,44 @@ on:
 
 jobs:
     build:
-        runs-on: windows-latest
-        permissions:
-            contents: write
+        runs-on: ubuntu-latest
+        env:
+            DALAMUD_HOME: /tmp/dalamud
         
         steps:
             - uses: actions/checkout@v4
               with:
                   submodules: true
 
+            - name: Get Tag Name
+              run: echo "tag=$(echo ${{ github.ref }} | sed 's/refs\/tags\/v//')" >> $GITHUB_ENV
+
             - name: Setup .NET
               uses: actions/setup-dotnet@v4
               with:
                   dotnet-version: '8.x.x'
 
+            - name: Download Dalamud Latest
+              run: |
+                  wget https://goatcorp.github.io/dalamud-distrib/latest.zip -O ${{ env.DALAMUD_HOME }}.zip
+                  unzip ${{ env.DALAMUD_HOME }}.zip -d ${{ env.DALAMUD_HOME }}    
+
             - name: Restore
               run: dotnet restore
 
-            - name: Download Dalamud
-              run: |
-                  Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/stg/latest.zip -OutFile latest.zip
-                  Expand-Archive -Force latest.zip "$env:AppData\XIVLauncher\addon\Hooks\dev\"
-
             - name: Build
               run: |
-                  dotnet build --no-restore --configuration Release --nologo
+                  dotnet build --no-restore --configuration Release --nologo -p:AssemblyVersion=${{ env.tag }}
 
-            - uses: ncipollo/release-action@v1
+            - name: Publish Version
+              uses: PunishXIV/dynamis-action@v1
+              id: dynamis
               with:
-                  artifacts: "./NecroLens/bin/x64/Release/NecroLens/latest.zip"
-                  name: ${{ github.event.head_commit.message }}
-                  makeLatest: true
-
-            - run: |
-                  rm -R ./NecroLens/bin/x64/Release/NecroLens
-
-            - name: Upload Build Artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: latest
-                  path: ./NecroLens/bin/x64/Release/
+                  plugin_id: 53
+                  internal_name: 'NecroLens'
+                  version_number: ${{ env.tag }}
+                  path: 'NecroLens/bin/x64/Release/NecroLens/latest.zip'
+                  type: 'latest'
+                  dalamud_version: '9'
+              env:
+                  PUBLISHER_KEY: ${{ secrets.PUBLISHER_KEY }}
