@@ -58,3 +58,6 @@ If you accidentally closed the main window you can bring it back with the `/necr
  - Pomander auto usage
  - Enemy AoE Radar
  - Trap/Hoard location logging
+
+---
+_Special thanks to Leonhart for making the icon!_
