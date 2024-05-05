@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
@@ -21,8 +22,8 @@ public class MainWindow : Window, IDisposable
     {
         SizeConstraints = new WindowSizeConstraints
         {
-            MinimumSize = new Vector2(370, 260),
-            MaximumSize = new Vector2(370, 260)
+            MinimumSize = new Vector2(370, 330),
+            MaximumSize = new Vector2(370, 330)
         };
         RespectCloseHotkey = false;
     }
@@ -173,6 +174,21 @@ public class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
+        
+        ImGui.Separator();
+        ImGui.TextColored(new Vector4(1, 0, 0, 1), "NecroLens repo has changed! \nPlease update your repo.");
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(1, 0, 0, 1));
+        if (ImGui.Button("Click here for Instructions"))
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/Jukkales/DalamudPlugins/blob/main/RepoChange.md",
+                UseShellExecute = true
+            });
+        }
+        ImGui.PopStyleColor();
+        ImGui.Separator();
+        
         ImGui.BeginGroup();
         ImGui.Text(string.Format(Strings.MainWindow_Floor, DungeonService.FloorDetails.CurrentFloor));
 

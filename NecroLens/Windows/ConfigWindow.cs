@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Numerics;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using NecroLens.Data;
@@ -22,6 +23,31 @@ public class ConfigWindow : Window, IDisposable
 
     public override void Draw()
     {
+        ImGui.Separator();
+        ImGui.Separator();
+        ImGui.Separator();
+        ImGui.Separator();
+        ImGui.Separator();
+        ImGui.Separator();
+        
+        ImGui.TextColored(new Vector4(1, 0, 0, 1), "NecroLens repo has changed! \nPlease update your repo.");
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(1, 0, 0, 1));
+        if (ImGui.Button("Click here for Instructions"))
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/Jukkales/DalamudPlugins/blob/main/RepoChange.md",
+                UseShellExecute = true
+            });
+        }
+        ImGui.PopStyleColor();
+        ImGui.Separator();
+        ImGui.Separator();
+        ImGui.Separator();
+        ImGui.Separator();
+        ImGui.Separator();
+        ImGui.Separator();
+        
         if (ImGui.Button("Want to help with localization?"))
             Process.Start(new ProcessStartInfo
                               { FileName = "https://crowdin.com/project/necrolens", UseShellExecute = true });
