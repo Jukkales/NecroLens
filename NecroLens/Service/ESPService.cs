@@ -215,13 +215,13 @@ public class ESPService : IDisposable
                         if (obj.IsValid() && !IsIgnoredObject(obj))
                         {
                             MobInfo mobInfo = null!;
-                            if (obj is BattleNpc npcObj)
+                            if (obj is IBattleNpc npcObj)
                                 MobService.MobInfoDictionary.TryGetValue(npcObj.NameId, out mobInfo!);
 
                             var espObj = new ESPObject(obj, mobInfo);
                             
                             if (obj.DataId == DataIds.GoldChest 
-                                && DungeonService.FloorDetails.DoubleChests.TryGetValue(obj.ObjectId, out var value))
+                                && DungeonService.FloorDetails.DoubleChests.TryGetValue(obj.EntityId, out var value))
                             {
                                 espObj.ContainingPomander = value;
                             }
@@ -233,7 +233,7 @@ public class ESPService : IDisposable
                         }
 
                         if (ClientState.LocalPlayer != null &&
-                            ClientState.LocalPlayer.ObjectId == obj.ObjectId)
+                            ClientState.LocalPlayer.EntityId == obj.EntityId)
                             entityList.Add(new ESPObject(obj));
                     }
 

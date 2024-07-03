@@ -48,7 +48,7 @@ public class ESPObject
     private IClientState clientState;
     private MobInfo? mobInfo;
 
-    public ESPObject(GameObject gameObject, MobInfo? mobInfo = null)
+    public ESPObject(IGameObject gameObject, MobInfo? mobInfo = null)
     {
         this.clientState = ClientState;
         ContainingPomander = null;
@@ -61,7 +61,7 @@ public class ESPObject
             if (DeepDungeonContentInfo.ContentMobInfoChanges.TryGetValue(
                     DungeonService.CurrentContentId, out var overrideInfos))
             {
-                var npc = (BattleNpc)gameObject;
+                var npc = (IBattleNpc)gameObject;
                 var mob = overrideInfos.FirstOrDefault(m => m.Id == npc.NameId);
                 if (mob != null)
                 {
@@ -76,7 +76,7 @@ public class ESPObject
         {
             var dataId = gameObject.DataId;
 
-            if (clientState.LocalPlayer != null && clientState.LocalPlayer.ObjectId == gameObject.ObjectId)
+            if (clientState.LocalPlayer != null && clientState.LocalPlayer.EntityId == gameObject.EntityId)
                 Type = ESPType.Player;
             else if (DataIds.BronzeChestIDs.Contains(dataId))
                 Type = ESPType.BronzeChest;
@@ -105,7 +105,7 @@ public class ESPObject
     
     public Pomander? ContainingPomander { get; set; }
 
-    public GameObject GameObject { get; }
+    public IGameObject GameObject { get; }
 
     public ESPType Type { get; set; } = ESPType.Enemy;
 
@@ -214,7 +214,7 @@ public class ESPObject
     {
         try
         {
-            return GameObject is BattleNpc npc && (npc.StatusFlags & StatusFlags.InCombat) != 0;
+            return GameObject is IBattleNpc npc && (npc.StatusFlags & StatusFlags.InCombat) != 0;
         }
         catch (AccessViolationException)
         {
@@ -280,7 +280,7 @@ public class ESPObject
         if (Config.ShowDebugInformation)
         {
             name += "\nD:" + GameObject.DataId;
-            if (GameObject is BattleNpc npc2) name += " N:" + npc2.NameId;
+            if (GameObject is IBattleNpc npc2) name += " N:" + npc2.NameId;
         }
 
         return name;

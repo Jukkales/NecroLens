@@ -22,10 +22,10 @@ public static class ESPUtils
         return new Vector2(v.X - v2.X, v.Z - v2.Z).Length();
     }
 
-    public static bool IsIgnoredObject(GameObject gameObject)
+    public static bool IsIgnoredObject(IGameObject gameObject)
     {
         if (DataIds.IgnoredDataIDs.Contains(gameObject.DataId)) return true;
-        if (gameObject.IsDead || gameObject is BattleNpc { CurrentHp: <= 0 }) return true;
+        if (gameObject.IsDead || gameObject is IBattleNpc { CurrentHp: <= 0 }) return true;
 
         return false;
     }

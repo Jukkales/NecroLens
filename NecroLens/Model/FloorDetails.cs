@@ -157,11 +157,11 @@ public partial class FloorDetails
     {
         if (FloorTransfer
             || IsIgnored(espObj.GameObject.DataId)
-            || FloorObjects.ContainsKey(espObj.GameObject.ObjectId)) return;
+            || FloorObjects.ContainsKey(espObj.GameObject.EntityId)) return;
 
         var obj = new FloorObject();
         obj.DataId = espObj.GameObject.DataId;
-        if (espObj.GameObject is BattleNpc npcObj)
+        if (espObj.GameObject is IBattleNpc npcObj)
         {
             obj.NameId = npcObj.NameId;
             obj.Name = npcObj.Name.TextValue;
@@ -169,7 +169,7 @@ public partial class FloorDetails
 
         obj.ContentId = currentContentId;
         obj.Floor = CurrentFloor;
-        FloorObjects[espObj.GameObject.ObjectId] = obj;
+        FloorObjects[espObj.GameObject.EntityId] = obj;
     }
 
     private bool IsIgnored(uint dataId)

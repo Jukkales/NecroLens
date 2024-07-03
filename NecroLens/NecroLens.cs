@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using Dalamud.Game;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using ECommons;
@@ -30,7 +31,7 @@ public sealed class NecroLens : IDalamudPlugin
     private readonly ESPTestService espTestService;
 #endif
 
-    public NecroLens(DalamudPluginInterface? pluginInterface)
+    public NecroLens(IDalamudPluginInterface? pluginInterface)
     {
         pluginInterface?.Create<PluginService>();
         Plugin = this;
@@ -61,9 +62,9 @@ public sealed class NecroLens : IDalamudPlugin
 
         CultureInfo.DefaultThreadCurrentUICulture = ClientState.ClientLanguage switch
         {
-            Dalamud.ClientLanguage.French => CultureInfo.GetCultureInfo("fr"),
-            Dalamud.ClientLanguage.German => CultureInfo.GetCultureInfo("de"),
-            Dalamud.ClientLanguage.Japanese => CultureInfo.GetCultureInfo("ja"),
+            ClientLanguage.French => CultureInfo.GetCultureInfo("fr"),
+            ClientLanguage.German => CultureInfo.GetCultureInfo("de"),
+            ClientLanguage.Japanese => CultureInfo.GetCultureInfo("ja"),
             _ => CultureInfo.GetCultureInfo("en")
         };
     }

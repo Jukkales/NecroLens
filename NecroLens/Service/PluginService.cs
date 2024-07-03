@@ -11,7 +11,7 @@ public class PluginService
     public static NecroLens Plugin = null!;
 
     [PluginService]
-    public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+    public static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
 
     [PluginService]
     public static IChatGui ChatGui { get; private set; } = null!;

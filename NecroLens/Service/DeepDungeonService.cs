@@ -6,6 +6,7 @@ using System.Timers;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Network;
 using ECommons.Automation;
+using ECommons.Automation.NeoTaskManager;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -42,8 +43,10 @@ public class DeepDungeonService : IDisposable
         Ready = false;
         conf = Config;
         FloorDetails = new FloorDetails();
-        taskManager = new TaskManager();
-        taskManager.TimeoutSilently = true;
+        taskManager = new TaskManager(new TaskManagerConfiguration
+        {
+            TimeoutSilently = true
+        });
         PomanderNames = new Dictionary<Pomander, string>();
         
         foreach (var pomander in DataManager.GetExcelSheet<DeepDungeonItem>(ClientState.ClientLanguage)!.Skip(1))
@@ -185,10 +188,10 @@ public class DeepDungeonService : IDisposable
                         var player = ClientState.LocalPlayer!;
                         var chest = ObjectTable
                                     .Where(o => o.DataId == DataIds.GoldChest)
-                                    .First(o => o.Position.Distance2D(player.Position) <= 4.6f);
-                        if (chest)
+                                    .FirstOrDefault(o => o.Position.Distance2D(player.Position) <= 4.6f);
+                        if (chest != null)
                         {
-                            FloorDetails.DoubleChests[chest.ObjectId] = pomander;
+                            FloorDetails.DoubleChests[chest.EntityId] = pomander;
                         }
                     }
 
@@ -235,10 +238,10 @@ public class DeepDungeonService : IDisposable
             if (type == ESPObject.ESPType.SilverChest && player.CurrentHp <= player.MaxHp * 0.77) return;
 
             if (CheckChestOpenSafe(type) && espObj.Distance() <= espObj.InteractionDistance()
-                                         && !FloorDetails.InteractionList.Contains(espObj.GameObject.ObjectId))
+                                         && !FloorDetails.InteractionList.Contains(espObj.GameObject.EntityId))
             {
                 TargetSystem.Instance()->InteractWithObject((GameObject*)espObj.GameObject.Address);
-                FloorDetails.InteractionList.Add(espObj.GameObject.ObjectId);
+                FloorDetails.InteractionList.Add(espObj.GameObject.EntityId);
             }
         }
     }
