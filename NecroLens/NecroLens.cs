@@ -85,6 +85,8 @@ public sealed class NecroLens : IDalamudPlugin
         espTestService.Dispose();
 #endif
         mobInfoService.Dispose();
+        
+        ECommonsMain.Dispose();
     }
 
     private void DrawUI()
