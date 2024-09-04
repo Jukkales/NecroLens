@@ -150,7 +150,6 @@ public class DeepDungeonService : IDisposable
                 case DataIds.DirectorUpdateDutyRecommenced:
                     if (Ready && FloorDetails.FloorTransfer)
                     {
-                        FloorDetails.DumpFloorObjects(CurrentContentId);
                         FloorDetails.NextFloor();
                     }
 
@@ -173,6 +172,8 @@ public class DeepDungeonService : IDisposable
                     break;
                 case DataIds.SystemLogTransferenceInitiated:
                     FloorDetails.FloorTransfer = true;
+                    FloorDetails.DumpFloorObjects(CurrentContentId);
+                    FloorDetails.FloorObjects.Clear();
                     break;
                 case 0x1C6A:
                 case 0x1C6B:
