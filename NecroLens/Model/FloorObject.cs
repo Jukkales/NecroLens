@@ -7,4 +7,5 @@ public class FloorObject
     public string? Name { get; set; }
     public int ContentId { get; set; }
     public int Floor { get; set; }
+    public float? HitboxRadius { get; set; }
 }

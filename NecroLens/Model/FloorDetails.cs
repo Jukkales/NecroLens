@@ -169,6 +169,7 @@ public partial class FloorDetails
 
         obj.ContentId = currentContentId;
         obj.Floor = CurrentFloor;
+        obj.HitboxRadius = espObj.GameObject.HitboxRadius;
         FloorObjects[espObj.GameObject.EntityId] = obj;
     }
 
@@ -199,6 +200,7 @@ public partial class FloorDetails
                     NameId = keyValuePair.Value.NameId,
                     ContentId = currentContentId,
                     Floor = CurrentFloor,
+                    HitboxRadius = keyValuePair.Value.HitboxRadius,
                     MoveTimes = [],     // TODO
                     AggroDistances = [] // TODO
                 };
@@ -225,7 +227,7 @@ public partial class FloorDetails
                 using var client = new HttpClient();
                 try
                 {
-                    await client.PostAsync("https://necrolens.jusrv.de/api/import",
+                    await client.PostAsync("https://necrolens.jusrv.de/api/import2",
                                            new StringContent(json, Encoding.UTF8, "application/json"));
                 }
                 catch (Exception e)
