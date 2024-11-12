@@ -10,7 +10,7 @@ using ECommons.Automation.NeoTaskManager;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using NecroLens.Model;
 using NecroLens.util;
 using static NecroLens.util.DeepDungeonUtil;
@@ -51,7 +51,7 @@ public class DeepDungeonService : IDisposable
         
         foreach (var pomander in DataManager.GetExcelSheet<DeepDungeonItem>(ClientState.ClientLanguage)!.Skip(1))
         {
-            PomanderNames[(Pomander)pomander.RowId] = pomander.Name;
+            PomanderNames[(Pomander)pomander.RowId] = pomander.Name.ToString();
         }
     }
 
