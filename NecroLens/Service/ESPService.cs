@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Threading;
-using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Plugin.Services;
 using ImGuiNET;
 using NecroLens.Model;
 using NecroLens.util;
@@ -17,12 +17,9 @@ namespace NecroLens.Service;
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public class ESPService : IDisposable
 {
-    private const ushort Tick = 250;
     private readonly Configuration conf;
 
     private readonly List<ESPObject> mapObjects;
-    private readonly Task mapScanner;
-    private bool active;
 
     public ESPService()
     {
@@ -31,22 +28,16 @@ public class ESPService : IDisposable
         mapObjects = new List<ESPObject>();
         conf = Config;
 
-        active = true;
-
         PluginInterface.UiBuilder.Draw += OnUpdate;
         ClientState.TerritoryChanged += OnCleanup;
-
-        // Enable Scanner
-        mapScanner = Task.Run(MapScanner);
+        Framework.Update += OnTick;
     }
-
 
     public void Dispose()
     {
         PluginInterface.UiBuilder.Draw -= OnUpdate;
         ClientState.TerritoryChanged -= OnCleanup;
-        active = false;
-        while (!mapScanner.IsCompleted) PluginLog.Debug("wait till scanner is stopped...");
+        Framework.Update -= OnTick;
         mapObjects.Clear();
         PluginLog.Information("ESP Service unloaded");
     }
@@ -67,14 +58,21 @@ public class ESPService : IDisposable
      */
     private void OnUpdate()
     {
-        if (ShouldDraw())
+        try
         {
-            if (!Monitor.TryEnter(mapObjects)) return;
+            if (ShouldDraw())
+            {
+                if (!Monitor.TryEnter(mapObjects)) return;
 
-            var drawList = ImGui.GetBackgroundDrawList();
-            foreach (var gameObject in mapObjects) DrawEspObject(drawList, gameObject);
+                var drawList = ImGui.GetBackgroundDrawList();
+                foreach (var gameObject in mapObjects) DrawEspObject(drawList, gameObject);
 
-            Monitor.Exit(mapObjects);
+                Monitor.Exit(mapObjects);
+            }
+        }
+        catch (Exception e)
+        {
+            PluginLog.Error(e.ToString());
         }
     }
 
@@ -191,65 +189,58 @@ public class ESPService : IDisposable
                  Condition[ConditionFlag.BetweenAreas] ||
                  Condition[ConditionFlag.BetweenAreas51]) &&
                DeepDungeonUtil.InDeepDungeon && ClientState.LocalPlayer != null &&
-               ClientState.LocalContentId > 0 && ObjectTable.Length > 0 && 
-               !DungeonService.FloorDetails.FloorTransfer;
+               ClientState.LocalContentId > 0 && !DungeonService.FloorDetails.FloorTransfer;
     }
 
     /**
      * Not-Drawing Scanner method updating mapObjects every Tick.
      */
-    private void MapScanner()
+    private void OnTick(IFramework framework)
     {
-        PluginLog.Debug("ESP Background scan started");
-        // Keep scanner alive till Dispose()
-        while (active)
+        try
         {
-            try
+            if (ShouldDraw())
             {
-                if (ShouldDraw())
+                var entityList = new List<ESPObject>();
+                foreach (var obj in ObjectTable)
                 {
-                    var entityList = new List<ESPObject>();
-                    foreach (var obj in ObjectTable)
+                    // Ignore every player object
+                    if (obj.IsValid() && !IsIgnoredObject(obj))
                     {
-                        // Ignore every player object
-                        if (obj.IsValid() && !IsIgnoredObject(obj))
+                        MobInfo mobInfo = null!;
+                        if (obj is IBattleNpc npcObj)
+                            MobService.MobInfoDictionary.TryGetValue(npcObj.NameId, out mobInfo!);
+
+                        var espObj = new ESPObject(obj, mobInfo);
+                        
+                        if (obj.DataId == DataIds.GoldChest 
+                            && DungeonService.FloorDetails.DoubleChests.TryGetValue(obj.EntityId, out var value))
                         {
-                            MobInfo mobInfo = null!;
-                            if (obj is IBattleNpc npcObj)
-                                MobService.MobInfoDictionary.TryGetValue(npcObj.NameId, out mobInfo!);
-
-                            var espObj = new ESPObject(obj, mobInfo);
-                            
-                            if (obj.DataId == DataIds.GoldChest 
-                                && DungeonService.FloorDetails.DoubleChests.TryGetValue(obj.EntityId, out var value))
-                            {
-                                espObj.ContainingPomander = value;
-                            }
-
-                            DungeonService.TryInteract(espObj);
-
-                            entityList.Add(espObj);
-                            DungeonService.TrackFloorObjects(espObj);
+                            espObj.ContainingPomander = value;
                         }
 
-                        if (ClientState.LocalPlayer != null &&
-                            ClientState.LocalPlayer.EntityId == obj.EntityId)
-                            entityList.Add(new ESPObject(obj));
+                        DungeonService.TryInteract(espObj);
+
+                        entityList.Add(espObj);
+                        DungeonService.TrackFloorObjects(espObj);
                     }
 
-                    Monitor.Enter(mapObjects);
-                    mapObjects.Clear();
-                    mapObjects.AddRange(entityList);
-                    Monitor.Exit(mapObjects);
+                    if (ClientState.LocalPlayer != null &&
+                        ClientState.LocalPlayer.EntityId == obj.EntityId)
+                        entityList.Add(new ESPObject(obj));
                 }
-            }
-            catch (Exception e)
-            {
-                PluginLog.Error(e.ToString());
-            }
 
-            Thread.Sleep(Tick);
+                Monitor.Enter(mapObjects);
+                mapObjects.Clear();
+                mapObjects.AddRange(entityList);
+                Monitor.Exit(mapObjects);
+            }
         }
+        catch (Exception e)
+        {
+            PluginLog.Error(e.ToString());
+        }
+
     }
 
 }

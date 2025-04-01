@@ -5,6 +5,7 @@ using System.Linq;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using NecroLens.Data;
 using NecroLens.util;
 
@@ -212,15 +213,18 @@ public class ESPObject
 
     public bool InCombat()
     {
-        try
+        unsafe
         {
-            return GameObject is IBattleNpc npc && (npc.StatusFlags & StatusFlags.InCombat) != 0;
-        }
-        catch (AccessViolationException)
-        {
-            // 6.4: accessing StatusFlags sometimes causes access violations
-            // we ignore them and assume "yes" here to disable rendering
-            return true;
+            try
+            {
+                if (!GameObject.IsValid() || GameObject is not IBattleNpc) return true;
+                // Using dalamud's status flags here sometimes causes game crashes 
+                return ((BattleChara*)GameObject.Address)->Character.InCombat;
+            }
+            catch (Exception)
+            {
+                return true;
+            }
         }
     }
 
