@@ -5,7 +5,7 @@
     "Description": "DeepDungeon Helper. Radar for Mobs, Aggro, Sight and everything else.",
     "InternalName": "NecroLens",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 12,
+    "DalamudApiLevel": 13,
     "Tags": [
         "potd",
         "hoh",

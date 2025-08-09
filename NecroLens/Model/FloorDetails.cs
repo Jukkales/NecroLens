@@ -81,7 +81,7 @@ public partial class FloorDetails
     {
         if (TryGetAddonByName<AtkUnitBase>("DeepDungeonMap", out var addon))
         {
-            var floorText = addon->GetNodeById(17)->ChildNode->PrevSiblingNode->GetAsAtkTextNode()->NodeText.ToString();
+            var floorText = addon->GetNodeById(26)->ChildNode->PrevSiblingNode->GetAsAtkTextNode()->NodeText.ToString();
             var floor = int.Parse(FloorNumber().Match(floorText).Value);
             if (CurrentFloor != floor)
             {
@@ -97,7 +97,7 @@ public partial class FloorDetails
     {
         if (TryGetAddonByName<AtkUnitBase>("DeepDungeonMap", out var addon))
         {
-            var key = addon->GetNodeById(7)->ChildNode->PrevSiblingNode;
+            var key = addon->GetNodeById(16)->ChildNode->PrevSiblingNode;
             var image = key->GetAsAtkComponentNode()->Component->UldManager.NodeList[1]->GetAsAtkImageNode();
             return image->PartId * 10;
         }

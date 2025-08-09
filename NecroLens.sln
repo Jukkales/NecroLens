@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NecroLens", "NecroLens\Necr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NecroLensDataTools", "NecroLensDataTools\NecroLensDataTools.csproj", "{38352FD9-7111-4C76-B659-9655B5D09F0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommons", "ECommons\ECommons\ECommons.csproj", "{CC80F078-C440-43BB-8A5D-316582030441}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,10 +19,6 @@ Global
 		{13C812E9-0D42-4B95-8646-40EEBF30636F}.Release|x64.Build.0 = Release|x64
 		{38352FD9-7111-4C76-B659-9655B5D09F0D}.Debug|x64.ActiveCfg = Release|x64
 		{38352FD9-7111-4C76-B659-9655B5D09F0D}.Debug|x64.Build.0 = Release|x64
-		{CC80F078-C440-43BB-8A5D-316582030441}.Debug|x64.ActiveCfg = Debug|x64
-		{CC80F078-C440-43BB-8A5D-316582030441}.Debug|x64.Build.0 = Debug|x64
-		{CC80F078-C440-43BB-8A5D-316582030441}.Release|x64.ActiveCfg = Release|x64
-		{CC80F078-C440-43BB-8A5D-316582030441}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

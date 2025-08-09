@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Dalamud.NET.Sdk/13.0.0">
     <PropertyGroup>
         <Authors>Jukka</Authors>
         <Version>0.0.0.0</Version>
@@ -43,7 +43,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="12.0.0"/>
+        <PackageReference Include="ECommons" Version="3.0.1.3" />
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>
@@ -91,10 +91,6 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Strings.resx</DependentUpon>
       </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
     </ItemGroup>
 
 </Project>

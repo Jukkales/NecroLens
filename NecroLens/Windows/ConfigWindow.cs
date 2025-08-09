@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using NecroLens.Data;
 using NecroLens.Model;
 using NecroLens.util;

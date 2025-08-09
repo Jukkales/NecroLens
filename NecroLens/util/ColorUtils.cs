@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Numerics;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace NecroLens.util;
 

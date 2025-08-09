@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.ClientState.Objects;
+﻿using Dalamud.Game;
+using Dalamud.Game.ClientState.Objects;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
@@ -38,13 +39,16 @@ public class PluginService
     public static IGameGui GameGui { get; private set; } = null!;
 
     [PluginService]
-    public static IGameNetwork GameNetwork { get; private set; } = null!;
-
-    [PluginService]
     public static IObjectTable ObjectTable { get; private set; } = null!;
 
     [PluginService]
     public static IPartyList PartyList { get; private set; } = null!;
+    
+    [PluginService]
+    public static ISigScanner SigScanner { get; private set; } = null!;
+
+    [PluginService]
+    public static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
 
     [PluginService]
     public static ITargetManager TargetManager { get; private set; } = null!;

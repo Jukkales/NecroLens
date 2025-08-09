@@ -5,7 +5,7 @@ using System.Numerics;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using NecroLens.Data;
 using NecroLens.Model;
 using NecroLens.util;
@@ -87,8 +87,8 @@ public class MainWindow : Window, IDisposable
             if (progress > 0)
             {
                 ImGui.SameLine();
-                // ImGui.Text($"({progress}%% - approx {DeepDungeonService.RemainingKills()} kills left)");
-                ImGui.Text($"({progress}%%)");
+                // ImGui.Text($"({progress}% - approx {DeepDungeonService.RemainingKills()} kills left)");
+                ImGui.Text($"({progress}%)");
             }
         }
     }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Timers;
 using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.Network;
+using Dalamud.Hooking;
 using ECommons.Automation;
 using ECommons.Automation.NeoTaskManager;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
@@ -32,10 +31,32 @@ public class DeepDungeonService : IDisposable
     private readonly TaskManager taskManager;
     public readonly FloorDetails FloorDetails;
     public readonly Dictionary<Pomander, string> PomanderNames;
+    
+    private const string ActorControlSig = "E8 ?? ?? ?? ?? 0F B7 0B 83 E9 64";
+    private delegate void ActorControlSelfDelegate(uint category, uint eventId, uint param1, uint param2, uint param3, uint param4, uint param5, uint param6, ulong targetId, byte param7);
+    private Hook<ActorControlSelfDelegate>? actorControlSelfHook;
+    
+    
+    private const string SystemLogSig = "E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 0F B6 47 28";
+    private Hook<SystemLogMessageDelegate>? systemLogMessageHook;
+    private unsafe delegate void SystemLogMessageDelegate(uint entityId, uint logMessageId, int* args, byte argCount);
 
     public DeepDungeonService()
     {
-        GameNetwork.NetworkMessage += NetworkMessage;
+        // GameNetwork.NetworkMessage += NetworkMessage;
+        unsafe
+        {
+            var actorControlSelfPtr = SigScanner.ScanText(ActorControlSig);
+            actorControlSelfHook =
+                GameInteropProvider.HookFromAddress<ActorControlSelfDelegate>(actorControlSelfPtr, ActorControlSelf);
+            actorControlSelfHook.Enable();
+
+            var systemLogPtr = SigScanner.ScanText(SystemLogSig);
+            systemLogMessageHook =
+                GameInteropProvider.HookFromAddress<SystemLogMessageDelegate>(systemLogPtr, SystemLogMessage);
+            systemLogMessageHook.Enable();
+        }
+
         FloorTimes = new Dictionary<int, int>();
         floorTimer = new Timer();
         floorTimer.Elapsed += OnTimerUpdate;
@@ -49,7 +70,7 @@ public class DeepDungeonService : IDisposable
         });
         PomanderNames = new Dictionary<Pomander, string>();
         
-        foreach (var pomander in DataManager.GetExcelSheet<DeepDungeonItem>(ClientState.ClientLanguage)!.Skip(1))
+        foreach (var pomander in DataManager.GetExcelSheet<DeepDungeonItem>(ClientState.ClientLanguage).Skip(1))
         {
             PomanderNames[(Pomander)pomander.RowId] = pomander.Name.ToString();
         }
@@ -57,7 +78,10 @@ public class DeepDungeonService : IDisposable
 
     public void Dispose()
     {
-        GameNetwork.NetworkMessage -= NetworkMessage;
+        actorControlSelfHook?.Disable();
+        actorControlSelfHook?.Dispose();
+        systemLogMessageHook?.Disable();
+        systemLogMessageHook?.Dispose();
     }
 
     private void EnterDeepDungeon(int contentId, DeepDungeonContentInfo.DeepDungeonFloorSetInfo info)
@@ -113,59 +137,25 @@ public class DeepDungeonService : IDisposable
         var time = FloorDetails.UpdateFloorTime();
         FloorTimes[FloorDetails.CurrentFloor] = time;
     }
-
-    private void NetworkMessage(
-        IntPtr dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, NetworkMessageDirection direction)
+    
+    private void ActorControlSelf(uint category, uint eventId, uint param1, uint param2, uint param3, uint param4, uint param5, uint param6, ulong targetId, byte param7)
     {
-        if (direction == NetworkMessageDirection.ZoneDown)
-        {
-            switch (opCode)
-            {
-                case (int)ServerZoneIpcType.SystemLogMessage:
-                    OnSystemLogMessage(dataPtr, ReadNumber(dataPtr, 4, 4));
-                    break;
-                case (int)ServerZoneIpcType.ActorControlSelf:
-                    OnActorControlSelf(dataPtr);
-                    break;
-            }
-        }
+        actorControlSelfHook!.Original(category, eventId, param1, param2, param3, param4, param5, param6, targetId, param7);
+
+        if (eventId == 100 && !Ready && DeepDungeonContentInfo.ContentInfo.TryGetValue((int)param2, out var info))
+            EnterDeepDungeon((int)param2, info);
     }
-
-    private void OnActorControlSelf(IntPtr dataPtr)
+    
+    private unsafe void SystemLogMessage(uint entityId, uint logId, int* args, byte argCount)
     {
-        // OnDirectorUpdate
-        if (Marshal.ReadByte(dataPtr) == DataIds.ActorControlSelfDirectorUpdate)
-        {
-            switch (Marshal.ReadByte(dataPtr, 8))
-            {
-                // OnDutyCommenced
-                case DataIds.DirectorUpdateDutyCommenced:
-                {
-                    var contentId = ReadNumber(dataPtr, 4, 2);
-                    if (!Ready && DeepDungeonContentInfo.ContentInfo.TryGetValue(contentId, out var info))
-                        EnterDeepDungeon(contentId, info);
-                    break;
-                }
-                // OnDutyRecommenced
-                case DataIds.DirectorUpdateDutyRecommenced:
-                    if (Ready && FloorDetails.FloorTransfer)
-                    {
-                        FloorDetails.NextFloor();
-                    }
-
-                    break;
-            }
-        }
-    }
-
-    private void OnSystemLogMessage(IntPtr dataPtr, int logId)
-    {
+        systemLogMessageHook!.Original(entityId, logId, args, argCount);
+        
         if (InDeepDungeon)
         {
-            switch ((uint)logId)
+            switch (logId)
             {
                 case DataIds.SystemLogPomanderUsed:
-                    FloorDetails.OnPomanderUsed((Pomander)Marshal.ReadByte(dataPtr, 16));
+                    FloorDetails.OnPomanderUsed((Pomander)args[1]);
                     break;
                 case DataIds.SystemLogDutyEnded:
                     ExitDeepDungeon();
@@ -174,6 +164,13 @@ public class DeepDungeonService : IDisposable
                     FloorDetails.FloorTransfer = true;
                     FloorDetails.DumpFloorObjects(CurrentContentId);
                     FloorDetails.FloorObjects.Clear();
+                    
+                    break;
+                case 0x1C66:
+                    if (Ready && FloorDetails.FloorTransfer)
+                    {
+                        FloorDetails.NextFloor();
+                    }
                     break;
                 case 0x1C6A:
                 case 0x1C6B:
@@ -182,8 +179,8 @@ public class DeepDungeonService : IDisposable
                     break;
                 case 0x1C36:
                 case 0x23F8:
-                // case 0x282F: // Demiclone
-                    var pomander = (Pomander)Marshal.ReadByte(dataPtr, 12);
+                    // case 0x282F: // Demiclone
+                    var pomander = (Pomander)args[0];
                     if (pomander > 0)
                     {
                         var player = ClientState.LocalPlayer!;
@@ -199,13 +196,6 @@ public class DeepDungeonService : IDisposable
                     break;
             }
         }
-    }
-
-    private static int ReadNumber(IntPtr dataPtr, int offset, int size)
-    {
-        var bytes = new byte[4];
-        Marshal.Copy(dataPtr + offset, bytes, 0, size);
-        return BitConverter.ToInt32(bytes);
     }
 
     private bool CheckChestOpenSafe(ESPObject.ESPType type)

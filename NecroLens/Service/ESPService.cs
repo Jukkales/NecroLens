@@ -7,7 +7,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using NecroLens.Model;
 using NecroLens.util;
 using static NecroLens.util.ESPUtils;
@@ -188,8 +188,8 @@ public class ESPService : IDisposable
                !(Condition[ConditionFlag.LoggingOut] ||
                  Condition[ConditionFlag.BetweenAreas] ||
                  Condition[ConditionFlag.BetweenAreas51]) &&
-               DeepDungeonUtil.InDeepDungeon && ClientState.LocalPlayer != null &&
-               ClientState.LocalContentId > 0 && !DungeonService.FloorDetails.FloorTransfer;
+               ClientState is { LocalPlayer: not null, LocalContentId: > 0 }
+                && DeepDungeonUtil.InDeepDungeon;
     }
 
     /**
