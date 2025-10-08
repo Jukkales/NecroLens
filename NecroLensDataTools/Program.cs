@@ -25,7 +25,7 @@ public class DatabaseConverter
 
         var mobList = new List<MobInfo>();
         foreach (var info in csvInfo)
-            if ((info.PotD ?? false) || (info.HoH ?? false) || (info.EO ?? false))
+            if ((info.PotD ?? false) || (info.HoH ?? false) || (info.EO ?? false) || (info.PT ?? false))
             {
                 var mob = new MobInfo
                 {
