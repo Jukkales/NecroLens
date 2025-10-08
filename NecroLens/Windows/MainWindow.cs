@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
@@ -16,13 +16,13 @@ public class MainWindow : Window, IDisposable
 {
     public MainWindow() : base("NecroLens",
                                ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse |
-                               ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize |
+                               ImGuiWindowFlags.NoCollapse |
                                ImGuiWindowFlags.NoFocusOnAppearing)
     {
         SizeConstraints = new WindowSizeConstraints
         {
             MinimumSize = new Vector2(370, 260),
-            MaximumSize = new Vector2(370, 260)
+            MaximumSize = new Vector2(640, 280)
         };
         RespectCloseHotkey = false;
     }

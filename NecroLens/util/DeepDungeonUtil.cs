@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dalamud.Game.Text;
@@ -14,16 +14,17 @@ namespace NecroLens.util;
 public static class DeepDungeonUtil
 {
     public static ushort MapId => ClientState.TerritoryType;
-    public static bool InDeepDungeon => InPotD || InHoH || InEO;
+    public static bool InDeepDungeon => InPotD || InHoH || InEO || InPT;
     public static bool InPotD => DataIds.PalaceOfTheDeadMapIds.Contains(MapId);
     public static bool InHoH => DataIds.HeavenOnHighMapIds.Contains(MapId);
     public static bool InEO => DataIds.EurekaOrthosMapIds.Contains(MapId);
-    
+    public static bool InPT => DataIds.PilgrimsTraverseMapIds.Contains(MapId);
+
     public static bool IsPomanderUsable(Pomander pomander)
     {
         // Only in Deep Dungeon of course :D
         var usable = InDeepDungeon;
-        
+
         if (!usable)
         {
             PrintChatMessage($"Can only be used in DeepDungeon");
@@ -36,7 +37,7 @@ public static class DeepDungeonUtil
             var itemPenalty = Player.Status.Where(s => s.StatusId == DataIds.ItemPenaltyStatusId);
             usable = usable && !itemPenalty.Any();
         }
-        
+
         if (!usable)
         {
             PrintChatMessage($"Unable to use: Item Penalty active");
@@ -59,7 +60,7 @@ public static class DeepDungeonUtil
 
             _ => false
         };
-        
+
         if (!usable)
         {
             PrintChatMessage($"Unable to use: Pomander not usable in current Deep Dungeon");
@@ -77,7 +78,7 @@ public static class DeepDungeonUtil
             PrintChatMessage($"Define a pomander name like '/pomander Safety' or even a part of the name like '/pomander saf'");
             return false;
         }
-        
+
         var sheet = DataManager.GetExcelSheet<Lumina.Excel.Sheets.DeepDungeonItem>()!;
         var matches = sheet.Where(e => e.RowId is > 0 and < 23)
                            .Where(e => e.Singular.ToString().Contains(name, StringComparison.OrdinalIgnoreCase))

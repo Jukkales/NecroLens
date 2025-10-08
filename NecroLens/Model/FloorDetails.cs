@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -156,11 +156,11 @@ public partial class FloorDetails
     public void TrackFloorObjects(ESPObject espObj, int currentContentId)
     {
         if (FloorTransfer
-            || IsIgnored(espObj.GameObject.DataId)
+            || IsIgnored(espObj.GameObject.BaseId)
             || FloorObjects.ContainsKey(espObj.GameObject.EntityId)) return;
 
         var obj = new FloorObject();
-        obj.DataId = espObj.GameObject.DataId;
+        obj.DataId = espObj.GameObject.BaseId;
         if (espObj.GameObject is IBattleNpc npcObj)
         {
             obj.NameId = npcObj.NameId;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -213,7 +213,7 @@ public class ESPService : IDisposable
 
                         var espObj = new ESPObject(obj, mobInfo);
                         
-                        if (obj.DataId == DataIds.GoldChest 
+                        if (obj.BaseId == DataIds.GoldChest 
                             && DungeonService.FloorDetails.DoubleChests.TryGetValue(obj.EntityId, out var value))
                         {
                             espObj.ContainingPomander = value;

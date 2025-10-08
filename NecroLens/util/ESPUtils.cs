@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -24,7 +24,7 @@ public static class ESPUtils
 
     public static bool IsIgnoredObject(IGameObject gameObject)
     {
-        if (DataIds.IgnoredDataIDs.Contains(gameObject.DataId)) return true;
+        if (DataIds.IgnoredDataIDs.Contains(gameObject.BaseId)) return true;
         if (gameObject.IsDead || gameObject is IBattleNpc { CurrentHp: <= 0 }) return true;
 
         return false;

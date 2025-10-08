@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using NecroLens.Model;
 
@@ -60,7 +60,19 @@ public class DeepDungeonContentInfo
         { 60037, new DeepDungeonFloorSetInfo { StartFloor = 61, RespawnTime = 600, MimicChests = MimicChests.Gold } },
         { 60038, new DeepDungeonFloorSetInfo { StartFloor = 71, RespawnTime = 600, MimicChests = MimicChests.Gold } },
         { 60039, new DeepDungeonFloorSetInfo { StartFloor = 81, RespawnTime = 600, MimicChests = MimicChests.Gold } },
-        { 60040, new DeepDungeonFloorSetInfo { StartFloor = 91, RespawnTime = 600, MimicChests = MimicChests.Gold } }
+        { 60040, new DeepDungeonFloorSetInfo { StartFloor = 91, RespawnTime = 600, MimicChests = MimicChests.Gold } },
+
+        // Pilgrims Traverse
+        { 60041, new DeepDungeonFloorSetInfo { StartFloor = 1, RespawnTime = 60, MimicChests = MimicChests.Bronze } },
+        { 60042, new DeepDungeonFloorSetInfo { StartFloor = 11, RespawnTime = 60, MimicChests = MimicChests.Bronze } },
+        { 60043, new DeepDungeonFloorSetInfo { StartFloor = 21, RespawnTime = 60, MimicChests = MimicChests.Bronze } },
+        { 60044, new DeepDungeonFloorSetInfo { StartFloor = 31, RespawnTime = 600, MimicChests = MimicChests.Silver } },
+        { 60045, new DeepDungeonFloorSetInfo { StartFloor = 41, RespawnTime = 600, MimicChests = MimicChests.Silver } },
+        { 60046, new DeepDungeonFloorSetInfo { StartFloor = 51, RespawnTime = 600, MimicChests = MimicChests.Silver } },
+        { 60047, new DeepDungeonFloorSetInfo { StartFloor = 61, RespawnTime = 600, MimicChests = MimicChests.Gold } },
+        { 60048, new DeepDungeonFloorSetInfo { StartFloor = 71, RespawnTime = 600, MimicChests = MimicChests.Gold } },
+        { 60049, new DeepDungeonFloorSetInfo { StartFloor = 81, RespawnTime = 600, MimicChests = MimicChests.Gold } },
+        { 60050, new DeepDungeonFloorSetInfo { StartFloor = 91, RespawnTime = 600, MimicChests = MimicChests.Gold } },
     };
 
     // Some Mobs on PotD are used multiple times with different settings

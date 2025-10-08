@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29709.97
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NecroLens", "NecroLens\NecroLens.csproj", "{13C812E9-0D42-4B95-8646-40EEBF30636F}"
 EndProject
@@ -19,6 +19,8 @@ Global
 		{13C812E9-0D42-4B95-8646-40EEBF30636F}.Release|x64.Build.0 = Release|x64
 		{38352FD9-7111-4C76-B659-9655B5D09F0D}.Debug|x64.ActiveCfg = Release|x64
 		{38352FD9-7111-4C76-B659-9655B5D09F0D}.Debug|x64.Build.0 = Release|x64
+		{38352FD9-7111-4C76-B659-9655B5D09F0D}.Release|x64.ActiveCfg = Release|x64
+		{38352FD9-7111-4C76-B659-9655B5D09F0D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

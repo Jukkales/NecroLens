@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
@@ -137,15 +137,18 @@ public class DeepDungeonService : IDisposable
         var time = FloorDetails.UpdateFloorTime();
         FloorTimes[FloorDetails.CurrentFloor] = time;
     }
-    
+
     private void ActorControlSelf(uint category, uint eventId, uint param1, uint param2, uint param3, uint param4, uint param5, uint param6, ulong targetId, byte param7)
     {
         actorControlSelfHook!.Original(category, eventId, param1, param2, param3, param4, param5, param6, targetId, param7);
 
         if (eventId == 100 && !Ready && DeepDungeonContentInfo.ContentInfo.TryGetValue((int)param2, out var info))
             EnterDeepDungeon((int)param2, info);
+
+        if (eventId == 200 && Ready && FloorDetails.FloorTransfer)
+            FloorDetails.NextFloor();
     }
-    
+
     private unsafe void SystemLogMessage(uint entityId, uint logId, int* args, byte argCount)
     {
         systemLogMessageHook!.Original(entityId, logId, args, argCount);
@@ -185,7 +188,7 @@ public class DeepDungeonService : IDisposable
                     {
                         var player = ClientState.LocalPlayer!;
                         var chest = ObjectTable
-                                    .Where(o => o.DataId == DataIds.GoldChest)
+                                    .Where(o => o.BaseId == DataIds.GoldChest)
                                     .FirstOrDefault(o => o.Position.Distance2D(player.Position) <= 4.6f);
                         if (chest != null)
                         {
@@ -243,7 +246,7 @@ public class DeepDungeonService : IDisposable
         foreach (var obj in ObjectTable)
             if (obj.IsValid())
             {
-                var dataId = obj.DataId;
+                var dataId = obj.BaseId;
                 if (DataIds.BronzeChestIDs.Contains(dataId) || DataIds.SilverChest == dataId ||
                     DataIds.GoldChest == dataId || DataIds.AccursedHoardCoffer == dataId)
                 {
