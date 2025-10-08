@@ -34,7 +34,10 @@ public enum Pomander
     PurityProtomander,
     FortuneProtomander,
     WitchingProtomander,
-    SerenityProtomander,  // = 33 -> 22 + Serenity
-    IntuitionProtomander, // = 34 -> 20 + Intuition
-    RaisingProtomander,   // = 35 -> 20 + Raising
+    SerenityProtomander,     // = 33 -> 22 + Serenity
+    IntuitionProtomander,    // = 34 -> 20 + Intuition
+    RaisingProtomander,      // = 35 -> 20 + Raising
+    HasteProtomander,        // PT
+    PurificationProtomander, // PT
+    DevotionProtomander,     // PT
 }
