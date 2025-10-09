@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Interface;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using NecroLens.Data;
@@ -43,7 +44,8 @@ public class ESPObject
         MimicChest,
         Trap,
         Return,
-        Passage
+        Passage,
+        Votife,
     }
 
     private IClientState clientState;
@@ -101,6 +103,8 @@ public class ESPObject
                 Type = ESPType.FriendlyEnemy;
             else if (DataIds.MimicIDs.Contains(dataId))
                 Type = ESPType.Mimic;
+            else if (DataIds.VotifesIds.Contains(dataId))
+                Type = ESPType.Votife;
         }
     }
     
@@ -206,6 +210,8 @@ public class ESPObject
                 return Config.SilverCofferColor;
             case ESPType.BronzeChest:
                 return Config.BronzeCofferColor;
+            case ESPType.Votife:
+                return Config.VotifeColor;
             default:
                 return Color.White.ToUint();
         }
@@ -243,6 +249,7 @@ public class ESPObject
             ESPType.Return => "\uE03B",
             ESPType.Passage => "\uE035",
             ESPType.FriendlyEnemy => "\uE034",
+            ESPType.Votife => "\uE03B",
             _ => null
         };
     }

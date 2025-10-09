@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using Dalamud.Interface.Windowing;
@@ -264,6 +264,21 @@ public class ConfigWindow : Window, IDisposable
         if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightObjects_Passage, ref highlightPassage))
         {
             conf.HighlightPassage = highlightPassage;
+            Config.Save();
+        }
+
+        var votifeColor = ImGui.ColorConvertU32ToFloat4(conf.VotifeColor).WithoutAlpha();
+        if (ImGui.ColorEdit3("##votife", ref votifeColor, ImGuiColorEditFlags.NoInputs))
+        {
+            conf.VotifeColor = ImGui.ColorConvertFloat4ToU32(votifeColor.WithAlpha(0xFF));
+            Config.Save();
+        }
+        ImGui.SameLine();
+
+        var highlightVotife = conf.ShowVotife;
+        if (ImGui.Checkbox(Strings.ConfigWindow_ESPTab_HighlightObjects_Votife, ref highlightVotife))
+        {
+            conf.ShowVotife = highlightVotife;
             Config.Save();
         }
 

@@ -47,7 +47,7 @@ public static class DeepDungeonUtil
         usable = usable && pomander switch
         {
             // Normal Pomander can be used in PotD and HoH
-            >= Pomander.Safety and <= Pomander.Serenity or Pomander.Intuition or Pomander.Raising => InPotD || InHoH,
+            >= Pomander.Safety and <= Pomander.Serenity or Pomander.Intuition or Pomander.Raising => InPotD || InHoH || InPT,
 
             // PotD exclusive Pomander
             Pomander.Rage or Pomander.Lust or Pomander.Resolution => InPotD,
@@ -57,6 +57,8 @@ public static class DeepDungeonUtil
 
             // Protomander can be used in EO only
             >= Pomander.LethargyProtomander and <= Pomander.RaisingProtomander => InEO,
+
+            >= Pomander.HastePomander and <= Pomander.DevotionPomander => InPT,
 
             _ => false
         };

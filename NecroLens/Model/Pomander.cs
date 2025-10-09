@@ -1,4 +1,4 @@
-﻿namespace NecroLens.Model;
+namespace NecroLens.Model;
 
 public enum Pomander
 {
@@ -37,4 +37,8 @@ public enum Pomander
     SerenityProtomander,  // = 33 -> 22 + Serenity
     IntuitionProtomander, // = 34 -> 20 + Intuition
     RaisingProtomander,   // = 35 -> 20 + Raising
+    DummyPomander, // 36, for some reason they skipped a number for PT???
+    HastePomander, // PT Unique
+    PurificationPomander, // PT Unique
+    DevotionPomander, // PT Unique
 }
