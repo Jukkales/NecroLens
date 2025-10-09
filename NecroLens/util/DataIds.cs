@@ -70,7 +70,9 @@ public static class DataIds
         // HoH
         1036, 1037, 1038, 1039, 1040, 1041, 1042, 1043, 1044, 1045, 1046, 1047, 1048, 1049,
         // EO
-        1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554
+        1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554,
+        // PT
+        1892, 1893, 1908, 1893
     };
 
     public static readonly Dictionary<uint, string> TrapIDs = new()
@@ -81,7 +83,8 @@ public static class DataIds
         { 2007185, Strings.Traps_Impeding_Trap },
         { 2007186, Strings.Traps_Toad_Trap },
         { 2009504, Strings.Traps_Odder_Trap },
-        { 2013284, Strings.Traps_Owlet_Trap }
+        { 2013284, Strings.Traps_Owlet_Trap },
+        { 2014939, Strings.Traps_Fae_Trap },
     };
 
     public static readonly HashSet<uint> PassageIDs = new()

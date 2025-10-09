@@ -92,6 +92,7 @@ public class ESPService : IDisposable
             ESPObject.ESPType.Trap => conf.ShowTraps,
             ESPObject.ESPType.Return => conf.ShowReturn,
             ESPObject.ESPType.Passage => conf.ShowPassage,
+            ESPObject.ESPType.Votife => conf.ShowVotife,
             _ => false
         };
     }
@@ -141,6 +142,9 @@ public class ESPService : IDisposable
                 DrawCircleFilled(drawList, espObject, 1f, espObject.RenderColor());
 
             if (conf.HighlightPassage && type == ESPObject.ESPType.Passage)
+                DrawCircleFilled(drawList, espObject, 2f, espObject.RenderColor());
+
+            if (conf.ShowVotife && type == ESPObject.ESPType.Votife)
                 DrawCircleFilled(drawList, espObject, 2f, espObject.RenderColor());
         }
 

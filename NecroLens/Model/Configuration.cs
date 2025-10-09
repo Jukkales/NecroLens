@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Dalamud.Configuration;
 
@@ -29,6 +29,7 @@ public class Configuration : IPluginConfiguration
     public bool ShowReturn { get; set; } = true;
     public bool ShowTraps { get; set; } = true;
     public bool ShowMimicCoffer { get; set; } = true;
+    public bool ShowVotife { get; set; } = true;
 
     public bool OpenChests { get; set; } = false;
     public bool OpenBronzeCoffers { get; set; } = true;
@@ -44,6 +45,7 @@ public class Configuration : IPluginConfiguration
     public uint NormalAggroColor { get; set; } = 0xFF2A2AA5;
     public uint SoundAggroColor { get; set; } = 0xFFFF00FF;
     public uint PassageColor { get; set; } = 0xFFD0E040;
+    public uint VotifeColor { get; set; } = 0xFFD0E040;
     
     public uint BronzeCofferColor { get; set; } = 0xFF13458B;
     public uint SilverCofferColor { get; set; } = 0xFFC0C0C0;
