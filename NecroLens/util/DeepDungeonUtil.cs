@@ -57,8 +57,6 @@ public static class DeepDungeonUtil
 
             // Protomander can be used in EO only
             >= Pomander.LethargyProtomander and <= Pomander.RaisingProtomander => InEO,
-            
-            >= Pomander.HasteProtomander and <= Pomander.DevotionProtomander => InPT,
 
             >= Pomander.HastePomander and <= Pomander.DevotionPomander => InPT,
 
