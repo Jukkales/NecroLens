@@ -54,13 +54,16 @@ public static class DataIds
         2005809, // Exit
         2001168, // Twistaaa
 
-        // Demiclones
-        15898, 15899, 15860
+        // Random friendly stuff
+        15898, 15899, 15860,
+        18867, 18868, 18869, 
+        10489, 16926, 7245,
+        13961, 10487
     };
 
     public static readonly HashSet<uint> MimicIDs = new()
     {
-        2566, 6362, 6363, 7392, 7393, 7394, 5832, 5834, 5835, 15997, 15998, 15999, 16002, 16003
+        2566, 6362, 6363, 7392, 7393, 7394, 5832, 5834, 5835, 15997, 15998, 15999, 16002, 16003, 18889, 18890
     };
 
     public static readonly HashSet<uint> BronzeChestIDs = new()
@@ -72,7 +75,7 @@ public static class DataIds
         // EO
         1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554,
         // PT
-        1892, 1893, 1908, 1893
+        1892, 1893, 1908
     };
 
     public static readonly Dictionary<uint, string> TrapIDs = new()
@@ -110,7 +113,9 @@ public static class DataIds
         // HoH
         7396, 7397, 7398,
         // EO
-        16007, 16008, 16009, 16012
+        16007, 16008, 16009, 16012,
+        // PT
+        18898, 18899, 18900
     };
 
     // Pilgrimage's Traverse Candle Buffs
