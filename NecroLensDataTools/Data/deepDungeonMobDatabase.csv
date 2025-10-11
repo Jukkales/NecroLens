@@ -14056,7 +14056,7 @@ traverse scissorjaws;;;;True;14203;Sight;Easy;;;
 traverse cama;;;;True;14204;Proximity;Easy;;;
 invoked Baal;;;;True;14205;Sight;Easy;;;
 traverse rider;;;;True;14206;Proximity;Easy;True;;
-invoked succubus;;;;True;14207;Proximity;Easy;;;
+invoked succubus;;;;True;14207;Sight;Easy;True;;
 invoked Humbaba;;;;True;14208;Sight;Easy;True;;
 invoked gremlin;;;;True;14209;Sight;Easy;;;
 traverse gnoll;;;;True;14210;Sight;Easy;;;
