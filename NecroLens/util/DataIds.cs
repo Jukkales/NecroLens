@@ -42,7 +42,7 @@ public static class DataIds
 
     public static readonly HashSet<uint> PilgrimsTraverseMapIds = new()
     {
-        1281, 1282, 1283, 1284, 1284, 1286, 1287, 1288, 1289, 1290
+        1281, 1282, 1283, 1284, 1285, 1286, 1287, 1288, 1289, 1290
     };
 
     public static readonly HashSet<uint> IgnoredDataIDs = new()
