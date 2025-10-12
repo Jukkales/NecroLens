@@ -124,7 +124,7 @@ public class ESPObject
      */
     public float AggroDistance()
     {
-        return Type == ESPType.Mimic && DeepDungeonUtil.InPotD ? 14.6f : 10.8f;
+        return GameObject.HitboxRadius + (Type == ESPType.Mimic && DeepDungeonUtil.InPotD ? 14f : 10f);
     }
 
     public ESPAggroType AggroType()
