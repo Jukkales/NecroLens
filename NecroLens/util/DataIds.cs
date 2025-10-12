@@ -75,7 +75,7 @@ public static class DataIds
         // EO
         1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554,
         // PT
-        1892, 1893, 1908
+        1892, 1882, 1893, 1908, 
     };
 
     public static readonly Dictionary<uint, string> TrapIDs = new()
