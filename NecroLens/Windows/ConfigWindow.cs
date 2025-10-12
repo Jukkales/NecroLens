@@ -1,27 +1,78 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using Dalamud.Interface.Windowing;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Game;
 using NecroLens.Data;
 using NecroLens.Model;
 using NecroLens.util;
 
 namespace NecroLens.Windows;
 
-public class ConfigWindow : Window, IDisposable
+public class ConfigWindow() : Window(Strings.ConfigWindow_Title, ImGuiWindowFlags.AlwaysAutoResize), IDisposable
 {
-    private readonly Configuration conf;
+    private readonly Configuration conf = Config;
 
-    public ConfigWindow() : base(Strings.ConfigWindow_Title, ImGuiWindowFlags.AlwaysAutoResize)
+    private List<KeyValuePair<String, String>> GetLanguages()
     {
-        conf = Config;
-    }
-
+      return new List<KeyValuePair<string, string>>
+      {
+          new[]
+          {
+              new KeyValuePair<string, string>("", Strings.ConfigWindow_Language_default),
+              new KeyValuePair<string, string>("de", Strings.ConfigWindow_Language_de),
+              new KeyValuePair<string, string>("en", Strings.ConfigWindow_Language_en),
+              new KeyValuePair<string, string>("fr", Strings.ConfigWindow_Language_fr),
+              new KeyValuePair<string, string>("ja", Strings.ConfigWindow_Language_ja),
+              new KeyValuePair<string, string>("zh", Strings.ConfigWindow_Language_zh),
+              new KeyValuePair<string, string>("ko", Strings.ConfigWindow_Language_ko),
+          }
+      };  
+    } 
+    
     public void Dispose() { }
 
     public override void Draw()
     {
+        ImGui.Text(Strings.ConfigWindow_Language);
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(150);
+        var languages = GetLanguages();  
+        var lang = languages.Find(pair => pair.Key == conf.Language).Value;
+        if (ImGui.BeginCombo("##language", lang))
+        {
+            foreach (var language in languages)
+            {
+                var selected = language.Key == conf.Language;
+                if (ImGui.Selectable(language.Value, selected))
+                {
+                    conf.Language = language.Key;
+                    Config.Save();
+                    if (language.Key == "")
+                    {
+                        CultureInfo.DefaultThreadCurrentUICulture = ClientState.ClientLanguage switch
+                        {
+                            ClientLanguage.French => CultureInfo.GetCultureInfo("fr"),
+                            ClientLanguage.German => CultureInfo.GetCultureInfo("de"),
+                            ClientLanguage.Japanese => CultureInfo.GetCultureInfo("ja"),
+                            _ => CultureInfo.GetCultureInfo("en")
+                        };
+                    }
+                    else
+                    {
+                        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo(conf.Language);
+                    }
+                }
+            }
+            ImGui.EndCombo();
+        }
+        ImGui.SameLine();
+        ImGui.Spacing();
+        ImGui.SameLine();
+        
         if (ImGui.Button("Want to help with localization?"))
             Process.Start(new ProcessStartInfo
                               { FileName = "https://crowdin.com/project/necrolens", UseShellExecute = true });

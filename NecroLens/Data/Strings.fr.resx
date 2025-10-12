@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,11 +117,287 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ConfigWindow_ESPTab_HighlightObjects_Votife" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="ConfigWindow_Tab_General" xml:space="preserve">
+    <value>General</value>
   </data>
-  <data name="Traps_Fae_Trap" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="ConfigWindow_Tab_ESPSettings" xml:space="preserve">
+    <value>ESP Settings</value>
+  </data>
+  <data name="ConfigWindow_Tab_Chests" xml:space="preserve">
+    <value>Chests</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenChests" xml:space="preserve">
+    <value>Open Chests</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenChests_Details" xml:space="preserve">
+    <value>Automatically opens chest for you once you're in interaction range.
+The plugin only tries to open a chest one time!</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests" xml:space="preserve">
+    <value>Open the following chests:</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Bronze" xml:space="preserve">
+    <value>Bronze</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Silver" xml:space="preserve">
+    <value>Silver</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Gold" xml:space="preserve">
+    <value>Gold</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Hoards" xml:space="preserve">
+    <value>Hoards</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenUnsafeChests" xml:space="preserve">
+    <value>Open unsafe chests</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenUnsafeChests_Details" xml:space="preserve">
+    <value>Even open chests which can be Mimics on the current floor</value>
+  </data>
+  <data name="ConfigWindow_Title" xml:space="preserve">
+    <value>NecroLens Configuration</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowPlayerDot" xml:space="preserve">
+    <value>Show Player Dot</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowPlayerDot_Details" xml:space="preserve">
+    <value>A little dot showing your hit box.</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowAggroRange" xml:space="preserve">
+    <value>Show aggro range</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowAggroRange_Details" xml:space="preserve">
+    <value>Draw sight-, proximity- and sound-range.
+Sound Mobs will also have hit box.</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowAggroRange_Proximity_and_Sight" xml:space="preserve">
+    <value>Proximity and Sight</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowAggroRange_Sound" xml:space="preserve">
+    <value>Sound</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowPatrolArrow" xml:space="preserve">
+    <value>Show Arrow on Patrol</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowPatrolArrow_Details" xml:space="preserve">
+    <value>Draw an arrow pointing in movement direction.</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowCofferInteractionRange" xml:space="preserve">
+    <value>Show interaction range for coffers</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowCofferInteractionRange_Details" xml:space="preserve">
+    <value>Once you approach a treasure coffer a light circle shows up the maximum distance to open.</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightObjects" xml:space="preserve">
+    <value>Highlight the following objects once near:</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightObjects_TreasureChests" xml:space="preserve">
+    <value>Treasure Chests</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightObjects_Passage" xml:space="preserve">
+    <value>Passage</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests" xml:space="preserve">
+    <value>Show the following treasure coffers in the overlay:</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Bronze" xml:space="preserve">
+    <value>Bronze Chests</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Silver" xml:space="preserve">
+    <value>Silver Chests</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Gold" xml:space="preserve">
+    <value>Gold Chests</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Hoards" xml:space="preserve">
+    <value>Accursed Hoards</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_AutomaticallyOpen" xml:space="preserve">
+    <value>Automatically open in DeepDungeon</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_AutomaticallyOpen_Details" xml:space="preserve">
+    <value>Opens the Main window when you enter a DeepDungeon.
+It shows some handy information and quick access to Settings.</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_EnableOverlay" xml:space="preserve">
+      <value>Enable ESP Overlay</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenChests_EXPERIMENTAL" xml:space="preserve">
+    <value>EXPERIMENTAL</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_EnableOverlay_Details" xml:space="preserve">
+    <value>Draws the ESP overlay showing the positions of Chests, Mobs and all aggro ranges.
+You can configure everything you want to see under ESP Settings.
+Important: The ESP can only show objects in the games render distance.
+This is fixed and CAN NOT be changed!</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_OpenChests" xml:space="preserve">
+    <value>Enable OpenChests</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_OpenChests_Details" xml:space="preserve">
+    <value>EXPERIMENTAL FEATURE
+Automatically opens chest for you once you're in interaction range.
+By default it will NOT open chests which can be Mimics this set!
+
+This feature can cause your character being stuck next to a chest!
+If this happens disable this feature.</value>
+  </data>
+  <data name="PluginCommands_OpenOverlay_Help" xml:space="preserve">
+    <value>Opens the main window.</value>
+  </data>
+  <data name="PluginCommands_OpenConfig_Help" xml:space="preserve">
+    <value>Opens the configuration.</value>
+  </data>
+  <data name="MainWindow_TrapStatus_Title" xml:space="preserve">
+    <value>Traps:</value>
+  </data>
+  <data name="MainWindow_TrapStatus_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="MainWindow_TrapStatus_Visible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="MainWindow_TrapStatus_Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="MainWindow_PassageStatus_Title" xml:space="preserve">
+    <value>Passage:</value>
+  </data>
+  <data name="MainWindow_PassageStatus_Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="MainWindow_PassageStatus_Closed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="MainWindow_TimeSet_Title" xml:space="preserve">
+    <value>Times:</value>
+  </data>
+  <data name="MainWindow_NextFloorMark_ActiveNextFloor" xml:space="preserve">
+    <value>Active on next Floor</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Title" xml:space="preserve">
+    <value>Current Floor Effects:</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Affluence" xml:space="preserve">
+    <value>Affluence</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Flight" xml:space="preserve">
+    <value>Flight</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Alteration" xml:space="preserve">
+    <value>Alteration</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Safety" xml:space="preserve">
+    <value>Safety</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Sight" xml:space="preserve">
+    <value>Sight</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Fortune" xml:space="preserve">
+    <value>Fortune</value>
+  </data>
+  <data name="MainWindow_Floor" xml:space="preserve">
+    <value>Floor: {0}</value>
+  </data>
+  <data name="MainWindow_Respawns" xml:space="preserve">
+    <value>Respawns: {0}</value>
+  </data>
+  <data name="MainWindow_ShowAggro" xml:space="preserve">
+    <value>Show Aggro</value>
+  </data>
+  <data name="MainWindow_OpenChests" xml:space="preserve">
+    <value>Open Chests</value>
+  </data>
+  <data name="MainWindow_OpenChests_Help" xml:space="preserve">
+    <value>Toggle Open Chests respecting your settings.
+
+IMPORTANT:
+If you're stuck near a chest and cant move anymore disable this option!</value>
+  </data>
+  <data name="Traps_Landmine" xml:space="preserve">
+    <value>Landmine</value>
+  </data>
+  <data name="Traps_Luring_Trap" xml:space="preserve">
+    <value>Luring Trap</value>
+  </data>
+  <data name="Traps_Enfeebling_Trap" xml:space="preserve">
+    <value>Enfeebling Trap</value>
+  </data>
+  <data name="Traps_Impeding_Trap" xml:space="preserve">
+    <value>Impeding Trap</value>
+  </data>
+  <data name="Traps_Toad_Trap" xml:space="preserve">
+    <value>Toad Trap</value>
+  </data>
+  <data name="Traps_Odder_Trap" xml:space="preserve">
+    <value>Odder Trap</value>
+  </data>
+  <data name="Traps_Owlet_Trap" xml:space="preserve">
+    <value>Owlet Trap</value>
+  </data>
+  <data name="Chest_Accursed_Hoard" xml:space="preserve">
+    <value>Accursed Hoard</value>
+  </data>
+  <data name="Chest_Bronze_Chest" xml:space="preserve">
+    <value>Bronze Chest</value>
+  </data>
+  <data name="Chest_Silver_Chest" xml:space="preserve">
+    <value>Silver Chest</value>
+  </data>
+  <data name="Chest_Gold_Chest" xml:space="preserve">
+    <value>Gold Chest</value>
+  </data>
+  <data name="Chest_Mimic" xml:space="preserve">
+    <value>Mimic</value>
+  </data>
+  <data name="Traps_Unknown" xml:space="preserve">
+    <value>Trap</value>
+  </data>
+  <data name="PluginCommands_OpenChest_Help" xml:space="preserve">
+    <value>Try top open a Chest near to you.</value>
+  </data>
+  <data name="MainWindow_OpenChestButton_Help" xml:space="preserve">
+    <value>Try to open the nearest chest to you.</value>
+  </data>
+  <data name="ConfigWindow_Tab_Extras" xml:space="preserve">
+    <value>Extras</value>
+  </data>
+  <data name="ConfigWindow_ExtrasTab_ShowDebugInformation" xml:space="preserve">
+    <value>Show Debug Information</value>
+  </data>
+  <data name="ConfigWindow_ExtrasTab_ShowDebugInformation_Details" xml:space="preserve">
+    <value>Show the ID for elements. 
+Please turn this on before you submit a bug report. 
+It helps me to identify problems faster.</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightObjects_Votife" xml:space="preserve">
+    <value>Vestige</value>
+  </data>
+  <data name="Traps_Fae_Trap" xml:space="preserve">
+    <value>Fae Trap</value>
+  </data>
+  <data name="ConfigWindow_Language_de" xml:space="preserve">
+      <value>Allemand</value>
+  </data>
+  <data name="ConfigWindow_Language_en" xml:space="preserve">
+      <value>Anglais</value>
+  </data>
+  <data name="ConfigWindow_Language_fr" xml:space="preserve">
+      <value>Français</value>
+  </data>
+  <data name="ConfigWindow_Language_ja" xml:space="preserve">
+      <value>Japonais</value>
+  </data>
+  <data name="ConfigWindow_Language_zh" xml:space="preserve">
+      <value>Chinois</value>
+  </data>
+  <data name="ConfigWindow_Language_ko" xml:space="preserve">
+      <value>Coréen</value>
+  </data>
+  <data name="ConfigWindow_Language" xml:space="preserve">
+      <value>Langue:</value>
+  </data>
+  <data name="ConfigWindow_Language_default" xml:space="preserve">
+      <value>Langue du client</value>
   </data>
 </root>

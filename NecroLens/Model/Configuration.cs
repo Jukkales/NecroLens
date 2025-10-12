@@ -56,6 +56,7 @@ public class Configuration : IPluginConfiguration
     
     public string? UniqueId { get; set; }
     public bool OptInDataCollection { get; set; } = false;
+    public string Language { get; set; } = "";
 
     public void Save()
     {

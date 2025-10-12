@@ -9,8 +9,8 @@ public class DataCollector
     public string? Sender { get; set; }
     
     public string? Party { get; set; }
-    
-    public Collection<MobData> Data { get; set; }
+
+    public Collection<MobData> Data { get; set; } = [];
     
     public class MobData
     {

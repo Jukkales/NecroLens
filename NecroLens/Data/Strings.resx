@@ -376,4 +376,28 @@ It helps me to identify problems faster.</value>
   <data name="Traps_Fae_Trap" xml:space="preserve">
     <value>Fae Trap</value>
   </data>
+  <data name="ConfigWindow_Language" xml:space="preserve">
+      <value>Language:</value>
+  </data>
+  <data name="ConfigWindow_Language_en" xml:space="preserve">
+      <value>English</value>
+  </data>
+  <data name="ConfigWindow_Language_de" xml:space="preserve">
+      <value>German</value>
+  </data>
+  <data name="ConfigWindow_Language_fr" xml:space="preserve">
+      <value>French</value>
+  </data>
+  <data name="ConfigWindow_Language_ja" xml:space="preserve">
+      <value>Japanese</value>
+  </data>
+  <data name="ConfigWindow_Language_ko" xml:space="preserve">
+      <value>Korean</value>
+  </data>
+  <data name="ConfigWindow_Language_zh" xml:space="preserve">
+      <value>Chinese</value>
+  </data>
+  <data name="ConfigWindow_Language_default" xml:space="preserve">
+      <value>Client-Language</value>
+  </data>
 </root>

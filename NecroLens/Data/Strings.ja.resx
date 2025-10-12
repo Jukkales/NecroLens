@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,11 +117,284 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ConfigWindow_ESPTab_HighlightObjects_Votife" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="ConfigWindow_Tab_General" xml:space="preserve">
+    <value>全般</value>
   </data>
-  <data name="Traps_Fae_Trap" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="ConfigWindow_Tab_ESPSettings" xml:space="preserve">
+    <value>ESP 設定</value>
+  </data>
+  <data name="ConfigWindow_Tab_Chests" xml:space="preserve">
+    <value>宝箱</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenChests" xml:space="preserve">
+    <value>宝箱を開ける</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenChests_Details" xml:space="preserve">
+    <value>インタラクト可能な範囲内に居る時、自動的に宝箱を開くことができます
+プラグインは宝箱を1回だけ開けようとします！</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests" xml:space="preserve">
+    <value>次の宝箱を開く:</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Bronze" xml:space="preserve">
+    <value>銅</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Silver" xml:space="preserve">
+    <value>銀</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Gold" xml:space="preserve">
+    <value>金</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenFollowingChests_Hoards" xml:space="preserve">
+    <value>埋もれた財宝</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenUnsafeChests" xml:space="preserve">
+    <value>安全ではない宝箱も開ける</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenUnsafeChests_Details" xml:space="preserve">
+    <value>現在のフロアでミミックの可能性がある宝箱も開けます</value>
+  </data>
+  <data name="ConfigWindow_Title" xml:space="preserve">
+    <value>NecroLens 設定</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowPlayerDot" xml:space="preserve">
+    <value>プレイヤーのドットを表示</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowPlayerDot_Details" xml:space="preserve">
+    <value>プレイヤーのヒットボックスをドットで表示します</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowAggroRange" xml:space="preserve">
+    <value>感知範囲を表示</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowAggroRange_Details" xml:space="preserve">
+    <value>視覚、接近、聴覚感知の範囲を表示する
+聴覚感知はヒットボックスも表示する</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowAggroRange_Proximity_and_Sight" xml:space="preserve">
+    <value>接近感知と視覚感知</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowAggroRange_Sound" xml:space="preserve">
+    <value>聴覚感知</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowPatrolArrow" xml:space="preserve">
+    <value>巡回モブに矢印を表示</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowPatrolArrow_Details" xml:space="preserve">
+    <value>巡回モブの進行方向を示す矢印を表示します</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowCofferInteractionRange" xml:space="preserve">
+    <value>宝箱のインタラクト可能な範囲を表示</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_ShowCofferInteractionRange_Details" xml:space="preserve">
+    <value>宝箱に近づくとインタラクトが可能になるまでの範囲を表示します</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightObjects" xml:space="preserve">
+    <value>近くにある次のオブジェクトをハイライト表示する</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightObjects_TreasureChests" xml:space="preserve">
+    <value>宝箱</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightObjects_Passage" xml:space="preserve">
+    <value>転移</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests" xml:space="preserve">
+    <value>以下の宝箱をオーバーレイで強調表示する</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Bronze" xml:space="preserve">
+    <value>銅の宝箱</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Silver" xml:space="preserve">
+    <value>銀の宝箱</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Gold" xml:space="preserve">
+    <value>金の宝箱</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightTreasureChests_Hoards" xml:space="preserve">
+    <value>埋もれた財宝</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_AutomaticallyOpen" xml:space="preserve">
+    <value>ディープダンジョン突入時にNecroLensウィンドウを自動的に開く</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_AutomaticallyOpen_Details" xml:space="preserve">
+    <value>ディープダンジョンへ突入した時にメインウィンドウを開きます
+いくつかの便利な情報と設定へのクイックアクセスが可能です</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_EnableOverlay" xml:space="preserve">
+    <value>ESP オーバーレイを有効にする</value>
+  </data>
+  <data name="ConfigWindow_ChestsTab_OpenChests_EXPERIMENTAL" xml:space="preserve">
+    <value>実験的</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_EnableOverlay_Details" xml:space="preserve">
+    <value>ESPオーバーレイを描画し、宝箱、モブ、すべての感知範囲を表示します
+ESP設定で表示させたいものを任意に設定出来ます
+重要：ESPオーバーレイはゲームのレンダリング距離内のオブジェクトしか表示できません。
+これはゲームの仕様によって固定されており、変更することはできません！</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_OpenChests" xml:space="preserve">
+    <value>宝箱の自動インタラクトを有効にする</value>
+  </data>
+  <data name="ConfigWindow_GeneralTab_OpenChests_Details" xml:space="preserve">
+    <value>実験的機能
+インタラクト可能な範囲に入れば自動的に宝箱を開けてくれます
+デフォルトではミミックの可能性がある宝箱は自動的には開けません！
+
+この機能によってあなたのキャラクターが宝箱の横で動けなくなることがあります！
+その場合はこの機能を無効にしてください。</value>
+  </data>
+  <data name="PluginCommands_OpenOverlay_Help" xml:space="preserve">
+    <value>メインウィンドウを開く</value>
+  </data>
+  <data name="PluginCommands_OpenConfig_Help" xml:space="preserve">
+    <value>設定を開く</value>
+  </data>
+  <data name="MainWindow_TrapStatus_Title" xml:space="preserve">
+    <value>トラップ：</value>
+  </data>
+  <data name="MainWindow_TrapStatus_Active" xml:space="preserve">
+    <value>あり</value>
+  </data>
+  <data name="MainWindow_TrapStatus_Visible" xml:space="preserve">
+    <value>可視状態</value>
+  </data>
+  <data name="MainWindow_TrapStatus_Inactive" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="MainWindow_PassageStatus_Title" xml:space="preserve">
+    <value>転移：</value>
+  </data>
+  <data name="MainWindow_PassageStatus_Open" xml:space="preserve">
+    <value>可能</value>
+  </data>
+  <data name="MainWindow_PassageStatus_Closed" xml:space="preserve">
+    <value>未</value>
+  </data>
+  <data name="MainWindow_TimeSet_Title" xml:space="preserve">
+    <value>経過時間：</value>
+  </data>
+  <data name="MainWindow_NextFloorMark_ActiveNextFloor" xml:space="preserve">
+    <value>次の階で有効にする</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Title" xml:space="preserve">
+    <value>現在のフロアの魔土器効果：</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Affluence" xml:space="preserve">
+    <value>宝箱増加</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Flight" xml:space="preserve">
+    <value>敵排除</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Alteration" xml:space="preserve">
+    <value>敵変化</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Safety" xml:space="preserve">
+    <value>呪印解除</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Sight" xml:space="preserve">
+    <value>サイトロ</value>
+  </data>
+  <data name="MainWindow_CurrentFloorEffects_Fortune" xml:space="preserve">
+    <value>運気上昇</value>
+  </data>
+  <data name="MainWindow_Floor" xml:space="preserve">
+    <value>現在の階層：{0}</value>
+  </data>
+  <data name="MainWindow_Respawns" xml:space="preserve">
+    <value>リスポーン： {0}</value>
+  </data>
+  <data name="MainWindow_ShowAggro" xml:space="preserve">
+    <value>感知表示</value>
+  </data>
+  <data name="MainWindow_OpenChests" xml:space="preserve">
+    <value>宝箱を開ける</value>
+  </data>
+  <data name="MainWindow_OpenChests_Help" xml:space="preserve">
+    <value>設定に従って開ける宝箱を切り替えます</value>
+  </data>
+  <data name="Traps_Landmine" xml:space="preserve">
+    <value>地雷トラップ</value>
+  </data>
+  <data name="Traps_Luring_Trap" xml:space="preserve">
+    <value>敵誘引トラップ</value>
+  </data>
+  <data name="Traps_Enfeebling_Trap" xml:space="preserve">
+    <value>弱体トラップ</value>
+  </data>
+  <data name="Traps_Impeding_Trap" xml:space="preserve">
+    <value>阻害トラップ</value>
+  </data>
+  <data name="Traps_Toad_Trap" xml:space="preserve">
+    <value>トード化トラップ</value>
+  </data>
+  <data name="Traps_Odder_Trap" xml:space="preserve">
+    <value>ウソウソ化トラップ</value>
+  </data>
+  <data name="Traps_Owlet_Trap" xml:space="preserve">
+    <value>フクロウ化トラップ</value>
+  </data>
+  <data name="Chest_Accursed_Hoard" xml:space="preserve">
+    <value>埋もれた財宝</value>
+  </data>
+  <data name="Chest_Bronze_Chest" xml:space="preserve">
+    <value>銅の宝箱</value>
+  </data>
+  <data name="Chest_Silver_Chest" xml:space="preserve">
+    <value>銀の宝箱</value>
+  </data>
+  <data name="Chest_Gold_Chest" xml:space="preserve">
+    <value>金の宝箱</value>
+  </data>
+  <data name="Chest_Mimic" xml:space="preserve">
+    <value>ミミック</value>
+  </data>
+  <data name="Traps_Unknown" xml:space="preserve">
+    <value>トラップ</value>
+  </data>
+  <data name="PluginCommands_OpenChest_Help" xml:space="preserve">
+    <value>近くのチェストを開けてみてください。</value>
+  </data>
+  <data name="MainWindow_OpenChestButton_Help" xml:space="preserve">
+    <value>あなたに最も近いチェストを開けてみてください。</value>
+  </data>
+  <data name="ConfigWindow_Tab_Extras" xml:space="preserve">
+    <value>その他</value>
+  </data>
+  <data name="ConfigWindow_ExtrasTab_ShowDebugInformation" xml:space="preserve">
+    <value>デバッグ情報を表示</value>
+  </data>
+  <data name="ConfigWindow_ExtrasTab_ShowDebugInformation_Details" xml:space="preserve">
+    <value>要素の ID を表示します。 
+バグレポートを送信する前にこれをオンにしてください。 
+問題をより速く特定するのに役立ちます。</value>
+  </data>
+  <data name="ConfigWindow_ESPTab_HighlightObjects_Votife" xml:space="preserve">
+    <value>Vestige</value>
+  </data>
+  <data name="Traps_Fae_Trap" xml:space="preserve">
+    <value>フェイトラップ</value>
+  </data>
+  <data name="ConfigWindow_Language" xml:space="preserve">
+      <value>言語:</value>
+  </data>
+  <data name="ConfigWindow_Language_en" xml:space="preserve">
+      <value>英語</value>
+  </data>
+  <data name="ConfigWindow_Language_de" xml:space="preserve">
+      <value>ドイツ語</value>
+  </data>
+  <data name="ConfigWindow_Language_fr" xml:space="preserve">
+      <value>フランス語</value>
+  </data>
+  <data name="ConfigWindow_Language_ja" xml:space="preserve">
+      <value>日本語</value>
+  </data>
+  <data name="ConfigWindow_Language_ko" xml:space="preserve">
+      <value>韓国語</value>
+  </data>
+  <data name="ConfigWindow_Language_zh" xml:space="preserve">
+      <value>中国語</value>
+  </data>
+  <data name="ConfigWindow_Language_default" xml:space="preserve">
+      <value>クライアント言語</value>
   </data>
 </root>

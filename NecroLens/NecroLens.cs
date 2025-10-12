@@ -60,13 +60,20 @@ public sealed class NecroLens : IDalamudPlugin
         PluginInterface.UiBuilder.Draw += DrawUI;
         PluginInterface.UiBuilder.OpenConfigUi += ShowConfigWindow;
 
-        CultureInfo.DefaultThreadCurrentUICulture = ClientState.ClientLanguage switch
+        if (Config.Language == "")
         {
-            ClientLanguage.French => CultureInfo.GetCultureInfo("fr"),
-            ClientLanguage.German => CultureInfo.GetCultureInfo("de"),
-            ClientLanguage.Japanese => CultureInfo.GetCultureInfo("ja"),
-            _ => CultureInfo.GetCultureInfo("en")
-        };
+            CultureInfo.DefaultThreadCurrentUICulture = ClientState.ClientLanguage switch
+            {
+                ClientLanguage.French => CultureInfo.GetCultureInfo("fr"),
+                ClientLanguage.German => CultureInfo.GetCultureInfo("de"),
+                ClientLanguage.Japanese => CultureInfo.GetCultureInfo("ja"),
+                _ => CultureInfo.GetCultureInfo("en")
+            };
+        }
+        else
+        {
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo(Config.Language);
+        }
     }
 
     public void Dispose()
