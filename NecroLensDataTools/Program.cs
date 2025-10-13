@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Text.Json;
-using CsvHelper;
-using CsvHelper.Configuration;
+using ClosedXML.Excel;
 using NecroLens.Model;
 
 namespace NecroLensDataTools;
@@ -11,20 +9,41 @@ namespace NecroLensDataTools;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class DatabaseConverter
 {
-    public static void Main(String[] args)
+       public static void Main(String[] args)
     {
-        var inFile = Path.Combine(Directory.GetCurrentDirectory(), "../../../../Data/deepDungeonMobDatabase.csv");
+        var inFile = Path.Combine(Directory.GetCurrentDirectory(), "../../../../Data/deepDungeonMobDatabase.xlsx");
         var csvInfo = new List<DbNpcName>();
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";", HasHeaderRecord = true };
-        using var reader = new StreamReader(inFile);
-        using var csv = new CsvReader(reader, config);
-        var records = csv.GetRecords<DbNpcName>();
-        csvInfo.AddRange(records);
-        csv.Dispose();
-        reader.Dispose();
+
+        using (var workbook = new XLWorkbook(inFile))
+        {
+            var worksheet = workbook.Worksheet(1);
+            var rows = worksheet.RangeUsed()!.RowsUsed().Skip(1);
+
+            foreach (var row in rows)
+            {
+                var entry = new DbNpcName
+                {
+                    PotD = row.Cell(2).GetValue<bool?>(),
+                    HoH = row.Cell(3).GetValue<bool?>(),
+                    EO = row.Cell(4).GetValue<bool?>(),
+                    PT = row.Cell(5).GetValue<bool?>(),
+                    Id = int.Parse(row.Cell(6).GetValue<string>()), 
+                    
+                    Aggro = row.Cell(7).GetValue<string>(),
+                    DangerLevel = row.Cell(8).GetValue<string>(),
+                    
+                    Patrol = row.Cell(9).GetValue<bool?>(),
+                    BossOrAdd = row.Cell(10).GetValue<bool?>(),
+                    Special = row.Cell(11).GetValue<bool?>()
+                };
+
+                csvInfo.Add(entry);
+            }
+        }
 
         var mobList = new List<MobInfo>();
         foreach (var info in csvInfo)
+        {
             if ((info.PotD ?? false) || (info.HoH ?? false) || (info.EO ?? false) || (info.PT ?? false))
             {
                 var mob = new MobInfo
@@ -39,7 +58,8 @@ public class DatabaseConverter
                 };
                 mobList.Add(mob);
             }
-
+        }
+        
         var outFile = Path.Combine(Directory.GetCurrentDirectory(), "../../../../../NecroLens/Data/allMobs.json");
         File.WriteAllText(outFile, JsonSerializer.Serialize(mobList));
     }
