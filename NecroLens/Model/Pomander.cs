@@ -38,7 +38,7 @@ public enum Pomander
     IntuitionProtomander, // = 34 -> 20 + Intuition
     RaisingProtomander,   // = 35 -> 20 + Raising
     
-    HastePomander, // = 37 PT Unique
+    HastePomander, // = 36 PT Unique
     PurificationPomander, // PT Unique
     DevotionPomander, // PT Unique
 }
