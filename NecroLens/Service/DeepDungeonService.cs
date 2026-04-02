@@ -275,7 +275,7 @@ public class DeepDungeonService : IDisposable
             taskManager.Enqueue(() =>
             {
                 TryGetAddonByName<AtkUnitBase>("DeepDungeonStatus", out var addon);
-                Callback.Fire(addon, true, 11, (int)pomander);
+                ECommons.Automation.Callback.Fire(addon, true, 11, (int)pomander);
             });
         }
     }

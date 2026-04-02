@@ -6,7 +6,7 @@ namespace NecroLens.Model;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 [Serializable]
-public class Configuration : IPluginConfiguration
+public class Configuration
 {
     public bool AutoOpenOnEnter { get; set; } = true;
 
@@ -40,26 +40,26 @@ public class Configuration : IPluginConfiguration
     public bool OpenUnsafeChests { get; set; } = false;
 
     public int Version { get; set; } = 1;
-    
+
     public uint PlayerDotColor { get; set; } = 0xCC0000FF;
     public uint NormalAggroColor { get; set; } = 0xFF2A2AA5;
     public uint SoundAggroColor { get; set; } = 0xFFFF00FF;
     public uint PassageColor { get; set; } = 0xFFD0E040;
     public uint VotifeColor { get; set; } = 0xFFD0E040;
-    
+
     public uint BronzeCofferColor { get; set; } = 0xFF13458B;
     public uint SilverCofferColor { get; set; } = 0xFFC0C0C0;
     public uint GoldCofferColor { get; set; } = 0xFF00D7FF;
     public uint HoardColor { get; set; } = 0xFF00D7FF;
-    
+
     public bool ShowDebugInformation { get; set; } = false;
-    
+
     public string? UniqueId { get; set; }
     public bool OptInDataCollection { get; set; } = false;
     public string Language { get; set; } = "";
 
     public void Save()
     {
-        PluginInterface.SavePluginConfig(this);
+        C.Save();
     }
 }

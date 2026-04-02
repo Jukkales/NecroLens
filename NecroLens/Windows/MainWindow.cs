@@ -14,10 +14,7 @@ namespace NecroLens.Windows;
 
 public class MainWindow : Window, IDisposable
 {
-    public MainWindow() : base("NecroLens",
-                               ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse |
-                               ImGuiWindowFlags.NoCollapse |
-                               ImGuiWindowFlags.NoFocusOnAppearing)
+    public MainWindow() : base("NecroLens", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoFocusOnAppearing)
     {
         SizeConstraints = new WindowSizeConstraints
         {
