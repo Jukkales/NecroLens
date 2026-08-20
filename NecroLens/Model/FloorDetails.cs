@@ -8,7 +8,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using NecroLens.util;
+using NecroLens.Enums;
+using NecroLens.MobData;
 using Newtonsoft.Json;
 using static NecroLens.util.DeepDungeonUtil;
 
@@ -125,14 +126,14 @@ public partial class FloorDetails
         }
     }
 
-    public DeepDungeonTrapStatus TrapStatus()
+    public TrapStatus CurrentTrapStatus()
     {
         if (floorEffects.ContainsAny(Pomander.Safety, Pomander.SafetyProtomander))
-            return DeepDungeonTrapStatus.Inactive;
+            return TrapStatus.Inactive;
 
-        if (floorEffects.ContainsAny(Pomander.Sight, Pomander.SightProtomander)) return DeepDungeonTrapStatus.Visible;
+        if (floorEffects.ContainsAny(Pomander.Sight, Pomander.SightProtomander)) return TrapStatus.Visible;
 
-        return DeepDungeonTrapStatus.Active;
+        return TrapStatus.Active;
     }
 
     public bool HasRespawn()
@@ -188,7 +189,7 @@ public partial class FloorDetails
 
     public void DumpFloorObjects(int currentContentId)
     {
-        if (Config.OptInDataCollection)
+        if (C.OptInDataCollection)
         {
             var result = new Dictionary<uint, DataCollector.MobData>();
 
@@ -209,7 +210,7 @@ public partial class FloorDetails
 
             var collector = new DataCollector
             {
-                Sender = Config.UniqueId!,
+                Sender = C.UniqueId!,
                 Party = PartyList.PartyId.ToString(),
                 Data = new Collection<DataCollector.MobData>(result.Values.ToList())
             };

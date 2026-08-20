@@ -1,14 +1,12 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Linq;
-using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Interface;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using NecroLens.Data;
+using NecroLens.Enums;
 using NecroLens.util;
+
+using NecroLens.MobData;
 
 namespace NecroLens.Model;
 
@@ -30,28 +28,10 @@ public class ESPObject
         Danger
     }
 
-    public enum ESPType
-    {
-        Player,
-        Enemy,
-        Mimic,
-        FriendlyEnemy,
-        BronzeChest,
-        SilverChest,
-        GoldChest,
-        AccursedHoard,
-        AccursedHoardCoffer,
-        MimicChest,
-        Trap,
-        Return,
-        Passage,
-        Votife,
-    }
-
     private IClientState clientState;
     private IObjectTable objectTable;
-    private MobInfo? mobInfo;
 
+    /*
     public ESPObject(IGameObject gameObject, MobInfo? mobInfo = null)
     {
         this.clientState = ClientState;
@@ -109,6 +89,7 @@ public class ESPObject
                 Type = ESPType.Votife;
         }
     }
+    */
     
     public Pomander? ContainingPomander { get; set; }
 
@@ -129,35 +110,29 @@ public class ESPObject
         return GameObject.HitboxRadius + (Type == ESPType.Mimic && DeepDungeonUtil.InPotD ? 14f : 10f);
     }
 
-    public ESPAggroType AggroType()
+    public AggroType ReturnAgroType()
     {
-        return mobInfo?.AggroType ?? ESPAggroType.Proximity;
+        return AggroType.Proximity;
     }
 
-    public ESPDangerLevel DangerLevel()
+    public DangerLevel ReturnDangerLevel()
     {
-        return mobInfo?.DangerLevel ?? ESPDangerLevel.Easy;
+        return DangerLevel.Easy;
     }
 
     public bool IsBossOrAdd()
     {
-        return mobInfo?.BossOrAdd ?? false;
+        return false;
     }
 
     public bool IsSpecialMob()
     {
-        return mobInfo?.Special ?? false;
+        return false;
     }
 
     public bool IsPatrol()
     {
-        // heavenly onmitsu exists twice, one partol one not. Only DataId differs
-        if (mobInfo != null && mobInfo.Id == 7305)
-        {
-            return GameObject.BaseId == 8922;
-        }
-
-        return mobInfo?.Patrol ?? false;
+        return false;
     }
 
     public float InteractionDistance()
@@ -174,7 +149,9 @@ public class ESPObject
 
     public float Distance()
     {
-        return objectTable.LocalPlayer != null ? GameObject.Position.Distance2D(objectTable.LocalPlayer.Position) : 0;
+        // return objectTable.LocalPlayer != null ? GameObject.Position.Distance2D(objectTable.LocalPlayer.Position) : 0;
+        return 0;
+
     }
 
     public bool IsChest()
@@ -182,15 +159,16 @@ public class ESPObject
         return Type is ESPType.BronzeChest or ESPType.SilverChest or ESPType.GoldChest or ESPType.AccursedHoardCoffer;
     }
 
+    /*
     public uint RenderColor()
     {
         switch (Type)
         {
             case ESPType.Enemy:
-                return DangerLevel() switch
+                return ReturnDangerLevel() switch
                 {
-                    ESPDangerLevel.Danger => Color.Red.ToUint(),
-                    ESPDangerLevel.Caution => Color.OrangeRed.ToUint(),
+                    DangerLevel.Danger => Color.Red.ToUint(),
+                    DangerLevel.Caution => Color.OrangeRed.ToUint(),
                     _ => Color.White.ToUint()
                 };
             case ESPType.FriendlyEnemy:
@@ -202,7 +180,7 @@ public class ESPObject
             case ESPType.Return:
                 return Color.LightBlue.ToUint();
             case ESPType.Passage:
-                return Config.PassageColor;
+                return ;
             case ESPType.AccursedHoard:
             case ESPType.AccursedHoardCoffer:
                 return Config.HoardColor;
@@ -218,6 +196,7 @@ public class ESPObject
                 return Color.White.ToUint();
         }
     }
+    */
 
     public bool InCombat()
     {
@@ -256,6 +235,7 @@ public class ESPObject
         };
     }
 
+    /*
     public string Name()
     {
         // We dont wanna see Bosses and Adds
@@ -290,7 +270,7 @@ public class ESPObject
         };
 
 
-        if (Config.ShowDebugInformation)
+        if (C.ShowDebugInformation)
         {
             name += "\nD:" + GameObject.BaseId;
             if (GameObject is IBattleNpc npc2) name += " N:" + npc2.NameId;
@@ -298,4 +278,5 @@ public class ESPObject
 
         return name;
     }
+    */
 }

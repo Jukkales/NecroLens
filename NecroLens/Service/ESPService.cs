@@ -1,24 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.Threading;
 using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Plugin.Services;
 using Dalamud.Bindings.ImGui;
 using NecroLens.Model;
 using NecroLens.util;
-using static NecroLens.util.ESPUtils;
+using ECommons.DalamudServices;
 
 namespace NecroLens.Service;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public class ESPService : IDisposable
 {
-    private readonly Configuration conf;
-
     private readonly List<ESPObject> mapObjects;
 
     public ESPService()
@@ -26,18 +20,13 @@ public class ESPService : IDisposable
         PluginLog.Debug("ESP Service loading...");
 
         mapObjects = new List<ESPObject>();
-        conf = Config;
 
-        PluginInterface.UiBuilder.Draw += OnUpdate;
         ClientState.TerritoryChanged += OnCleanup;
-        Framework.Update += OnTick;
     }
 
     public void Dispose()
     {
-        PluginInterface.UiBuilder.Draw -= OnUpdate;
         ClientState.TerritoryChanged -= OnCleanup;
-        Framework.Update -= OnTick;
         mapObjects.Clear();
         PluginLog.Information("ESP Service unloaded");
     }
@@ -65,7 +54,10 @@ public class ESPService : IDisposable
                 if (!Monitor.TryEnter(mapObjects)) return;
 
                 var drawList = ImGui.GetBackgroundDrawList();
-                foreach (var gameObject in mapObjects) DrawEspObject(drawList, gameObject);
+                foreach (var gameObject in mapObjects)
+                {
+                    // DrawEspObject(drawList, gameObject);
+                }
 
                 Monitor.Exit(mapObjects);
             }
@@ -76,6 +68,7 @@ public class ESPService : IDisposable
         }
     }
 
+    /*
     private bool DoDrawName(ESPObject espObject)
     {
         return espObject.Type switch
@@ -96,10 +89,12 @@ public class ESPService : IDisposable
             _ => false
         };
     }
+    */
 
     /**
      * Draws every Object for the ESP-Overlay.
      */
+    /*
     private void DrawEspObject(ImDrawListPtr drawList, ESPObject espObject)
     {
         var type = espObject.Type;
@@ -158,48 +153,37 @@ public class ESPService : IDisposable
 
             if (espObject.Distance() <= 50)
             {
-                switch (espObject.AggroType())
+                switch (espObject.ReturnAgroType())
                 {
-                    case ESPObject.ESPAggroType.Proximity:
+                    case AggroType.Proximity:
                         DrawCircle(drawList, espObject, espObject.AggroDistance(),
                                    conf.NormalAggroColor, DefaultFilledOpacity);
                         break;
-                    case ESPObject.ESPAggroType.Sound:
+                    case AggroType.Sound:
                         DrawCircle(drawList, espObject, espObject.AggroDistance(),
                                    conf.SoundAggroColor, DefaultFilledOpacity);
                         DrawCircleFilled(drawList, espObject, espObject.GameObject.HitboxRadius,
                                          conf.SoundAggroColor, DefaultFilledOpacity);
                         break;
-                    case ESPObject.ESPAggroType.Sight:
+                    case AggroType.Sight:
                         DrawConeFromCenterPoint(drawList, espObject, espObject.SightRadian,
                                                 espObject.AggroDistance(), conf.NormalAggroColor);
                         break;
                     default:
                         PluginLog.Error(
-                            $"Unable to process AggroType {espObject.AggroType().ToString()}");
+                            $"Unable to process AggroType {espObject.ReturnAgroType().ToString()}");
                         break;
                 }
             }
         }
     }
+    */
 
-    /**
-     * Method returns true if the ESP is Enabled, In valid state and in DeepDungeon
-     */
-    private bool ShouldDraw()
-    {
-        return Config.EnableESP &&
-               !(Condition[ConditionFlag.LoggingOut] ||
-                 Condition[ConditionFlag.BetweenAreas] ||
-                 Condition[ConditionFlag.BetweenAreas51]) &&
-                 ObjectTable.LocalPlayer != null &&
-                 PlayerState.ContentId > 0
-                && DeepDungeonUtil.InDeepDungeon;
-    }
 
     /**
      * Not-Drawing Scanner method updating mapObjects every Tick.
      */
+    /*
     private void OnTick(IFramework framework)
     {
         try
@@ -247,5 +231,19 @@ public class ESPService : IDisposable
         }
 
     }
+    */
 
+    /**
+    * Method returns true if the ESP is Enabled, In valid state and in DeepDungeon
+    */
+    private bool ShouldDraw()
+    {
+        bool enabled = C.EnableESP;
+        bool conditions = !(Svc.Condition[ConditionFlag.LoggingOut] || Svc.Condition[ConditionFlag.BetweenAreas] || Svc.Condition[ConditionFlag.BetweenAreas51]);
+        bool available = Svc.Objects.LocalPlayer != null;
+        bool contentId = Svc.PlayerState.ContentId > 0;
+        bool inDeepDungeon = DeepDungeonUtil.InDeepDungeon;
+
+        return enabled && conditions && available && contentId && inDeepDungeon;
+    }
 }

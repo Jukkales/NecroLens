@@ -5,15 +5,14 @@ using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using NecroLens.MobData;
 using NecroLens.Model;
 
 namespace NecroLens.util;
 
-[SuppressMessage("ReSharper", "PatternIsRedundant")] // RSRP-492231
-[SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class DeepDungeonUtil
 {
-    public static uint MapId => ClientState.TerritoryType;
+    public static uint MapId => Player.Territory.RowId;
     public static bool InDeepDungeon => InPotD || InHoH || InEO || InPT;
     public static bool InPotD => DataIds.PalaceOfTheDeadMapIds.Contains(MapId);
     public static bool InHoH => DataIds.HeavenOnHighMapIds.Contains(MapId);

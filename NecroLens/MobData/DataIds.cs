@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NecroLens.Data;
 
-namespace NecroLens.util;
+namespace NecroLens.MobData;
 
 public static class DataIds
 {
@@ -102,8 +102,8 @@ public static class DataIds
     {
         2007187, // PotD
         2009506, // HoH
-        2013286,  // EO
-        2014755
+        2013286, // EO
+        2014755  // PT
     };
 
     public static readonly HashSet<uint> FriendlyIDs = new()

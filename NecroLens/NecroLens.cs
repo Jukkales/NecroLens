@@ -1,68 +1,69 @@
-﻿#undef DEBUG
-
-
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dalamud.Game;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using ECommons;
-using NecroLens.Model;
+using ECommons.Configuration;
+using NecroLens.Data;
+using NecroLens.Configuration;
 using NecroLens.Service;
 using NecroLens.Windows;
+using Pictomancy;
+using ECommons.DalamudServices;
+using NecroLens.PictoRender;
+using ECommons.GameHelpers;
+using NecroLens.MobData;
+using NecroLens.util;
 
 namespace NecroLens;
 
-[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-[SuppressMessage("ReSharper", "UnusedType.Global")]
-[SuppressMessage("ReSharper", "InconsistentNaming")]
 public sealed class NecroLens : IDalamudPlugin
 {
-    private readonly ConfigWindow configWindow;
-    private readonly DeepDungeonService deepDungeonService;
-    private readonly ESPService espService;
-    private readonly MainWindow mainWindow;
-    private readonly MobInfoService mobInfoService;
-    private readonly PluginCommands pluginCommands;
 
-    public readonly WindowSystem WindowSystem = new("NecroLens");
+    internal static NecroLens P = null!;
 
-#if DEBUG
-    private readonly ESPTestService espTestService;
-#endif
+    private Config config;
+    public static Config C => P.config;
+    public static PctContext PictoService;
 
-    public NecroLens(IDalamudPluginInterface? pluginInterface)
+    // Windows
+    internal WindowSystem windowSystem;
+    internal ConfigWindow configWindow;
+    internal MainWindow mainWindow;
+
+    public NecroLens(IDalamudPluginInterface pi)
     {
-        pluginInterface?.Create<PluginService>();
-        Plugin = this;
+        P = this;
+        ECommonsMain.Init(pi, P, Module.DalamudReflector);
+        new ECommons.Schedulers.TickScheduler(Load);
+        PictoService = PctService.Initialize(pi);
+    }
 
-        ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector);
+    public void Load()
+    {
+        EzConfig.Migrate<Config>();
+        config = EzConfig.Init<Config>();
 
-        Config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        MobDatabase.UpdateMobInfo();
 
-        pluginCommands = new PluginCommands();
-        configWindow = new ConfigWindow();
-        mainWindow = new MainWindow();
+        windowSystem = new();
+        configWindow = new();
+        mainWindow = new();
 
-        WindowSystem.AddWindow(mainWindow);
-        WindowSystem.AddWindow(configWindow);
+        EzCmd.Add("/necrolens", OnCommand, $""" {Strings.PluginCommands_OpenOverlay_Help}""");
+        EzCmd.Add("/necrolenscfg", OnCommand, $"""{Strings.PluginCommands_OpenConfig_Help}""");
+        EzCmd.Add("/openchest", OnCommand, $"""{Strings.PluginCommands_OpenChest_Help}""");
+        EzCmd.Add("/pomander", OnCommand, "Try to use the ponander with given name");
 
-        mobInfoService = new MobInfoService();
-        MobService = mobInfoService;
+        Svc.Framework.Update += Tick;
+        Svc.PluginInterface.UiBuilder.Draw += OnDraw;
+        Svc.PluginInterface.UiBuilder.Draw += windowSystem.Draw;
+        Svc.PluginInterface.UiBuilder.OpenMainUi += ShowMainWindow;
+        Svc.PluginInterface.UiBuilder.OpenConfigUi += ShowConfigWindow;
 
-        espService = new ESPService();
-
-        deepDungeonService = new DeepDungeonService();
-        DungeonService = deepDungeonService;
-#if DEBUG
-        espTestService = new ESPTestService();
-#endif
-        PluginInterface.UiBuilder.Draw += DrawUI;
-        PluginInterface.UiBuilder.OpenConfigUi += ShowConfigWindow;
-
-        if (Config.Language == "")
+        if (config.Language == "")
         {
-            CultureInfo.DefaultThreadCurrentUICulture = ClientState.ClientLanguage switch
+            CultureInfo.DefaultThreadCurrentUICulture = Svc.ClientState.ClientLanguage switch
             {
                 ClientLanguage.French => CultureInfo.GetCultureInfo("fr"),
                 ClientLanguage.German => CultureInfo.GetCultureInfo("de"),
@@ -72,33 +73,68 @@ public sealed class NecroLens : IDalamudPlugin
         }
         else
         {
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo(Config.Language);
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo(config.Language);
         }
     }
 
     public void Dispose()
     {
-        WindowSystem.RemoveAllWindows();
+        GenericHelpers.Safe(() => Svc.Framework.Update -= Tick);
+        GenericHelpers.Safe(() => Svc.PluginInterface.UiBuilder.Draw -= OnDraw);
+        GenericHelpers.Safe(() => Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw);
+        GenericHelpers.Safe(() => Svc.PluginInterface.UiBuilder.OpenMainUi -= ShowMainWindow);
+        GenericHelpers.Safe(() => Svc.PluginInterface.UiBuilder.OpenConfigUi -= ShowConfigWindow);
+        GenericHelpers.Safe(() => ECommonsMain.Dispose());
 
-        PluginInterface.UiBuilder.Draw -= DrawUI;
-        PluginInterface.UiBuilder.OpenConfigUi -= ShowConfigWindow;
-
-        configWindow.Dispose();
-        pluginCommands.Dispose();
-        mainWindow.Dispose();
-        espService.Dispose();
-        deepDungeonService.Dispose();
-#if DEBUG
-        espTestService.Dispose();
-#endif
-        mobInfoService.Dispose();
-        
-        ECommonsMain.Dispose();
+        // Windows to be removed
+        GenericHelpers.Safe(() => configWindow.Dispose());
+        GenericHelpers.Safe(() => mainWindow.Dispose());
+        GenericHelpers.Safe(() => PictoService.Dispose());
     }
 
-    private void DrawUI()
+    private void Tick(object _)
     {
-        WindowSystem.Draw();
+        if (DeepDungeonUtil.InDeepDungeon)
+        {
+            // PictoManager.CheckObjects();
+        }
+    }
+
+    private void OnDraw()
+    {
+        if (Player.Available && DeepDungeonUtil.InDeepDungeon)
+        {
+            PictoManager.DrawPicto();
+            PictoManager.CheckObjects();
+        }
+    }
+
+    private void OnCommand(string command, string args)
+    {
+        if (command == "/necrolens")
+        {
+            Svc.Log.Verbose("Opening Necrolens Window");
+            ShowMainWindow();
+            return;
+        }
+        else if (command == "/necrolenscfg")
+        {
+            Svc.Log.Verbose("Opening Necrolens Config");
+            ShowConfigWindow();
+            return;
+        }
+        else if (command == "/openchest")
+        {
+            Svc.Log.Verbose("Attempting to open chest");
+            DungeonService.TryNearestOpenChest();
+            return;
+        }
+        else if (command == "/pomander")
+        {
+            Svc.Log.Verbose($"Using pomander: {args}");
+            DungeonService.OnPomanderCommand(args);
+            return;
+        }
     }
 
     public void ShowMainWindow()

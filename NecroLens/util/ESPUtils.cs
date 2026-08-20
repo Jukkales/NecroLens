@@ -6,12 +6,13 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Bindings.ImGui;
 using NecroLens.Model;
+using NecroLens.MobData;
 
 namespace NecroLens.util;
 
-[SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class ESPUtils
 {
+    /*
     public const float DefaultCircleThickness = 2f;
     public const float DefaultFilledOpacity = 0.4f;
     public const int CircleSegments = 50;
@@ -181,4 +182,5 @@ public static class ESPUtils
         GameGui.WorldToScreen(stepPos, out var segment);
         return segment;
     }
+    */
 }

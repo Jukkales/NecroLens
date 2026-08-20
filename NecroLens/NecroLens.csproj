@@ -20,7 +20,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="data\*.json"/>
+        <None Remove="data\*.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -43,7 +43,8 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <PackageReference Include="ECommons" Version="3.1.0.6" />
+        <PackageReference Include="ECommons" Version="3.2.1.17" />
+        <PackageReference Include="Pictomancy" Version="1.0.10" />
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
             <Private>false</Private>
@@ -87,6 +88,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Strings.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Update="DotNet.ReproducibleBuilds" Version="2.0.5" />
     </ItemGroup>
 
 </Project>

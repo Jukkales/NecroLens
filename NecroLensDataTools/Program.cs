@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using ClosedXML.Excel;
 using NecroLens.Model;
@@ -9,7 +9,10 @@ namespace NecroLensDataTools;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class DatabaseConverter
 {
-       public static void Main(String[] args)
+    // Ended up dropping this in turn for allowing for directly storing it in the .cs file
+    // That way instead of needing to rebuild the spreadsheet (and finding the mobIDS), they can just be directly put in their respective deep dungeon file for reference
+    /*
+    public static void Main(String[] args)
     {
         var inFile = Path.Combine(Directory.GetCurrentDirectory(), "../../../../Data/deepDungeonMobDatabase.xlsx");
         var csvInfo = new List<DbNpcName>();
@@ -49,9 +52,8 @@ public class DatabaseConverter
                 var mob = new MobInfo
                 {
                     Id = (uint)info.Id,
-                    AggroType = (ESPObject.ESPAggroType)Enum.Parse(typeof(ESPObject.ESPAggroType), info.Aggro!),
-                    DangerLevel =
-                        (ESPObject.ESPDangerLevel)Enum.Parse(typeof(ESPObject.ESPDangerLevel), info.DangerLevel!),
+                    // AggroType = (ESPObject.ESPAggroType)Enum.Parse(typeof(ESPObject.ESPAggroType), info.Aggro!),
+                    // DangerLevel = (ESPObject.ESPDangerLevel)Enum.Parse(typeof(ESPObject.ESPDangerLevel), info.DangerLevel!),
                     BossOrAdd = info.BossOrAdd ?? false,
                     Patrol = info.Patrol ?? false,
                     Special = info.Special ?? false
@@ -63,4 +65,5 @@ public class DatabaseConverter
         var outFile = Path.Combine(Directory.GetCurrentDirectory(), "../../../../../NecroLens/Data/allMobs.json");
         File.WriteAllText(outFile, JsonSerializer.Serialize(mobList));
     }
+    */
 }

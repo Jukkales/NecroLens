@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using Dalamud.Game.ClientState.Conditions;
@@ -30,7 +30,6 @@ public class ESPTestService : IDisposable
         {
             var drawList = ImGui.GetBackgroundDrawList();
             var player = ObjectTable.LocalPlayer;
-            var espObject = new ESPObject(player!);
 
             var onScreen = GameGui.WorldToScreen(player!.Position, out _);
             if (onScreen)
@@ -41,7 +40,7 @@ public class ESPTestService : IDisposable
                 // drawList.PathStroke(ColorUtils.ToUint(Color.Red, 0.8f), ImDrawFlags.RoundCornersDefault, 2f);
                 // drawList.PathClear();
 
-                ESPUtils.DrawFacingDirectionArrow(drawList, espObject, Color.Red.ToUint(), 1f, 4f);
+                // ESPUtils.DrawFacingDirectionArrow(drawList, espObject, Color.Red.ToUint(), 1f, 4f);
             }
         }
     }
